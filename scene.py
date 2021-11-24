@@ -26,3 +26,4 @@ class Scene:
 
         :param:     display -> The display where to draw the scene.
         """
+        pass
