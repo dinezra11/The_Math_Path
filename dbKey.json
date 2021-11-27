@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "discaproject-95553",
+  "private_key_id": "0600ba50933ceda00bc518792e552af7a333be1d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyJUU1zl3d1fkT\ni4eveS9/HZ0ZybbeLN+gxC+d4aSjj8xAJE8mfqVZZ0qE1J+Jael7HgTIeeRp9Ppz\nWOU8nnIw2HYGAwfllkTjb389u0QXPifUa5IThgS5LsGRu1nvOjN3t49eMsd6MDQY\nN41ghhj6lfBvsqR8oRF3ReAyeqUOjBMWd+lKOc0KJswVg8q0fL6sBdIt8G40a9s1\nj2NrQepRHfGcyFlQgjRLoMYxffOEHiVASZujh4ILfPu0u63Aqiz41t+/rWDs1UL3\n0vMtHUliARNvkGawBOirRPxy/C5B8SR/QOq0FsXuFGqOol9YxJFL7eqxko580zHz\nFRBll7EPAgMBAAECggEAIzstudtrQvELRmtE1VYxJ4GSzUPQT5YuT9wc0quKZPKO\nYW0M3j8Tsl+0JBrsxj9U9o1UQtWgb7gMQ/2jsF5hlPlqNfwpdqVGUHh/gJTlfXdE\nZ0Uy6XuKuZjenVShD6fB//4kc2u1eZvI4bUy15ENpZk7qMt6rk8oZh9CnJkWxY5n\nycnStmjoTkaUBYODAYlU3BXvJuM4iKmu3ibJyJsnoQVIrm1okLotWep+2zAQ2+/I\nRtWhN5oV7t/9rZzh0Hn5ottp7JLdMsVe4PSGXEB/CwVDzNd5an+pcjv7eQvzIE4m\n7kg/DxeVG/LyjDwfJF6YIhfVTVytCFsELCxG44h3eQKBgQDYns9WwO6GJYsTEo0e\nQD5jEknaL4SQqVgM9EJBw6sRVAvQL9Hvpz5VwYq/htHSC/xSsIGKNERqB/dTFXaL\nJdzWIuqxeXYQrjBAFf27K3/EryXfdgEvFfA4+0gNseP1I+36NNp8+tqMxAtjeizl\nOzmCERQiRoY38E63Nd+aYANdDQKBgQDSh+bmAHZ1nx/k7+6p+/Ms8Gh+cjy1ySHq\n5erogW4xupa6i6KMOUdiLoVUoeJtRpUgvvM5aD6KVioFL5BcRa1R14BwuAJOBR3l\n0jifRZpfPU8CjehzHSaQAgwbjNz3CxCrrK4t5kuvTruIT4/lrDbFB4ls+/xP0CBK\nAhz3xggXiwKBgC+5tYawlRy7EswN70d18gjT06+dfoB8vuiDvEFPAdachMnGb2N0\nnng4XwBZjMrRVzNErhWr9FLEFIqalPaNTf1jzf9x+kAskHbeIXvmVo0X5ak5D4O3\nOqjjO/nAcq/kzZ6tnGGixxnya2vsVA3hIYd1idEPZqzWZhFZbj1N4A/VAoGBAKou\n446PVzLTk6Or9ECCg1uTZtS4Ia1NTlakztRuNBaM32UilR5G+xY5xtvYFMIC6W/U\nC6cfRlbrOgKBJXABfw6GZrQ3et14s2dhHRZa3GQamjDVZ88OBGsqzIDEyKYG0s4D\nw7Uk0Y9/1IZm0kp1gLya0BNCSv51nnRU6ve7pDTrAoGADmqkq/ZQzrS6eZGTpaVS\nGIL7WW4W1OuOCwS8XI56Vlrh942A/l7KrCXrkdpG1f/UWZOjU2AbGYtJ4NF554Cd\ntgcpboDn43KfYKFENOBAAFbewGpvZNp4w7VaEb0+PeVGH30xUhF48ojXDB5LK4CN\nhDYbtuCX3kv1DBgROpqDl5w=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-vw798@discaproject-95553.iam.gserviceaccount.com",
+  "client_id": "109401145529123217887",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-vw798%40discaproject-95553.iam.gserviceaccount.com"
+}
