@@ -1,7 +1,7 @@
 import pygame.event
 from pygame import Surface
 from scene import Scene
-from uiComponents import Text, Button, TextInput
+from uiComponents import Text, Button, TextInput, CycleButton
 import database
 
 # Scene's Constants:
@@ -23,7 +23,7 @@ class LoginScene(Scene):
         super().__init__(display)
 
         def changeState(newState):
-            for index in range(1, len(self.inputForm), 2):
+            for index in range(1, len(self.inputForm) - 2, 2):
                 self.inputForm[index].clearText()
             self.state = newState
 
@@ -64,16 +64,22 @@ class LoginScene(Scene):
         for i in range(5):
             self.inputForm.append(Text((x, y), (0, 0, 0), REGISTER_FORM[i], 24, "fonts/defaultFont.ttf"))
             y += 20
-            if REGISTER_FORM[i] == "Password":
-                self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
+
+            if i == 4:  # Last element in the form will be a cycling button:
+                self.inputForm.append(CycleButton((x - 100, y, 200, 70), ((0, 46, 77), (0, 77, 128)),
+                                                  ("Child", "Parent", "Tutor"), "fonts/defaultFont.ttf", 28))
             else:
-                self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf"))
+                if REGISTER_FORM[i] == "Password":
+                    self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
+                else:
+                    self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf"))
+
             y += 60
 
-        self.registerButton = Button((x, y, 200, 70), ((0, 46, 77), (0, 77, 128)), "Register", "fonts/defaultFont.ttf",
-                                     28, makeRegistration, (
-                                         self.inputForm[1], self.inputForm[3], self.inputForm[5],
-                                         self.inputForm[7], self.inputForm[9]))
+        self.registerButton = Button((x - 100, y + 20, 200, 70), ((0, 46, 77), (0, 77, 128)), "Register",
+                                     "fonts/defaultFont.ttf", 28, makeRegistration, (
+                                     self.inputForm[1], self.inputForm[3], self.inputForm[5], self.inputForm[7],
+                                     self.inputForm[9]))
 
     def update(self):
         """ Update the scene.
@@ -84,7 +90,7 @@ class LoginScene(Scene):
             if event.type == pygame.QUIT:
                 return False
             if event.type == pygame.KEYDOWN:
-                for i in range(1, len(self.inputForm), 2):
+                for i in range(1, len(self.inputForm) - 2, 2):
                     self.inputForm[i].updateText(event)
 
         # Update rest of the scene:
