@@ -1,6 +1,7 @@
 """ Main file of the system! """
 import pygame
 from scene_login import LoginScene
+from scene_mainMenu import MainMenu
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -15,12 +16,13 @@ gameClock = pygame.time.Clock()
 
 # Scenes variables
 SCENES = {
-    'start': LoginScene
+    'start': LoginScene,
+    'mainMenu': MainMenu
 }
 currentScene = SCENES['start'](gameDisplay)
 
 
-def changeScene(newScene=""):
+def changeScene(newScene="", args=None):
     """ Change the current screen to the desired one.
     End the game if newScene='endGame'.
     Do nothing if the desired scene doesn't exist in SCENES's dictionary.
@@ -54,7 +56,10 @@ def changeScene(newScene=""):
         # Fade out and in to the new scene:
         fadeOut()
         del currentScene
-        currentScene = SCENES[newScene](gameDisplay)
+        if args is None:
+            currentScene = SCENES[newScene](gameDisplay)
+        else:
+            currentScene = SCENES[newScene](gameDisplay, args)
         fadeIn()
 
 
