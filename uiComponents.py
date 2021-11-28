@@ -66,7 +66,7 @@ class Button:
         display.blit(self.text, self.textPos)
 
 
-class CycleButton(Button): #### NEED TO FINISH #########
+class CycleButton(Button):
     """ CycleButton component -> A button for options - each click changes the option. """
     def __init__(self, rect: tuple, color: tuple, options: tuple, fontPath: str, fontSize: int):
         """ Initialize button.
@@ -90,9 +90,10 @@ class CycleButton(Button): #### NEED TO FINISH #########
         self.isHover = self.rect[0] < mousePos[0] < (self.rect[0] + self.rect[2]) and \
                        self.rect[1] < mousePos[1] < (self.rect[1] + self.rect[3])
 
-        if pygame.mouse.get_pressed()[0] and self.clickFunc is not None:
+        if pygame.mouse.get_pressed()[0]:
             if self.isHover and Button.clickable:
                 # Button clicked! Change the text:
+                Button.clickable = False
                 self.currentOption += 1
                 if self.currentOption >= len(self.options):
                     self.currentOption = 0
@@ -100,6 +101,9 @@ class CycleButton(Button): #### NEED TO FINISH #########
                 self.text = self.font.render(self.options[self.currentOption], True, (255, 255, 255))
         else:  # Prevent the button to be double clicked on the same user's click
             Button.clickable = True
+
+    def getText(self):
+        return self.options[self.currentOption]
 
 
 class Text:

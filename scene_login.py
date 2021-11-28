@@ -1,7 +1,7 @@
 import pygame.event
 from pygame import Surface
 from scene import Scene
-from uiComponents import Text, Button, TextInput
+from uiComponents import Text, Button, TextInput, CycleButton
 import database
 
 # Scene's Constants:
@@ -15,15 +15,20 @@ REGISTER_FORM = [
     "Password",
     "Account Type"
 ]
+LOGIN_FORM = [
+    "ID",
+    "Password"
+]
 
 
 class LoginScene(Scene):
     def __init__(self, display: Surface):
         """ Initialize the scene. """
+        import main  # Import main to get access to changeScene function (and avoid circular import)
         super().__init__(display)
 
         def changeState(newState):
-            for index in range(1, len(self.inputForm), 2):
+            for index in range(1, len(self.inputForm) - 2, 2):
                 self.inputForm[index].clearText()
             self.state = newState
 
@@ -40,6 +45,19 @@ class LoginScene(Scene):
                                  text[4].getText())
                 changeState("title")
             else:
+                pass  # NEED TO MAKE ERROR MESSAGE HERE
+
+        def attemptLogin(text: tuple):
+            """ Attempt to login! Check for input's validation first.
+            Valid input = ID only digits.
+
+            :param text:            A tuple which each element represents an input.
+            """
+            if text[0].getText().isdigit() and database.validateLogin(text[0].getText(), text[1].getText()):
+                # All input valid! Logged in. Move to the next scene:
+                main.changeScene("mainMenu", text[0].getText())
+            else:
+                print("WRONG INPUT")
                 pass  # NEED TO MAKE ERROR MESSAGE HERE
 
         self.state = "title"  # Scene's states: title, register, login
@@ -64,16 +82,40 @@ class LoginScene(Scene):
         for i in range(5):
             self.inputForm.append(Text((x, y), (0, 0, 0), REGISTER_FORM[i], 24, "fonts/defaultFont.ttf"))
             y += 20
-            if REGISTER_FORM[i] == "Password":
-                self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
+
+            if i == 4:  # Last element in the form will be a cycling button:
+                self.inputForm.append(CycleButton((x - 100, y, 200, 70), ((0, 46, 77), (0, 77, 128)),
+                                                  ("Child", "Parent", "Tutor"), "fonts/defaultFont.ttf", 28))
             else:
-                self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf"))
+                if REGISTER_FORM[i] == "Password":
+                    self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
+                else:
+                    self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf"))
+
             y += 60
 
-        self.registerButton = Button((x, y, 200, 70), ((0, 46, 77), (0, 77, 128)), "Register", "fonts/defaultFont.ttf",
-                                     28, makeRegistration, (
-                                         self.inputForm[1], self.inputForm[3], self.inputForm[5],
-                                         self.inputForm[7], self.inputForm[9]))
+        self.registerButton = Button((x - 100, y + 20, 200, 70), ((0, 46, 77), (0, 77, 128)), "Register",
+                                     "fonts/defaultFont.ttf", 28, makeRegistration, (
+                                         self.inputForm[1], self.inputForm[3], self.inputForm[5], self.inputForm[7],
+                                         self.inputForm[9]))
+
+        # Login screen ui components:
+        x = screenSize[0] / 2
+        y = (screenSize[1] / 3.8) * 1.3
+        self.loginForm = []
+        for i in range(2):
+            self.loginForm.append(Text((x, y), (0, 0, 0), LOGIN_FORM[i], 24, "fonts/defaultFont.ttf"))
+            y += 20
+
+            if LOGIN_FORM[i] == "Password":
+                self.loginForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
+            else:
+                self.loginForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf"))
+
+            y += 60
+
+        self.loginButton = Button((x - 100, y + 20, 200, 70), ((0, 46, 77), (0, 77, 128)), "Login",
+                                  "fonts/defaultFont.ttf", 28, attemptLogin, (self.loginForm[1], self.loginForm[3]))
 
     def update(self):
         """ Update the scene.
@@ -84,8 +126,10 @@ class LoginScene(Scene):
             if event.type == pygame.QUIT:
                 return False
             if event.type == pygame.KEYDOWN:
-                for i in range(1, len(self.inputForm), 2):
+                for i in range(1, len(self.inputForm) - 2, 2):
                     self.inputForm[i].updateText(event)
+                for i in range(1, len(self.loginForm), 2):
+                    self.loginForm[i].updateText(event)
 
         # Update rest of the scene:
         if self.state == "title":
@@ -98,6 +142,9 @@ class LoginScene(Scene):
                 form.update()
         elif self.state == "login":
             self.btnBack.update()
+            self.loginButton.update()
+            for form in self.loginForm:
+                form.update()
 
         return True
 
@@ -118,3 +165,6 @@ class LoginScene(Scene):
                 form.draw(display)
         elif self.state == "login":
             self.btnBack.draw(display)
+            self.loginButton.draw(display)
+            for form in self.loginForm:
+                form.draw(display)

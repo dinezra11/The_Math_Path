@@ -47,6 +47,17 @@ def addMessage(entryFrom, entryInfo, entryTo):
     pass  # צריך להמשיך את הקוד פה
 
 
+def getUser(searchID: str):
+    """ Find and return user's details according to a specific ID.
+
+    :param searchID:          The user's ID to search.
+    """
+    dbObj = db.reference("users").get()
+    for item in dbObj.items():
+        if item[0] == searchID:
+            return item
+
+
 def validateLogin(loginId, loginPass):
     """ Check if ID and password are valid.
     Return True if login confirmed. Return False if login failed.
