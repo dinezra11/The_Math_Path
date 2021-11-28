@@ -13,6 +13,7 @@ class Button:
         :param color:       A tuple of tuples, each tuple represents a color. ([normal color, on hover color])
         :param text:        The text to print on the button. (string)
         :param fontPath:    The path to the font file.
+        :param fontSize:    The size of the font.
         :param clickFunc:   Function. The button will call this function when it is clicked.
         :param clickArg:    The arguments to send as parameters to the function of clickFun.
         """
@@ -67,21 +68,38 @@ class Button:
 
 class CycleButton(Button): #### NEED TO FINISH #########
     """ CycleButton component -> A button for options - each click changes the option. """
-    def __init__(self, rect: tuple, color: tuple, text: str, fontPath: str, fontSize: int):
+    def __init__(self, rect: tuple, color: tuple, options: tuple, fontPath: str, fontSize: int):
         """ Initialize button.
 
                 :param rect:        A tuple that represents the measures of the button. (position and size)
                                     [x, y, width, height]
                 :param color:       A tuple of tuples, each tuple represents a color. ([normal color, on hover color])
-                :param text:        The text to print on the button. (string)
+                :param options:     A tuple of options. (string)
                 :param fontPath:    The path to the font file.
-                :param clickFunc:   Function. The button will call this function when it is clicked.
+                :param fontSize:    The size of the font.
                 """
-        super().__init__()
+        super().__init__(rect, color, options[0], fontPath, fontSize)
+
+        self.options = options
+        self.currentOption = 0
+        self.font = pygame.font.Font(fontPath, fontSize)
 
     def update(self):
         """ Update method. (override) """
-        pass
+        mousePos = pygame.mouse.get_pos()
+        self.isHover = self.rect[0] < mousePos[0] < (self.rect[0] + self.rect[2]) and \
+                       self.rect[1] < mousePos[1] < (self.rect[1] + self.rect[3])
+
+        if pygame.mouse.get_pressed()[0] and self.clickFunc is not None:
+            if self.isHover and Button.clickable:
+                # Button clicked! Change the text:
+                self.currentOption += 1
+                if self.currentOption >= len(self.options):
+                    self.currentOption = 0
+
+                self.text = self.font.render(self.options[self.currentOption], True, (255, 255, 255))
+        else:  # Prevent the button to be double clicked on the same user's click
+            Button.clickable = True
 
 
 class Text:
