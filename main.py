@@ -74,10 +74,14 @@ def changeScene(newScene="", args=None):
 def update():
     """ Update the screen according to the current scene. End the game when need to quit the game completely. """
     if currentScene.update():
-        return True # Continue with the game's loop
+        return True  # Continue with the game's loop
     else:
-        changeScene("endGame") # End the game's loop
-        return False
+        if type(currentScene) is LoginScene:
+            changeScene("endGame")
+            return False
+        else:
+            changeScene("start")  # End the game's loop
+            return True
 
 
 def draw():
@@ -89,7 +93,7 @@ def draw():
 # Game Loop:
 while update():
     draw()
-    gameClock.tick(30) # FPS
+    gameClock.tick(30)  # FPS
 
 # Quit the game. Close PyGame safely:
 pygame.quit()
