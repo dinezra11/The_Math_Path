@@ -8,7 +8,51 @@ BACKGROUND_COLOR = (102, 51, 0)
 HEADER_COLOR = (246, 195, 36)
 FOOTER_COLOR = (96, 96, 96)
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 HEADER_SIZE = 45
+
+
+class GameIcon:
+    """ A small game's icon to show on the menu. """
+
+    def __init__(self, fileName, caption, position: tuple, func, newSceneName):
+        """ Initialize the game's icon.
+
+        :param fileName:        The name of the image file.
+        :param caption:         A small text to be shown below the icon.
+        :param position:        The position of the icon.
+        :param func:            The function to change scene.
+        :param newSceneName     The name of the new scene to be showed when click on this icon.
+        """
+        self.img = pygame.image.load("images/Game's Icons/{0}.png".format(fileName))
+        self.img = pygame.transform.smoothscale(self.img, (150, 150))
+        self.position = position
+        self.caption = Text((self.position[0] + 150 / 2, self.position[1] + 150 + 15), WHITE, caption, 24,
+                            "fonts/defaultFont.ttf")
+        self.func = func
+        self.newSceneName = newSceneName
+        GameIcon.clickable = True  # Indicates whether the button is clickable or not (STATIC field for all of the objects)
+
+    def update(self):
+        mousePos = pygame.mouse.get_pos()
+        isHover = self.position[0] < mousePos[0] < (self.position[0] + 150) and \
+                  self.position[1] < mousePos[1] < (self.position[1] + 150)
+
+        if isHover:
+            self.img.set_alpha(100)
+        else:
+            self.img.set_alpha(255)
+
+        if pygame.mouse.get_pressed()[0]:
+            if isHover and GameIcon.clickable:
+                Button.clickable = False
+                self.func(self.newSceneName)
+        else:  # Prevent the button to be double clicked on the same user's click
+            GameIcon.clickable = True
+
+    def draw(self, display):
+        display.blit(self.img, (self.position[0], self.position[1]))
+        self.caption.draw(display)
 
 
 class ChooseGame(Scene):
@@ -33,18 +77,15 @@ class ChooseGame(Scene):
 
         self.titleText = Text((display.get_size()[0] / 2, 20), WHITE, "Choose a Game", 24, "fonts/defaultFont.ttf")
         self.btnBack = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
-                                                    ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
-                                                    28, goToScene, ("mainMenu", self.userId))
+                                              ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
+                                              28, goToScene, ("mainMenu", self.userId))
         self.btnGame = [
-            Button((100, HEADER_SIZE + 20, 300, 70),
-                   ((0, 46, 77), (0, 77, 128)), "Count Game", "fonts/defaultFont.ttf",
-                   28, goToScene, ("game_countGame", None)),
-            Button((100, HEADER_SIZE + 120, 300, 70),
-                   ((0, 46, 77), (0, 77, 128)), "Choose Size", "fonts/defaultFont.ttf",
-                   28, goToScene, ("game_chooseSize", None)),
-            Button((100, HEADER_SIZE + 220, 300, 70),
-                   ((0, 46, 77), (0, 77, 128)), "Math Expressions", "fonts/defaultFont.ttf",
-                   28, goToScene, ("game_mathExp", None))
+            GameIcon("count game icon", "Count Game", (100, HEADER_SIZE + 20), goToScene,
+                     ("game_countGame", None)),
+            GameIcon("choose size icon", "Choose Size", (300, HEADER_SIZE + 20), goToScene,
+                     ("game_chooseSize", None)),
+            GameIcon("math expressions icon", "Math Expressions", (500, HEADER_SIZE + 20), goToScene,
+                     ("game_mathExp", None))
         ]
 
     def update(self):
