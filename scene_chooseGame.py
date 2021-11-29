@@ -35,7 +35,6 @@ class ChooseGame(Scene):
         self.btnBack = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
                                                     ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
                                                     28, goToScene, ("mainMenu", self.userId))
-
         self.btnGame = [
             Button((100, HEADER_SIZE + 20, 300, 70),
                    ((0, 46, 77), (0, 77, 128)), "Count Game", "fonts/defaultFont.ttf",

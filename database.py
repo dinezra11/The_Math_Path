@@ -84,3 +84,21 @@ def isIdExists(idSearch):
             return True
 
     return False
+
+
+def validateName(input):
+    """ Check if name is valid. Name must be only letters. """
+    return input.isalpha()
+
+
+def validateId(input):
+    """ Check if ID is valid. ID must be only digits. """
+    return input.isdigit()
+
+
+def validateAccountType(input):
+    """ Check if account type is valid. Type must be a child, parent or tutor. """
+    if input in ("Child", "Tutor", "Parent"):
+        return True
+
+    return False
