@@ -2,6 +2,10 @@
 import pygame
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
+from scene_chooseGame import ChooseGame
+from scene_chooseSize import ChooseSize
+from scene_count_game import count_game
+from scene_mygame import MyGame
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -17,7 +21,11 @@ gameClock = pygame.time.Clock()
 # Scenes variables
 SCENES = {
     'start': LoginScene,
-    'mainMenu': MainMenu
+    'mainMenu': MainMenu,
+    'chooseGame': ChooseGame,
+    'game_countGame': count_game,
+    'game_chooseSize': ChooseSize,
+    'game_mathExp': MyGame
 }
 currentScene = SCENES['start'](gameDisplay)
 
@@ -66,10 +74,14 @@ def changeScene(newScene="", args=None):
 def update():
     """ Update the screen according to the current scene. End the game when need to quit the game completely. """
     if currentScene.update():
-        return True # Continue with the game's loop
+        return True  # Continue with the game's loop
     else:
-        changeScene("endGame") # End the game's loop
-        return False
+        if type(currentScene) is LoginScene: # If game was attempted to be closed from first scene - Quit the system.
+            changeScene("endGame")
+            return False
+        else: # If game was attempted to be closed from any other scene - Return to title screen.
+            changeScene("start")  # End the game's loop
+            return True
 
 
 def draw():
@@ -81,7 +93,7 @@ def draw():
 # Game Loop:
 while update():
     draw()
-    gameClock.tick(30) # FPS
+    gameClock.tick(30)  # FPS
 
 # Quit the game. Close PyGame safely:
 pygame.quit()

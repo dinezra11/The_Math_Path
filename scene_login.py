@@ -65,9 +65,9 @@ class LoginScene(Scene):
 
         # Title screen ui components:
         self.title = [Text((screenSize[0] / 2, screenSize[1] / 5), TITLE_COLOR,
-                           "The Math Path", 56, "fonts/defaultFont.ttf"),
+                           "The Math Path", 80, "fonts/defaultFont.ttf"),
                       Text((screenSize[0] / 2, screenSize[1] / 3.8), (0, 0, 0),
-                           "Secondary Title", 24, "fonts/defaultFont.ttf")]
+                           "A system for dealing with Dyscalculia", 24, "fonts/defaultFont.ttf")]
         self.btnLogin = Button((screenSize[0] / 4, screenSize[1] / 2, 200, 70), ((0, 46, 77), (0, 77, 128)),
                                "Login", "fonts/defaultFont.ttf", 28, changeState, "login")
         self.btnRegister = Button((screenSize[0] * 0.75 - 200, screenSize[1] / 2, 200, 70), ((0, 46, 77), (0, 77, 128)),
