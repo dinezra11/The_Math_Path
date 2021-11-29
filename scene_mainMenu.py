@@ -1,15 +1,15 @@
 import pygame.event
 from pygame import Surface
 from scene import Scene
-from uiComponents import Text
+from uiComponents import Text, Button
 import database
 
 # Scene's Constants:
 BACKGROUND_COLOR = (102, 51, 0)
 HEADER_COLOR = (246, 195, 36)
 FOOTER_COLOR = (96, 96, 96)
-
 WHITE = (255, 255, 255)
+HEADER_SIZE = 45
 
 
 class MainMenu(Scene):
@@ -19,11 +19,36 @@ class MainMenu(Scene):
         :param display:             The display where to draw the scene.
         :param userId:              User's id. (string)
         """
+        import main  # Import main to get access to changeScene function (and avoid circular import)
         super().__init__(display)
+
+        def goToScene(text: str):
+            """ Change to another scene.
+
+            :param text:            What scene needs to be displayed next.
+            """
+            main.changeScene(text)
+
+        screenSize = display.get_size()
         self.userObj = database.getUser(userId)  # Get the relevant user's details from the database
 
         title = "Welcome {0} {1}".format(self.userObj[1]["name"], self.userObj[1]["last"])
+        details = [
+            "First Name: {0}".format(self.userObj[1]["name"]),
+            "Last Name: {0}".format(self.userObj[1]["last"]),
+            "ID: {0}".format(self.userObj[0])
+        ]
         self.titleText = Text((display.get_size()[0] / 2, 20), WHITE, title, 24, "fonts/defaultFont.ttf")
+        self.detailsText = []
+        x = 100
+        y = HEADER_SIZE * 2
+        for item in details:
+            self.detailsText.append(Text((x, y), WHITE, item, 24, "fonts/defaultFont.ttf"))
+            y += 30
+
+        self.btnChooseGame = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
+                                                    ((0, 46, 77), (0, 77, 128)), "Login", "fonts/defaultFont.ttf", 28,
+                                                    goToScene, "chooseGame")
 
     def update(self):
         """ Update the scene.
@@ -34,6 +59,8 @@ class MainMenu(Scene):
             if event.type == pygame.QUIT:
                 return False
 
+        self.btnChooseGame.update()
+
         return True
 
     def draw(self, display: Surface):
@@ -42,6 +69,10 @@ class MainMenu(Scene):
         :param:     display -> The display where to draw the scene.
         """
         display.fill(BACKGROUND_COLOR)
-        display.fill(HEADER_COLOR, (0, 0, display.get_size()[0], 45))
-        display.fill(FOOTER_COLOR, (0, display.get_size()[1] - 45, display.get_size()[0], 45))
+        display.fill(HEADER_COLOR, (0, 0, display.get_size()[0], HEADER_SIZE))
+        display.fill(FOOTER_COLOR, (0, display.get_size()[1] - HEADER_SIZE, display.get_size()[0], HEADER_SIZE))
         self.titleText.draw(display)
+        for item in self.detailsText:
+            item.draw(display)
+
+        self.btnChooseGame.draw(display)
