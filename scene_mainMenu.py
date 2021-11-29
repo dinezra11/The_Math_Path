@@ -40,7 +40,7 @@ class MainMenu(Scene):
         ]
         self.titleText = Text((display.get_size()[0] / 2, 20), WHITE, title, 24, "fonts/defaultFont.ttf")
         self.detailsText = []
-        x = 100
+        x = display.get_size()[0] / 2
         y = HEADER_SIZE * 2
         for item in details:
             self.detailsText.append(Text((x, y), WHITE, item, 24, "fonts/defaultFont.ttf"))
