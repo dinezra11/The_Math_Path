@@ -2,6 +2,10 @@
 import pygame
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
+from scene_chooseGame import ChooseGame
+from scene_chooseSize import ChooseSize
+from scene_count_game import count_game
+from scene_mygame import MyGame
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -17,7 +21,11 @@ gameClock = pygame.time.Clock()
 # Scenes variables
 SCENES = {
     'start': LoginScene,
-    'mainMenu': MainMenu
+    'mainMenu': MainMenu,
+    'chooseGame': ChooseGame,
+    'game_countGame': count_game,
+    'game_chooseSize': ChooseSize,
+    'game_mathExp': MyGame
 }
 currentScene = SCENES['start'](gameDisplay)
 
