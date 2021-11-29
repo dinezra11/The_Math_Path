@@ -10,12 +10,12 @@ class ChooseSize(Scene):
         font_title = pygame.font.Font(None, 100)
         self.title = font_title.render('SizeMe', False, 'Blue')
 
-        # """ Prints the 1st line of the explain of the game"""
+        # """ Prints the 1st line of the explain of the game."""
         font_xpl = pygame.font.Font(None, 30)
         x = 'Welcome to SizeMe!'
         self.xpl = font_xpl.render(x, False, 'Black')
 
-        # """ Prints the 2nd line of the explain of the game"""
+        # """ Prints the 2nd line of the explain of the game."""
         font_xpl1 = pygame.font.Font(None, 30)
         y = 'Here we will learn the size value of the objects'
         self.xpl1 = font_xpl1.render(y, False, 'Black')
