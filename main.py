@@ -76,10 +76,10 @@ def update():
     if currentScene.update():
         return True  # Continue with the game's loop
     else:
-        if type(currentScene) is LoginScene:
+        if type(currentScene) is LoginScene: # If game was attempted to be closed from first scene - Quit the system.
             changeScene("endGame")
             return False
-        else:
+        else: # If game was attempted to be closed from any other scene - Return to title screen.
             changeScene("start")  # End the game's loop
             return True
 
