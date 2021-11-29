@@ -20,7 +20,7 @@ class ChooseSize(Scene):
         y = 'Here we will learn the size value of the objects'
         self.xpl1 = font_xpl1.render(y, False, 'Black')
 
-        # """ Prints the 3rd line of the explain of the game"""
+        # """ Prints the 3rd line of the explain of the game."""
         font_xpl2 = pygame.font.Font(None, 30)
         z = 'that will appear in front of us.'
         self.xpl2 = font_xpl2.render(z, False, 'Black')
@@ -153,3 +153,4 @@ class ChooseSize(Scene):
             self.level_one(display)
         if self.current_level == 2:
             self.end_game = True
+
