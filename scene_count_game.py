@@ -1,5 +1,6 @@
 import pygame
 from scene import Scene
+import database
 
 
 class count_game(Scene):
@@ -81,6 +82,7 @@ class count_game(Scene):
 
     def update(self):
         if self.update_end_game:
+            database.addScore("Count Game", 0)
             return
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

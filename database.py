@@ -27,14 +27,17 @@ def addUser(entryName, entryLast, entryId, entryPass, entryType):
     })
 
 
-def addScore(entryId, gameType, score):
+def addScore(gameType, score):
     """ Add a score entry to the database.
 
-    :param entryId:         User's ID
     :param gameType:        Game's type
     :param score:           Player's score on this game
     """
-    pass  # צריך להמשיך את הקוד פה
+    dbObj = db.reference('scores')
+    dbObj.push({
+        'type': gameType,
+        'score': score
+    })
 
 
 def addMessage(entryFrom, entryInfo, entryTo):

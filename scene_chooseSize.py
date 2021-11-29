@@ -1,5 +1,7 @@
 import pygame
 from scene import Scene
+import database
+
 
 class ChooseSize(Scene):
     def __init__(self, display):
@@ -56,6 +58,7 @@ class ChooseSize(Scene):
 
     def update(self):
         if self.update_end_game:
+            database.addScore("Choose Size", 0)
             return
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
