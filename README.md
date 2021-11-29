@@ -6,6 +6,7 @@ External Packages:
 - firebase-admin
 
 Must install the above packages in order to run the code.
+Run "main.py" file to run the system.
 
 Authors:
 - Din Ezra
