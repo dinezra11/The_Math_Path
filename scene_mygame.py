@@ -1,6 +1,7 @@
 import pygame
 import random
 from scene import Scene
+import database
 
 
 class MyGame(Scene):
@@ -85,12 +86,14 @@ class MyGame(Scene):
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                database.addScore("Math Expressions", self.score) # Save in DB
                 return False
         mouse_pos = pygame.mouse.get_pos()
         # -------------------------------if clicked on Exit-----------------------------------------
         if self.textRect6.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
                 self.color = (255, 255, 0)
+                database.addScore("Math Expressions", self.score) # Save in DB
                 return False
         # -------------------------------if clicked on Next------------------------------------------
         if self.textRect7.collidepoint(mouse_pos):
