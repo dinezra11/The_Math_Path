@@ -32,9 +32,9 @@ class ChooseSize(Scene):
         font_xpl3 = pygame.font.Font(None, 35)
         self.xpl3 = font_xpl3.render(s, False, 'Black')
 
-        self.start_button = pygame.image.load('images/start button.png')
+        self.start_button = pygame.image.load('images/Choose Size/start button.png')
 
-        self.page1 = pygame.image.load('images/board.jpg')
+        self.page1 = pygame.image.load('images/Choose Size/board.jpg')
 
         self.end_game1_font = pygame.font.Font(None, 40)
         self.end_game1_surface = self.end_game1_font.render('GOOD JOB, YOU HAVE REACHED THE END OF THE GAME!', True,
@@ -100,16 +100,16 @@ class ChooseSize(Scene):
         font_task = pygame.font.Font(None, 35)
         self.task = font_task.render(p, False, 'Black')
         display.blit(self.task, (200, 180))
-        self.one_ball = pygame.image.load('images/1 ball.png')
+        self.one_ball = pygame.image.load('images/Choose Size/1 ball.png')
         display.blit(self.one_ball, (200, 360))
-        self.six_balls = pygame.image.load('images/6 balls.png')
+        self.six_balls = pygame.image.load('images/Choose Size/6 balls.png')
         display.blit(self.six_balls, (824, 360))
 
-        self.left_symbol = pygame.image.load('images/left.png')
+        self.left_symbol = pygame.image.load('images/Choose Size/left.png')
         display.blit(self.left_symbol, (250, 500))
-        self.equal_symbol = pygame.image.load('images/equal.png')
+        self.equal_symbol = pygame.image.load('images/Choose Size/equal.png')
         display.blit(self.equal_symbol, (500, 500))
-        self.right_symbol = pygame.image.load('images/right.png')
+        self.right_symbol = pygame.image.load('images/Choose Size/right.png')
         display.blit(self.right_symbol, (750, 500))
         if pygame.mouse.get_pressed()[0]:
             leftButtonSize = self.left_symbol.get_size()
@@ -128,12 +128,12 @@ class ChooseSize(Scene):
 
     def correct_answer(self, display: pygame.Surface):
         display.blit(self.test_surface,(0,0))
-        correct_window = pygame.image.load('images/correct-answer-md.png')
+        correct_window = pygame.image.load('images/Choose Size/correct-answer-md.png')
         display.blit(correct_window,(350, 400))
 
     def wrong_answer(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        wrong_window = pygame.image.load('images/wrong answer.png')
+        wrong_window = pygame.image.load('images/Choose Size/wrong answer.png')
         display.blit(wrong_window,(280, 200))
         display.blit(self.try_again_surface, (100, 150))
 
