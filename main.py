@@ -1,5 +1,6 @@
 """ Main file of the system! """
 import pygame
+import traceback  # for showing the traceback on the console while error handling
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
 from scene_chooseGame import ChooseGame
@@ -27,7 +28,7 @@ SCENES = {
     'game_chooseSize': ChooseSize,
     'game_mathExp': MyGame
 }
-currentScene = SCENES['start'](gameDisplay)
+currentScene = None  # This variable will hold the object of the current scene!
 
 
 def changeScene(newScene="", args=None):
@@ -76,10 +77,10 @@ def update():
     if currentScene.update():
         return True  # Continue with the game's loop
     else:
-        if type(currentScene) is LoginScene: # If game was attempted to be closed from first scene - Quit the system.
+        if type(currentScene) is LoginScene:  # If game was attempted to be closed from first scene - Quit the system.
             changeScene("endGame")
             return False
-        else: # If game was attempted to be closed from any other scene - Return to title screen.
+        else:  # If game was attempted to be closed from any other scene - Return to title screen.
             changeScene("start")  # End the game's loop
             return True
 
@@ -90,11 +91,18 @@ def draw():
     pygame.display.update()
 
 
-# Game Loop:
-while update():
-    draw()
-    gameClock.tick(30)  # FPS
+# GAME STARTS HERE #
+try:
+    currentScene = SCENES['start'](gameDisplay)  # Initialize the first default scene
 
-# Quit the game. Close PyGame safely:
-pygame.quit()
-quit()
+    # Game's Loop:
+    while update():
+        draw()
+        gameClock.tick(30)  # FPS
+except Exception as e:  # Handle default exceptions (The exceptions that haven't been caught by the scene's class)
+    print("Error occurred.")  # need to make new error scene (detailed one)
+    traceback.print_exc()  # for debugging
+finally:
+    # Quit the game. Close PyGame safely:
+    pygame.quit()
+    quit()

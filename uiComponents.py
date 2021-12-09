@@ -4,6 +4,7 @@ import pygame
 
 class Button:
     """ Button component """
+
     def __init__(self, rect: tuple, color: tuple, text: str, fontPath: str, fontSize: int, clickFunc=None,
                  clickArg=None):
         """ Initialize button.
@@ -68,6 +69,7 @@ class Button:
 
 class CycleButton(Button):
     """ CycleButton component -> A button for options - each click changes the option. """
+
     def __init__(self, rect: tuple, color: tuple, options: tuple, fontPath: str, fontSize: int):
         """ Initialize button.
 
@@ -108,6 +110,7 @@ class CycleButton(Button):
 
 class Text:
     """ Text component """
+
     def __init__(self, position: tuple, color: tuple, text: str, size: int = 12, fontPath: str = None):
         """ Initialize text.
 
@@ -131,8 +134,62 @@ class Text:
         display.blit(self.text, self.position)
 
 
+class ErrorText(Text):
+    """ Text component """
+
+    def __init__(self, position: tuple, size: int = 12, fontPath: str = None):
+        """ Initialize text.
+
+        :param position:        A tuple that represents the position of the text. (x, y)
+        :param size:            Size of the font. (int) (Default = 12px)
+        :param fontPath:        Path to the font. (string) (Default = system's default font)
+        """
+        # Set the basic properties of the text (red color, empty text):
+        self.color = (255, 0, 0)
+        super().__init__(position, self.color, "", size, fontPath)
+
+        self.loadFont = pygame.font.Font(fontPath, size)
+        self.positionCenter = position
+
+        # Error's variable
+        self.time = None
+        self.errorDelay = None
+        self.textAlpha = None
+        self.isShow = False
+
+    def update(self):
+        """ Update method. """
+        if self.isShow:
+            # Error message is shown!
+            if pygame.time.get_ticks() - self.time > self.errorDelay:
+                # The message has been waited enough! Fade it out.
+                self.textAlpha -= 10
+                self.text.set_alpha(self.textAlpha)
+
+                if self.textAlpha <= 0:
+                    self.isShow = False
+
+    def pop(self, txt: str, ms: int):
+        """ Pop the the given text as an error.
+
+        :param txt:         The text to show as an error.
+        :param ms:          How long the error message will be shown. (In milliseconds)
+        """
+        self.text = self.loadFont.render(txt, True, self.color)
+        self.position = self.text.get_rect(center=self.positionCenter)
+        self.textAlpha = 255
+        self.time = pygame.time.get_ticks()
+        self.errorDelay = ms
+        self.isShow = True
+
+    def draw(self, display: pygame.display):
+        if self.isShow:
+            display.blit(self.text, self.position)
+
+
 class TextInput:
     """ TextInput component """
+
     def __init__(self, position: tuple, size: int = 12, fontPath: str = None, secret=False):
         """ Initialize text input.
 
