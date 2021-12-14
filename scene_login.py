@@ -201,7 +201,7 @@ class LoginScene(Scene):
 
             if i == 4:  # Last element in the form will be a cycling button:
                 self.inputForm.append(CycleButton((x - 100, y, 200, 70), ((0, 46, 77), (0, 77, 128)),
-                                                  ("Child", "Parent", "Tutor"), "fonts/defaultFont.ttf", 28))
+                                                  ("Child", "Parent", "Diagnostic"), "fonts/defaultFont.ttf", 28))
             else:
                 if REGISTER_FORM[i] == "Password":
                     self.inputForm.append(TextInput((x - 100, y), 24, "fonts/defaultFont.ttf", secret=True))
