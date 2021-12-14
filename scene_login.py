@@ -6,7 +6,6 @@ import database
 import random
 
 # Scene's Constants:
-BACKGROUND_COLOR = (0, 128, 255)  # Background color (RGB)
 TITLE_COLOR = (76, 0, 153)  # Title text color (RGB)
 ERROR_DELAY = 1000  # Error display time (in milliseconds)
 
@@ -169,6 +168,8 @@ class LoginScene(Scene):
         self.errorObj = ErrorText((screenSize[0] / 2, 20), 24, "fonts/defaultFont.ttf")
 
         # Background's graphics:
+        self.background = pygame.transform.scale(pygame.image.load('images/Login Scene/blue_background.jpg'),
+                                                 (screenSize[0], screenSize[1]))
         self.foregroundGrass = pygame.transform.scale(pygame.image.load('images/Login Scene/grass.png'),
                                                       (screenSize[0], screenSize[1] / 2))
         self.foregroundArithmetic = []
@@ -274,7 +275,7 @@ class LoginScene(Scene):
 
     def draw(self, display: Surface):
         """ Draw the scene. """
-        display.fill(BACKGROUND_COLOR)
+        display.blit(self.background, (0, 0))
         display.blit(self.foregroundGrass, (0, display.get_size()[1] - self.foregroundGrass.get_size()[1]))
         for i in self.foregroundArithmetic:
             i.draw(display)
