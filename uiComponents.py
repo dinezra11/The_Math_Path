@@ -124,6 +124,7 @@ class Text:
         loadFont = pygame.font.Font(fontPath, size)
 
         self.text = loadFont.render(text, True, color)
+        self.color = color
         self.position = self.text.get_rect()
         if alignCenter:
             self.position.center = position
@@ -133,6 +134,9 @@ class Text:
     def update(self):
         """ Update method. """
         pass
+
+    def changeText(self, newText):
+        self.text = loadFont.render(newText, True, self.color)
 
     def draw(self, display: pygame.display):
         display.blit(self.text, self.position)
