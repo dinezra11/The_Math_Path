@@ -121,9 +121,9 @@ class Text:
         :param size:            Size of the font. (int) (Default = 12px)
         :param fontPath:        Path to the font. (string) (Default = system's default font)
         """
-        loadFont = pygame.font.Font(fontPath, size)
+        self.loadFont = pygame.font.Font(fontPath, size)
 
-        self.text = loadFont.render(text, True, color)
+        self.text = self.loadFont.render(text, True, color)
         self.color = color
         self.position = self.text.get_rect()
         if alignCenter:
@@ -136,7 +136,7 @@ class Text:
         pass
 
     def changeText(self, newText):
-        self.text = loadFont.render(newText, True, self.color)
+        self.text = self.loadFont.render(newText, True, self.color)
 
     def draw(self, display: pygame.display):
         display.blit(self.text, self.position)
