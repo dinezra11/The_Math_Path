@@ -111,7 +111,8 @@ class CycleButton(Button):
 class Text:
     """ Text component """
 
-    def __init__(self, position: tuple, color: tuple, text: str, size: int = 12, fontPath: str = None):
+    def __init__(self, position: tuple, color: tuple, text: str, size: int = 12, fontPath: str = None,
+                 alignCenter=True):
         """ Initialize text.
 
         :param position:        A tuple that represents the position of the text. (x, y)
@@ -124,7 +125,10 @@ class Text:
 
         self.text = loadFont.render(text, True, color)
         self.position = self.text.get_rect()
-        self.position.center = position
+        if alignCenter:
+            self.position.center = position
+        else:
+            self.position = position
 
     def update(self):
         """ Update method. """
