@@ -1,6 +1,8 @@
 import firebase_admin
 from firebase_admin import db
 from datetime import datetime
+from string import ascii_letters, digits
+from random import choice
 
 cred_obj = firebase_admin.credentials.Certificate('dbKey.json')
 default_app = firebase_admin.initialize_app(cred_obj, {
@@ -17,13 +19,23 @@ def addUser(entryName, entryLast, entryId, entryPass, entryType):
     :param entryPass:           User's password
     :param entryType:           User's type
     """
+
+    def randomPassword():
+        """ Generate a random password for linking child user to parent user. """
+        linkPass = ""
+        for i in range(10):  # Length of random password = 10
+            linkPass += choice(ascii_letters + digits)  # Add one letter or digit
+
+        return linkPass
+
     dbObj = db.reference('users')
     dbObj.update({
         entryId: {
             'name': entryName,
             'last': entryLast,
             'password': entryPass,
-            'type': entryType
+            'type': entryType,
+            'passlink': randomPassword()
         }
     })
 
