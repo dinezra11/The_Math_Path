@@ -2,6 +2,7 @@ import pygame
 from random import randint
 from scene import Scene
 from uiComponents import Button, Text
+import database
 
 # Constants:
 HEARTICON_SIZE = 30  # Size of the heart's image
@@ -114,7 +115,7 @@ def generateQuestion(currentScore):
 
 
 class CatchGame(Scene):
-    def __init__(self, display):
+    def __init__(self, display, userId):
         """ Initialize the scene.
 
         :param:     display -> The display where to draw the scene.
@@ -124,6 +125,7 @@ class CatchGame(Scene):
             self.state = newState
 
         screenSize = display.get_size()
+        self.userId = userId
         Answer.screenSize = screenSize
         Answer.loadFont = pygame.font.Font("fonts/defaultFont.ttf", 30)
         self.state = "intro"  # Possible game's stats: intro, play, end, exit
@@ -206,7 +208,8 @@ class CatchGame(Scene):
         elif self.state == "end":
             self.endButton.update()
         elif self.state == "exit":
-            return False
+            database.addScore("Catch the Answer", self.score, self.userId)
+            return
 
         return True
 

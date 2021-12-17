@@ -27,13 +27,14 @@ def addUser(entryName, entryLast, entryId, entryPass, entryType):
     })
 
 
-def addScore(gameType, score):
+def addScore(gameType, score, userId):
     """ Add a score entry to the database.
 
     :param gameType:        Game's type
     :param score:           Player's score on this game
+    :param userId           User's ID that played in this game
     """
-    dbObj = db.reference('scores')
+    dbObj = db.reference('scores/{}'.format(userId))
     dbObj.push({
         'type': gameType,
         'score': score

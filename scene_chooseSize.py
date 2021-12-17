@@ -4,8 +4,9 @@ import database
 
 
 class ChooseSize(Scene):
-    def __init__(self, display):
+    def __init__(self, display, userId):
         super().__init__(display)
+        self.userId = userId
         self.test_surface = pygame.image.load('images/1024x800 background.png')
 
         # """ Prints the title"""
@@ -56,7 +57,7 @@ class ChooseSize(Scene):
 
     def update(self):
         if self.update_end_game:
-            database.addScore("Choose Size", 0)
+            database.addScore("Choose Size", 0, self.userId)
             return
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

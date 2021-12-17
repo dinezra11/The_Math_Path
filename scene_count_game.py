@@ -5,8 +5,9 @@ import database
 
 class count_game(Scene):
 
-    def __init__(self, display):
+    def __init__(self, display, userId):
         super().__init__(display)
+        self.userId = userId
         self.background_surf = pygame.image.load('images/1024x800 background.png')
 
         self.mouse_pos = pygame.mouse.get_pos()
@@ -82,7 +83,7 @@ class count_game(Scene):
 
     def update(self):
         if self.update_end_game:
-            database.addScore("Count Game", 0)
+            database.addScore("Count Game", 0, self.userId)
             return
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

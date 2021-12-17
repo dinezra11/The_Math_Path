@@ -81,13 +81,13 @@ class ChooseGame(Scene):
                                               28, goToScene, ("mainMenu", self.userId))
         self.btnGame = [
             GameIcon("catch answer icon.jpg", "Catch the Answer", (100, HEADER_SIZE + 20), goToScene,
-                     ("game_catchGame", None)),
+                     ("game_catchGame", self.userId)),
             GameIcon("choose size icon.png", "Choose Size", (300, HEADER_SIZE + 20), goToScene,
-                     ("game_chooseSize", None)),
+                     ("game_chooseSize", self.userId)),
             GameIcon("math expressions icon.png", "Math Expressions", (500, HEADER_SIZE + 20), goToScene,
-                     ("game_mathExp", None)),
+                     ("game_mathExp", self.userId)),
             GameIcon("count game icon.png", "Count Game", (100, HEADER_SIZE + 250), goToScene,
-                     ("game_countGame", None))
+                     ("game_countGame", self.userId))
         ]
 
     def update(self):
