@@ -1,5 +1,6 @@
 import firebase_admin
 from firebase_admin import db
+from datetime import datetime
 
 cred_obj = firebase_admin.credentials.Certificate('dbKey.json')
 default_app = firebase_admin.initialize_app(cred_obj, {
@@ -37,7 +38,8 @@ def addScore(gameType, score, userId):
     dbObj = db.reference('scores/{}'.format(userId))
     dbObj.push({
         'type': gameType,
-        'score': score
+        'score': score,
+        'time': str(datetime.now())
     })
 
 
