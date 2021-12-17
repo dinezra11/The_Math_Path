@@ -24,7 +24,7 @@ class GameIcon:
         :param func:            The function to change scene.
         :param newSceneName     The name of the new scene to be showed when click on this icon.
         """
-        self.img = pygame.image.load("images/Game's Icons/{0}.png".format(fileName))
+        self.img = pygame.image.load("images/Game's Icons/{0}".format(fileName))
         self.img = pygame.transform.smoothscale(self.img, (150, 150))
         self.position = position
         self.caption = Text((self.position[0] + 150 / 2, self.position[1] + 150 + 15), WHITE, caption, 24,
@@ -80,12 +80,14 @@ class ChooseGame(Scene):
                                               ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
                                               28, goToScene, ("mainMenu", self.userId))
         self.btnGame = [
-            GameIcon("count game icon", "Count Game", (100, HEADER_SIZE + 20), goToScene,
-                     ("game_countGame", None)),
-            GameIcon("choose size icon", "Choose Size", (300, HEADER_SIZE + 20), goToScene,
+            GameIcon("catch answer icon.jpg", "Catch the Answer", (100, HEADER_SIZE + 20), goToScene,
+                     ("game_catchGame", None)),
+            GameIcon("choose size icon.png", "Choose Size", (300, HEADER_SIZE + 20), goToScene,
                      ("game_chooseSize", None)),
-            GameIcon("math expressions icon", "Math Expressions", (500, HEADER_SIZE + 20), goToScene,
-                     ("game_mathExp", None))
+            GameIcon("math expressions icon.png", "Math Expressions", (500, HEADER_SIZE + 20), goToScene,
+                     ("game_mathExp", None)),
+            GameIcon("count game icon.png", "Count Game", (100, HEADER_SIZE + 250), goToScene,
+                     ("game_countGame", None))
         ]
 
     def update(self):

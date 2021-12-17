@@ -7,6 +7,7 @@ import database
 # Scene's Constants:
 WHITE = (255, 255, 255)
 HEADER_SIZE = 80
+FOOTER_SIZE = 160
 
 
 class MainMenu(Scene):
@@ -47,22 +48,22 @@ class MainMenu(Scene):
             "First Name: {0}".format(self.userObj[1]["name"]),
             "Last Name: {0}".format(self.userObj[1]["last"]),
             "ID: {0}".format(self.userObj[0]),
-            "Type: {0}".format(self.userObj[1]["type"])
+            "Account Type: {0}".format(self.userObj[1]["type"])
         ]
-        self.titleText = Text((display.get_size()[0] / 2, 20), WHITE, title, 24, "fonts/defaultFont.ttf")
+        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), WHITE, title, 36, "fonts/defaultFont.ttf")
         self.detailsText = []
-        x = display.get_size()[0] / 2
+        x = 10
         y = HEADER_SIZE * 2
         for item in details:
-            self.detailsText.append(Text((x, y), WHITE, item, 24, "fonts/defaultFont.ttf"))
+            self.detailsText.append(Text((x, y), WHITE, item, 24, "fonts/defaultFont.ttf", alignCenter=False))
             y += 30
 
-        self.btnChooseGame = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
+        self.btnChooseGame = self.btnLogin = Button((screenSize[0] / 3, HEADER_SIZE + 20, 140, 40),
                                                     ((0, 46, 77), (0, 77, 128)), "Play a Game", "fonts/defaultFont.ttf",
-                                                    28, goToScene, ("chooseGame", self.userObj[0]))
-        self.btnLogOff = Button((screenSize[0] - 250, screenSize[1] / 2+100, 200, 70),
-                                                    ((0, 46, 77), (0, 77, 128)), "Log Off", "fonts/defaultFont.ttf",
-                                                    28, goToScene, ("start", None))
+                                                    20, goToScene, ("chooseGame", self.userObj[0]))
+        self.btnLogOff = Button((screenSize[0] - 130, screenSize[1] - FOOTER_SIZE / 2, 120, 70),
+                                ((0, 46, 77), (0, 77, 128)), "Log Off", "fonts/defaultFont.ttf",
+                                28, goToScene, ("start", None))
 
     def update(self):
         """ Update the scene.
@@ -97,6 +98,5 @@ class MainMenu(Scene):
         self.btnLogOff.draw(display)
 
         # Draw Footer
-        pygame.draw.rect(display, (0, 0, 0), (5, display.get_size()[1] - HEADER_SIZE - 5, display.get_size()[0] - 10, HEADER_SIZE), width=2)
-
-
+        pygame.draw.rect(display, (0, 0, 0),
+                         (5, display.get_size()[1] - FOOTER_SIZE - 5, display.get_size()[0] - 10, FOOTER_SIZE), width=2)

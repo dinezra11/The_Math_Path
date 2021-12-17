@@ -7,6 +7,7 @@ from scene_chooseGame import ChooseGame
 from scene_chooseSize import ChooseSize
 from scene_count_game import count_game
 from scene_mygame import MyGame
+from scene_catchGame import CatchGame
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -26,7 +27,8 @@ SCENES = {
     'chooseGame': ChooseGame,
     'game_countGame': count_game,
     'game_chooseSize': ChooseSize,
-    'game_mathExp': MyGame
+    'game_mathExp': MyGame,
+    'game_catchGame': CatchGame
 }
 currentScene = None  # This variable will hold the object of the current scene!
 
