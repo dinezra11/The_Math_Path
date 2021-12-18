@@ -39,6 +39,7 @@ class Button:
         self.clickArg = clickArg
         self.isHover = False
         Button.clickable = True  # Indicates whether the button is clickable or not (STATIC field for all of the objects)
+        Button.clickSound = pygame.mixer.Sound("audio/sounds/button pressed.ogg")
 
     def update(self):
         """ Update method. """
@@ -48,6 +49,7 @@ class Button:
 
         if pygame.mouse.get_pressed()[0] and self.clickFunc is not None:
             if self.isHover and Button.clickable:
+                pygame.mixer.Sound.play(Button.clickSound)
                 Button.clickable = False
                 if self.clickArg is None:
                     self.clickFunc()
@@ -85,6 +87,7 @@ class CycleButton(Button):
         self.options = options
         self.currentOption = 0
         self.font = pygame.font.Font(fontPath, fontSize)
+        CycleButton.clickSound = pygame.mixer.Sound("audio/sounds/cycle button.ogg")
 
     def update(self):
         """ Update method. (override) """
@@ -95,6 +98,7 @@ class CycleButton(Button):
         if pygame.mouse.get_pressed()[0]:
             if self.isHover and Button.clickable:
                 # Button clicked! Change the text:
+                pygame.mixer.Sound.play(CycleButton.clickSound)
                 Button.clickable = False
                 self.currentOption += 1
                 if self.currentOption >= len(self.options):
