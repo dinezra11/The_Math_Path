@@ -76,6 +76,15 @@ def getUser(searchID: str):
             return item
 
 
+def getScore(searchID: str):
+    """ Find and return user's scores according to a specific ID.
+
+    :param searchID:          The user's ID to find his game's scores.
+    """
+    dbObj = db.reference("scores/{}".format(searchID)).get()
+    return dbObj
+
+
 def validateLogin(loginId, loginPass):
     """ Check if ID and password are valid.
     Return True if login confirmed. Return False if login failed.
