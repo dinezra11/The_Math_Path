@@ -18,6 +18,7 @@ WIN_TITLE = "The Math Path"
 pygame.init()
 gameDisplay = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption(WIN_TITLE)
+pygame.display.set_icon(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"))
 gameClock = pygame.time.Clock()
 
 # Scenes variables
