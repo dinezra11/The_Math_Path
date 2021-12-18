@@ -7,6 +7,7 @@ from uiComponents import Text, Button
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HEADER_SIZE = 80
+SYSTEMLOGO_SIZE = 70
 
 
 class GameIcon:
@@ -76,12 +77,12 @@ class ChooseGame(Scene):
                                                  (screenSize[0], screenSize[1]))
         self.background.set_alpha(120)
         self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
-                                                 (70, 70))
-        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), WHITE, "Choose a Game", 36,
+                                                 (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
+        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Choose a Game", 36,
                               "fonts/defaultFont.ttf")
-        self.btnBack = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
-                                              ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
-                                              28, goToScene, ("mainMenu", self.userId))
+        self.btnBack = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
+                              ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
+                              28, goToScene, ("mainMenu", self.userId))
         self.btnGame = [
             GameIcon("catch answer icon.jpg", "Catch the Answer", (100, HEADER_SIZE + 20), goToScene,
                      ("game_catchGame", self.userId)),
@@ -100,7 +101,7 @@ class ChooseGame(Scene):
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                return self.userId
 
         self.btnBack.update()
         for btn in self.btnGame:
@@ -118,6 +119,7 @@ class ChooseGame(Scene):
         # Draw Header
         pygame.draw.rect(display, (0, 0, 0), (5, 5, display.get_size()[0] - 10, HEADER_SIZE), width=2)
         display.blit(self.systemLogo, (10, 10))
+        display.blit(self.systemLogo, (display.get_size()[0] - SYSTEMLOGO_SIZE - 10, 10))
         self.titleText.draw(display)
 
         for btn in self.btnGame:
