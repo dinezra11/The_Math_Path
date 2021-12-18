@@ -209,7 +209,7 @@ class CatchGame(Scene):
             self.endButton.update()
         elif self.state == "exit":
             database.addScore("Catch the Answer", self.score, self.userId)
-            return
+            return self.userId  # Return userId so the system will go back to the user's menu screen
 
         return True
 

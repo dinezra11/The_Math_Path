@@ -58,7 +58,7 @@ class ChooseSize(Scene):
     def update(self):
         if self.update_end_game:
             database.addScore("Choose Size", 0, self.userId)
-            return
+            return self.userId  # Return userId so the system will go back to the user's menu screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False

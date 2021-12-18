@@ -4,12 +4,9 @@ from scene import Scene
 from uiComponents import Text, Button
 
 # Scene's Constants:
-BACKGROUND_COLOR = (102, 51, 0)
-HEADER_COLOR = (246, 195, 36)
-FOOTER_COLOR = (96, 96, 96)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-HEADER_SIZE = 45
+HEADER_SIZE = 80
 
 
 class GameIcon:
@@ -75,7 +72,13 @@ class ChooseGame(Scene):
         screenSize = display.get_size()
         self.userId = userId
 
-        self.titleText = Text((display.get_size()[0] / 2, 20), WHITE, "Choose a Game", 24, "fonts/defaultFont.ttf")
+        self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/blue_background.jpg"),
+                                                 (screenSize[0], screenSize[1]))
+        self.background.set_alpha(120)
+        self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
+                                                 (70, 70))
+        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), WHITE, "Choose a Game", 36,
+                              "fonts/defaultFont.ttf")
         self.btnBack = self.btnLogin = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
                                               ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
                                               28, goToScene, ("mainMenu", self.userId))
@@ -110,11 +113,14 @@ class ChooseGame(Scene):
 
         :param:     display -> The display where to draw the scene.
         """
-        display.fill(BACKGROUND_COLOR)
-        display.fill(HEADER_COLOR, (0, 0, display.get_size()[0], HEADER_SIZE))
-        display.fill(FOOTER_COLOR, (0, display.get_size()[1] - HEADER_SIZE, display.get_size()[0], HEADER_SIZE))
+        display.fill(BLACK)
+        display.blit(self.background, (0, 0))
+        # Draw Header
+        pygame.draw.rect(display, (0, 0, 0), (5, 5, display.get_size()[0] - 10, HEADER_SIZE), width=2)
+        display.blit(self.systemLogo, (10, 10))
         self.titleText.draw(display)
-        self.btnBack.draw(display)
 
         for btn in self.btnGame:
             btn.draw(display)
+
+        self.btnBack.draw(display)

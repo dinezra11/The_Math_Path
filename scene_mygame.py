@@ -88,15 +88,15 @@ class MyGame(Scene):
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                database.addScore("Math Expressions", self.score, self.userId) # Save in DB
-                return False
+                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                return self.userId  # Return userId so the system will go back to the user's menu screen
         mouse_pos = pygame.mouse.get_pos()
         # -------------------------------if clicked on Exit-----------------------------------------
         if self.textRect6.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
                 self.color = (255, 255, 0)
-                database.addScore("Math Expressions", self.score, self.userId) # Save in DB
-                return False
+                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                return self.userId  # Return userId so the system will go back to the user's menu screen
         # -------------------------------if clicked on Next------------------------------------------
         if self.textRect7.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
@@ -198,7 +198,7 @@ class MyGame(Scene):
                 self.score += 1
                 # should be automatic click on next button
         # --if clicked on one of the wrong answers----------------------
-        elif self.textRect3.collidepoint(mouse_pos) or self.textRect4.collidepoint(mouse_pos) or\
+        elif self.textRect3.collidepoint(mouse_pos) or self.textRect4.collidepoint(mouse_pos) or \
                 self.textRect5.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
                 # fill the correct answer rectangle with white

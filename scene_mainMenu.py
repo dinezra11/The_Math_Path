@@ -39,6 +39,7 @@ class MainMenu(Scene):
             backColor = "images/Login Scene/blue_background.jpg"
         self.background = pygame.transform.scale(pygame.image.load(backColor),
                                                  (screenSize[0], screenSize[1]))
+        self.background.set_alpha(180)
         self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
                                                  (70, 70))
 
@@ -84,7 +85,9 @@ class MainMenu(Scene):
 
         :param:     display -> The display where to draw the scene.
         """
+        display.fill((0, 0, 0))
         display.blit(self.background, (0, 0))
+
         # Draw Header
         pygame.draw.rect(display, (0, 0, 0), (5, 5, display.get_size()[0] - 10, HEADER_SIZE), width=2)
         display.blit(self.systemLogo, (10, 10))

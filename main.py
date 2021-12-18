@@ -76,15 +76,18 @@ def changeScene(newScene="", args=None):
 
 def update():
     """ Update the screen according to the current scene. End the game when need to quit the game completely. """
-    if currentScene.update():
-        return True  # Continue with the game's loop
-    else:
+    result = currentScene.update()
+    if result is False:
         if type(currentScene) is LoginScene:  # If game was attempted to be closed from first scene - Quit the system.
             changeScene("endGame")
             return False
         else:  # If game was attempted to be closed from any other scene - Return to title screen.
             changeScene("start")  # End the game's loop
-            return True
+    elif result is not True:  # Scene returned userId instead of boolean value. Return to main menu AFTER logging in
+        changeScene("mainMenu", result)
+        return True
+
+    return True  # Continue with the game's loop
 
 
 def draw():
