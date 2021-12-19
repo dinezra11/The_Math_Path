@@ -58,11 +58,16 @@ def addScore(gameType, score, userId):
 def addMessage(entryFrom, entryInfo, entryTo):
     """ Add a message entry to the database.
 
-    :param entryFrom:        Sender's ID
+    :param entryFrom:        Sender's name
     :param entryInfo:        The actual message
     :param entryTo:          Receiver's ID
     """
-    pass  # צריך להמשיך את הקוד פה
+    dbObj = db.reference('messages/{}'.format(entryTo))
+    dbObj.push({
+        'from': entryFrom,
+        'info': entryInfo,
+        'date': str(datetime.now())
+    })
 
 
 def getUser(searchID: str):
@@ -77,12 +82,40 @@ def getUser(searchID: str):
 
 
 def getScore(searchID: str):
-    """ Find and return user's scores according to a specific ID.
+    """ Find and return user's scores according to a specific ID. (Return a list of the scores)
 
     :param searchID:          The user's ID to find his game's scores.
     """
     dbObj = db.reference("scores/{}".format(searchID)).get()
-    return dbObj
+    if dbObj is None:
+        return None
+
+    # Make a list of the records, and return it reversed. (Sorted by date and time)
+    result = []
+    for _, record in dbObj.items():
+        result.insert(0, record)
+
+    return result
+
+
+def getMessage(searchID: str):
+    """ Find and return user's messages according to a specific ID. (Return a list of the messages)
+    Each element of the returned list will be a tuple, which the first value is the unique key of the record
+    and the second value is a dictionary of the record's data.
+    The unique key will be used for deleting messages.
+
+    :param searchID:          The user's ID to find his messages.
+    """
+    dbObj = db.reference("messages/{}".format(searchID)).get()
+    if dbObj is None:
+        return None
+
+    # Make a list of the records, and return it reversed. (Sorted by date and time)
+    result = []
+    for key, record in dbObj.items():
+        result.insert(0, (key, record))
+
+    return result
 
 
 def validateLogin(loginId, loginPass):
