@@ -66,7 +66,7 @@ def addMessage(entryFrom, entryInfo, entryTo):
     dbObj.push({
         'from': entryFrom,
         'info': entryInfo,
-        'date': str(datetime.today())
+        'date': str(datetime.now().date())
     })
 
 
