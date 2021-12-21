@@ -70,6 +70,14 @@ def addMessage(entryFrom, entryInfo, entryTo):
     })
 
 
+def addFeedback(text, entryFrom):
+    dbObj = db.reference('feedback')
+    dbObj.push({
+        'from': entryFrom,
+        'text': text
+    })
+
+
 # צריך לסיים את הפונקציה של מחיקת ההודעה!!!
 '''def deleteMessage(userID: str, msgID: str):
     """ Delete a message from the database. """
