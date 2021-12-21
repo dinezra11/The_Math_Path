@@ -1,7 +1,7 @@
 import pygame
 from scene import Scene
 from uiComponents import Text, Button
-from database import getScore
+from database import getScore, getMessage
 
 # Scene's Constants:
 HEADER_SIZE = 80
@@ -9,7 +9,7 @@ SYSTEMLOGO_SIZE = 70
 
 
 class View:
-    """ A class that represents a single view for a single score entry. """
+    """ A class that represents a single view for a single message entry. """
 
     def __init__(self, position: tuple, size: tuple, data):
         """ Initialize the View.
@@ -21,31 +21,14 @@ class View:
         self.position = position
         self.size = size
 
-        recordTime = data["time"].split()
         self.text = [
-            Text((position[0] + 5, position[1] + 2), (0, 0, 0), recordTime[0], 14,
-                 "fonts/defaultFont.ttf", alignCenter=False),  # Date
-            Text((position[0] + 5, position[1] + 22), (0, 0, 0), recordTime[1][:8], 14,
-                 "fonts/defaultFont.ttf", alignCenter=False),  # Time
-            Text((position[0] + 5, position[1] + size[1] - 38), (0, 0, 0), "Game: {}".format(data["type"]), 14,
-                 "fonts/defaultFont.ttf", alignCenter=False),  # Game's Name
-            Text((position[0] + 5, position[1] + size[1] - 20), (0, 0, 0), "Score: {}".format(data["score"]), 14,
-                 "fonts/defaultFont.ttf", alignCenter=False)  # Score
+            Text((position[0] + 5, position[1] + 2), (0, 0, 0),
+                 "{}, Dr.{} says:".format(data[1]['date'], data[1]['from']), 14, "fonts/defaultFont.ttf",
+                 alignCenter=False),  # Date and sender's name
+            Text((position[0] + 5, position[1] + size[1] - 20), (0, 0, 0), data[1]['info'], 14,
+                 "fonts/defaultFont.ttf", alignCenter=False)  # The actual message
         ]
 
-        iconPath = "images/Game's Icons"
-        if data["type"] == "Catch the Answer":
-            iconPath += "/catch answer icon.jpg"
-        elif data["type"] == "Choose Size":
-            iconPath += "/choose size icon.png"
-        elif data["type"] == "Math Expressions":
-            iconPath += "/math expressions icon.png"
-        elif data["type"] == "Count Game":
-            iconPath += "/count game icon.png"
-        else:
-            iconPath += "/notFound.jpg"  # Default icon image, in case of wrongly game's name
-        self.image = pygame.transform.scale(pygame.image.load(iconPath), (size[1] - 10, size[1] - 10))
-        self.image.set_alpha(90)
         self.background = pygame.Surface((size[0], size[1]))
         self.background.set_alpha(55)
         self.background.fill((255, 255, 255))
@@ -56,18 +39,12 @@ class View:
         display.blit(self.background, self.position)
         pygame.draw.rect(display, (0, 0, 0), (self.position[0], self.position[1], self.size[0], self.size[1]), width=2)
 
-        # Draw image (and borders)
-        display.blit(self.image, (self.position[0] + self.size[0] - (self.size[1] - 5), self.position[1] + 5))
-        pygame.draw.rect(display, (0, 0, 0),
-                         (self.position[0] + self.size[0] - (self.size[1] - 5), self.position[1] + 5, self.size[1] - 10,
-                          self.size[1] - 10), width=1)
-
         # Draw the data as a text on the view's box
         for txt in self.text:
             txt.draw(display)
 
 
-class ViewScores(Scene):
+class ViewMessages(Scene):
     def __init__(self, display, userId):
         """ Initialize the scene.
 
@@ -105,7 +82,7 @@ class ViewScores(Scene):
         self.background.set_alpha(180)
         self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
                                                  (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
-        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Game Scores Statistics",
+        self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Diagnostic's Reviews",
                               36, "fonts/defaultFont.ttf")
         self.currentPage = 0
         self.buttons = [
@@ -118,14 +95,15 @@ class ViewScores(Scene):
         ]
 
         # Initialize data from DB
-        data = getScore(self.userId)  # Get the scores of this user from the database
-        viewBoxSize = (screenSize[0] * 0.75, screenSize[1] / 8)
+        data = getMessage(self.userId)  # Get the scores of this user from the database
+        viewBoxSize = (screenSize[0] * 0.75, screenSize[1] / 14)
+        self.dataPerPage = 9
         self.views = []
+        xPos = (screenSize[0] - viewBoxSize[0]) / 2
+        startYpos = yPos = HEADER_SIZE + 20
         if data is not None:
-            xPos = (screenSize[0] - viewBoxSize[0]) / 2
-            startYpos = yPos = HEADER_SIZE + 20
             for d in data:
-                if yPos >= startYpos + 5 * (viewBoxSize[1] + 5):
+                if yPos >= startYpos + self.dataPerPage * (viewBoxSize[1] + 5):
                     yPos = startYpos
 
                 self.views.append(View((xPos, yPos), viewBoxSize, d))
@@ -141,7 +119,7 @@ class ViewScores(Scene):
                 return self.userId
 
         self.buttons[0].update()
-        if len(self.views) > (self.currentPage + 1) * 5:
+        if len(self.views) > (self.currentPage + 1) * self.dataPerPage:
             self.buttons[1].update()
         if self.currentPage != 0:
             self.buttons[2].update()
@@ -163,7 +141,7 @@ class ViewScores(Scene):
         self.titleText.draw(display)
 
         # Draw Data
-        for i in range(self.currentPage * 5, (self.currentPage + 1) * 5):
+        for i in range(self.currentPage * self.dataPerPage, (self.currentPage + 1) * self.dataPerPage):
             if i >= len(self.views):
                 break
 
@@ -171,7 +149,7 @@ class ViewScores(Scene):
 
         # Draw Buttons
         self.buttons[0].draw(display)
-        if len(self.views) > (self.currentPage + 1) * 5:
+        if len(self.views) > (self.currentPage + 1) * self.dataPerPage:
             self.buttons[1].draw(display)
         if self.currentPage != 0:
             self.buttons[2].draw(display)

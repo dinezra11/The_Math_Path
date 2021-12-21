@@ -82,7 +82,8 @@ class MainMenu(Scene):
                                 ("viewScores", self.userObj[0]))
         self.btnReviews = Button(
             (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
-            ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, lambda: None)
+            ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
+            ('viewMessages', self.userObj[0]))
 
         # Initialize help and info contents:
         if self.userObj[1]["type"] == "Child":

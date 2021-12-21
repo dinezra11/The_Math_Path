@@ -66,8 +66,23 @@ def addMessage(entryFrom, entryInfo, entryTo):
     dbObj.push({
         'from': entryFrom,
         'info': entryInfo,
-        'date': str(datetime.now())
+        'date': str(datetime.today())
     })
+
+
+# צריך לסיים את הפונקציה של מחיקת ההודעה!!!
+'''def deleteMessage(userID: str, msgID: str):
+    """ Delete a message from the database. """
+    dbObj = db.reference("messages/{}".format(userID)).get()
+    if dbObj is None:
+        return None
+
+    # Make a list of the records, and return it reversed. (Sorted by date and time)
+    result = []
+    for key, record in dbObj.items():
+        result.insert(0, (key, record))
+
+    return result'''
 
 
 def getUser(searchID: str):
