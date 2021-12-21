@@ -10,6 +10,7 @@ from scene_mygame import MyGame
 from scene_catchGame import CatchGame
 from scene_viewScores import ViewScores
 from scene_viewMessages import ViewMessages
+from scene_diag_feedback import diag_feedback
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -38,7 +39,8 @@ SCENES = {
 
     # Statistics and Data Scenes:
     'viewScores': ViewScores,
-    'viewMessages': ViewMessages
+    'viewMessages': ViewMessages,
+    'diag_feedback': diag_feedback
 }
 currentScene = None  # This variable will hold the object of the current scene!
 
