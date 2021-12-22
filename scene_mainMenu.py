@@ -27,7 +27,10 @@ class MainMenu(Scene):
 
             :param args:            What scene needs to be displayed next.
             """
-            main.changeScene(args[0], args[1])
+            if len(args) == 3:
+                main.changeScene(args[0], (args[1], args[2]))
+            else:
+                main.changeScene(args[0], args[1])
 
         screenSize = display.get_size()
         self.userObj = database.getUser(userId)  # Get the relevant user's details from the database
@@ -127,7 +130,7 @@ class MainMenu(Scene):
                 Button(
                     (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
                     ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
-                    ('viewMessages', self.userObj[0]))
+                    ('viewMessages', self.userObj[0], self.userObj[0]))
             ]
         else:
             # ----- Initialize DIAGNOSTIC's specific screen components ----- #
