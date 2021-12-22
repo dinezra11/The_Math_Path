@@ -82,6 +82,17 @@ def addFeedback(text, entryFrom):
         'text': text
     })
 
+def addTips(text, entryFrom):
+    """ Add a tip message for the system's developers.
+
+    :param text:            The actual message
+    """
+    dbObj = db.reference('tips')
+    dbObj.push({
+        'from': entryFrom,
+        'text': text
+    })
+
 
 # צריך לסיים את הפונקציה של מחיקת ההודעה!!!
 '''def deleteMessage(userID: str, msgID: str):
