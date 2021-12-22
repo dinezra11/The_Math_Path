@@ -93,6 +93,21 @@ def addTips(text, entryFrom):
         'from': entryFrom,
         'text': text
     })
+    
+def addPrivateNotes(text, entryFrom, childID):
+    """ Add a tip message for the system's developers.
+
+    :param text:            The actual message
+    """
+    dbObj = db.reference('private notes')
+    dbObj.push({
+        'from': entryFrom,
+        'text': text,
+        'childID': childID
+    })
+    
+    
+    
 
 
 def addChildToParent(childID, linkPass, parentID):
