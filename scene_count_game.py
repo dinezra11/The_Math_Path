@@ -73,6 +73,7 @@ class count_game(Scene):
         self.zero_surface = pygame.image.load('images/count_numbers/0.png')
         self.zero_surface = pygame.transform.scale(self.zero_surface, (100, 100))
 
+        self.score=0
         self.start_state = False
         self.current_level = 1
         self.next_level = False
@@ -83,7 +84,7 @@ class count_game(Scene):
 
     def update(self):
         if self.update_end_game:
-            database.addScore("Count Game", 0, self.userId)
+            database.addScore("Count Game", self.score, self.userId)
             return self.userId  # Return userId so the system will go back to the user's menu screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -134,6 +135,7 @@ class count_game(Scene):
             mouseOff = (450 < mousePos[0] < (450 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1]))) or (
                     800 < mousePos[0] < (800 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1])))
             if MouseOn:
+                self.score += 1
                 self.current_level += 1
                 self.next_level = True
             if mouseOff:
@@ -185,6 +187,7 @@ class count_game(Scene):
             mouseOff = (200 < mousePos[0] < (200 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1]))) or (
                     800 < mousePos[0] < (800 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1])))
             if MouseOn:
+                self.score += 1
                 self.current_level += 1
                 self.next_level = True
             if mouseOff:
@@ -214,6 +217,7 @@ class count_game(Scene):
             mouseOff = (200 < mousePos[0] < (200 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1]))) or (
                     450 < mousePos[0] < (450 + buttonSize[0]) and (600 < mousePos[1] < (600 + buttonSize[1])))
             if MouseOn:
+                self.score += 1
                 self.current_level += 1
                 self.next_level = True
             if mouseOff:
