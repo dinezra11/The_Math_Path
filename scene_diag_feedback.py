@@ -33,6 +33,11 @@ class diag_feedback(Scene):
         self.text_box_surf = pygame.transform.scale(self.text_box_surf, (600, 150))
         self.text_box_rec = self.text_box_surf.get_rect(midtop=(512, 300))
 
+        self.back_surf = pygame.image.load('images/back.png')
+        self.back_surf = pygame.transform.scale(self.back_surf, (150, 150))
+        self.back_rec = self.back_surf.get_rect(midtop=(900, 600))
+
+
         self.send_button_surf = pygame.image.load('images/mefateah_feedback/send.png')
         self.send_button_surf = pygame.transform.scale(self.send_button_surf, (150, 150))
         self.send_button_rec = self.text_box_surf.get_rect(midtop=(700, 600))
@@ -75,7 +80,12 @@ class diag_feedback(Scene):
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.send_button_rec.collidepoint(event.pos):
-                    database.addFeedback(self.final_text, self.userId)
+                    if self.temp_text1=='':
+                        database.addFeedback(self.user_text, self.userId)
+                    else:
+                        database.addFeedback(self.final_text, self.userId)
+                    return False
+                if self.back_rec.collidepoint(event.pos):
                     return False
             if event.type == pygame.KEYDOWN:
 
@@ -104,6 +114,7 @@ class diag_feedback(Scene):
     def draw(self, display: pygame.Surface):
         if self.start_state:
             display.blit(self.background_surf, (0, 0))
+            display.blit(self.back_surf, self.back_rec)
             display.blit(self.title_surface, self.title_rect)
             display.blit(self.explanation_surface, self.explanation_rect)
             display.blit(self.explanation2_surface, self.explanation2_rect)
