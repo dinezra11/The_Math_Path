@@ -97,11 +97,18 @@ class ViewScores(Scene):
                 self.currentPage -= 1
 
         screenSize = display.get_size()
-        self.userId = userId  # The scene will show the scores of this specific user
 
         # Background's Initialize
-        self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/blue_background.jpg"),
-                                                 (screenSize[0], screenSize[1]))
+        if type(userId) is not tuple:
+            self.userId = userId  # The scene will show the scores of this specific user
+            self.returnID = userId
+            self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/blue_background.jpg"),
+                                                     (screenSize[0], screenSize[1]))
+        else:
+            self.userId = userId[0]
+            self.returnID = userId[1]
+            self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/purple_background.jpg"),
+                                                     (screenSize[0], screenSize[1]))
         self.background.set_alpha(180)
         self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
                                                  (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
@@ -110,7 +117,7 @@ class ViewScores(Scene):
         self.currentPage = 0
         self.buttons = [
             Button((screenSize[0] - 200 - 20, screenSize[1] - 90, 200, 70), ((0, 46, 77), (0, 77, 128)), "Back",
-                   "fonts/defaultFont.ttf", 28, goToScene, ("mainMenu", self.userId)),
+                   "fonts/defaultFont.ttf", 28, goToScene, ("mainMenu", self.returnID)),
             Button((screenSize[0] - 55, screenSize[1] / 2, 50, 50), ((0, 46, 77), (0, 77, 128)), "->",
                    "fonts/defaultFont.ttf", 28, nextPage, "next"),
             Button((5, screenSize[1] / 2, 50, 50), ((0, 46, 77), (0, 77, 128)), "<-", "fonts/defaultFont.ttf", 28,
@@ -138,7 +145,7 @@ class ViewScores(Scene):
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return self.userId
+                return self.returnID
 
         self.buttons[0].update()
         if len(self.views) > (self.currentPage + 1) * 5:

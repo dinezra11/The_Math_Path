@@ -82,6 +82,7 @@ def addFeedback(text, entryFrom):
         'text': text
     })
 
+
 def addTips(text, entryFrom):
     """ Add a tip message for the system's developers.
 
@@ -105,7 +106,7 @@ def addChildToParent(childID, linkPass, parentID):
     dbObj = db.reference("users").get()
     for userId, userDetail in dbObj.items():
         if userId == childID:
-            if userDetail['passlink'] == linkPass:
+            if userDetail['passlink'] == linkPass and userDetail['type'] == "Child":
                 try:
                     dbObj = db.reference('users/{}/children'.format(parentID))
                     dbObj.push({

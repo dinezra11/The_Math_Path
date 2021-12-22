@@ -12,12 +12,13 @@ WHITE = (255, 255, 255)
 class View:
     """ A class that represents a single view for a single child entry. """
 
-    def __init__(self, position: tuple, size: tuple, data):
+    def __init__(self, position: tuple, size: tuple, data, goToScene, parentId):
         """ Initialize the View.
 
         :param position:        The (x, y) position of the view's box.
         :param size:            The size of the view's box.
         :param data:            The data from the database that needs to be shown.
+        :param goToScene:       The function that change scenes.
         """
         self.position = position
         self.size = size
@@ -30,10 +31,10 @@ class View:
         btnSize = size[1] / 2
         self.btnScores = ImageButton(
             (position[0] + size[0] - btnSize - 5, position[1] + size[1] - btnSize - 5, btnSize, btnSize),
-            "images/viewChildren Scene icons/scores icon.png", lambda: None, None)
+            "images/viewChildren Scene icons/scores icon.png", goToScene, ("viewScores", data["id"], parentId))
         self.btnMessages = ImageButton(
             (position[0] + size[0] - btnSize * 2 - 10, position[1] + size[1] - btnSize - 5, btnSize, btnSize),
-            "images/viewChildren Scene icons/messages icon.png", lambda: None, None)
+            "images/viewChildren Scene icons/messages icon.png", goToScene, ("viewMessages", data["id"], parentId))
 
         self.background = pygame.Surface((size[0], size[1]))
         self.background.set_alpha(55)
@@ -74,7 +75,10 @@ class ViewChildren(Scene):
 
             :param args:            What scene needs to be displayed next.
             """
-            main.changeScene(args[0], args[1])
+            if len(args) == 3:
+                main.changeScene(args[0], (args[1], args[2]))
+            else:
+                main.changeScene(args[0], args[1])
 
         def initializeChildList():
             # Initialize list of children
@@ -91,7 +95,7 @@ class ViewChildren(Scene):
                 startX = xPos = 50
                 yPos = HEADER_SIZE + 80
                 for d in data:
-                    self.views.append(View((xPos, yPos), viewBoxSize, d))
+                    self.views.append(View((xPos, yPos), viewBoxSize, d, goToScene, self.userDict[0]))
 
                     xPos += viewBoxSize[0] + 5
                     if xPos > startX + (viewBoxSize[0] + 5) * 2:
