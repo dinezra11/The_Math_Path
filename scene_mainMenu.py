@@ -29,15 +29,6 @@ class MainMenu(Scene):
             """
             main.changeScene(args[0], args[1])
 
-        def addChildToParent(entryForm: tuple):
-            """ Attempt to add a child to a parent's account!
-            Check if the link password is valid to the child's ID.
-
-            :param entryForm:           The user's input, as a tuple. (childID, childLinkPass)
-            """
-            self.inputForm[1].clearText()
-            self.inputForm[3].clearText()
-
         screenSize = display.get_size()
         self.userObj = database.getUser(userId)  # Get the relevant user's details from the database
 
@@ -55,6 +46,7 @@ class MainMenu(Scene):
         # Initialize screen's view, according to the user's specific account type:
         if self.userObj[1]["type"] == "Child":
             # ----- Initialize CHILD's specific screen components ----- #
+            self.backFill = (0, 0, 0)  # The color to be drawn below the background (For transparency effect)
             backColor = "images/Login Scene/blue_background.jpg"
 
             details = [
@@ -72,11 +64,12 @@ class MainMenu(Scene):
                 'As a user, you can choose and play any game you wish from the system.',
                 'Press on "Play a Game" button to go to the game selection screen. Your score will be saved after you '
                 'finish a game.',
-                '',
-                r"""You can watch your recent game's scores or the reviews from the diagnostics by pressing the"""
+                r"""You can watch your recent game's scores or the reviews from the diagnostics by pressing the """
                 "buttons at the top.",
                 "",
-                'Let your parent use your unique "Link to Parent" code so he can link your account to his account.'
+                'Let your parent use your unique "Link to Parent" code so he can link your account to his account.',
+                '',
+                "You can log off or send a feedback to the game's developers by pressing the icons at the bottom."
             ]
 
             # Initialize menu buttons:
@@ -98,6 +91,7 @@ class MainMenu(Scene):
             ]
         elif self.userObj[1]["type"] == "Parent":
             # ----- Initialize PARENT's specific screen components ----- #
+            self.backFill = (200, 200, 200)  # The color to be drawn below the background (For transparency effect)
             backColor = "images/Login Scene/purple_background.jpg"
 
             # Count children:
@@ -129,30 +123,15 @@ class MainMenu(Scene):
                 Button(
                     (screenSize[0] / 2 - btnSize[0] * 1.5 - spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
                     ((0, 46, 77), (0, 77, 128)), "My Children", "fonts/defaultFont.ttf", 18, goToScene,
-                    ("chooseGame", self.userObj[0])),
+                    ("viewChildren", self.userObj)),
                 Button(
                     (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
                     ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
                     ('viewMessages', self.userObj[0]))
             ]
-
-            # "Add a Child" components:
-            self.inputForm = [
-                # Input for child's ID:
-                Text((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 150), WHITE, "Child's ID:", 20,
-                     "fonts/defaultFont.ttf", alignCenter=True),
-                TextInput((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 130), 20, "fonts/defaultFont.ttf"),
-                # Input for child's link password:
-                Text((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 110), WHITE, "Link Password:", 20,
-                     "fonts/defaultFont.ttf", alignCenter=True),
-                TextInput((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 90), 20, "fonts/defaultFont.ttf")
-            ]
-            self.buttons.append(
-                Button((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 20, 130, 30), ((0, 46, 77), (0, 77, 128)),
-                       "Add a Child", "fonts/defaultFont.ttf", 20, addChildToParent,
-                       (self.inputForm[1], self.inputForm[3])))
         else:
             # ----- Initialize DIAGNOSTIC's specific screen components ----- #
+            self.backFill = (0, 0, 0)  # The color to be drawn below the background (For transparency effect)
             backColor = "images/Login Scene/red_background.jpg"
             details = []
             userHelpColor = (0, 100, 0)  # The color for the help section text
@@ -202,10 +181,6 @@ class MainMenu(Scene):
         for btn in self.buttons:
             btn.update()
 
-        if self.userObj[1]["type"] == "Parent":
-            self.inputForm[1].update()
-            self.inputForm[3].update()
-
         self.btnLogOff.update()
         self.btnFeedback.update()
 
@@ -216,7 +191,7 @@ class MainMenu(Scene):
 
         :param:     display -> The display where to draw the scene.
         """
-        display.fill((0, 0, 0))
+        display.fill(self.backFill)
         display.blit(self.background, (0, 0))
 
         # Draw Header
@@ -231,10 +206,6 @@ class MainMenu(Scene):
 
         for btn in self.buttons:
             btn.draw(display)
-
-        if self.userObj[1]["type"] == "Parent":
-            for formEntry in self.inputForm:
-                formEntry.draw(display)
 
         self.btnLogOff.draw(display)
         self.btnFeedback.draw(display)

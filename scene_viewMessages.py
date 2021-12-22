@@ -74,7 +74,7 @@ class ViewMessages(Scene):
                 self.currentPage -= 1
 
         screenSize = display.get_size()
-        self.userId = userId  # The scene will show the scores of this specific user
+        self.userId = userId  # The scene will show the messages of this specific user
 
         # Background's Initialize
         self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/blue_background.jpg"),
@@ -95,7 +95,7 @@ class ViewMessages(Scene):
         ]
 
         # Initialize data from DB
-        data = getMessage(self.userId)  # Get the scores of this user from the database
+        data = getMessage(self.userId)  # Get the messages of this user from the database
         viewBoxSize = (screenSize[0] * 0.75, screenSize[1] / 14)
         self.dataPerPage = 9
         self.views = []

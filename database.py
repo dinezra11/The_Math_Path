@@ -94,19 +94,31 @@ def addTips(text, entryFrom):
     })
 
 
-# צריך לסיים את הפונקציה של מחיקת ההודעה!!!
-'''def deleteMessage(userID: str, msgID: str):
-    """ Delete a message from the database. """
-    dbObj = db.reference("messages/{}".format(userID)).get()
-    if dbObj is None:
-        return None
+def addChildToParent(childID, linkPass, parentID):
+    """ Check if ID and link pass are valid, and if so -> add the child to the parent.
+    Return True if child has been added successfully. Return False if operation failed.
 
-    # Make a list of the records, and return it reversed. (Sorted by date and time)
-    result = []
-    for key, record in dbObj.items():
-        result.insert(0, (key, record))
+    :param childID:             The child's ID to add.
+    :param linkPass:            The unique link password of the child.
+    :param parentID:            The parent's ID.
+    """
+    dbObj = db.reference("users").get()
+    for userId, userDetail in dbObj.items():
+        if userId == childID:
+            if userDetail['passlink'] == linkPass:
+                try:
+                    dbObj = db.reference('users/{}/children'.format(parentID))
+                    dbObj.push({
+                        'full_name': "{} {}".format(userDetail['name'], userDetail['last']),
+                        'id': userId
+                    })
+                    return True
+                except Exception as e:
+                    return False
+            else:
+                break
 
-    return result'''
+    return False
 
 
 def getUser(searchID: str):
@@ -161,8 +173,8 @@ def validateLogin(loginId, loginPass):
     """ Check if ID and password are valid.
     Return True if login confirmed. Return False if login failed.
 
-    :param loginId:
-    :param loginPass
+    :param loginId:                 User's ID.
+    :param loginPass:               User's password.
     """
     dbObj = db.reference("users").get()
     for userId, userDetail in dbObj.items():
