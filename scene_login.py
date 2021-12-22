@@ -106,9 +106,12 @@ class LoginScene(Scene):
         super().__init__(display)
 
         def changeState(newState):
-            for index in range(1, len(self.inputForm) - 2, 2):
-                self.inputForm[index].clearText()
-            self.state = newState
+            if newState == "about":
+                main.changeScene("about")
+            else:
+                for index in range(1, len(self.inputForm) - 2, 2):
+                    self.inputForm[index].clearText()
+                self.state = newState
 
         def makeRegistration(text: tuple):
             """ Make the registration! Check for input's validation first.
@@ -190,6 +193,9 @@ class LoginScene(Scene):
                                   "Register", "fonts/defaultFont.ttf", 28, changeState, "register")
         self.btnBack = Button((screenSize[0] - 200 - 20, screenSize[1] - 70 - 20, 200, 70), ((0, 46, 77), (0, 77, 128)),
                               "Back", "fonts/defaultFont.ttf", 28, changeState, "title")
+        self.btnAbout = Button((screenSize[0] / 2 - 45, screenSize[1] - 220, 90, 32),
+                               ((0, 46, 77), (0, 77, 128)), "About Us", "fonts/defaultFont.ttf", 16, changeState,
+                               "about")
 
         # Register screen ui components:
         x = screenSize[0] / 2
@@ -251,6 +257,7 @@ class LoginScene(Scene):
         if self.state == "title":
             self.btnLogin.update()
             self.btnRegister.update()
+            self.btnAbout.update()
         elif self.state == "register":
             self.btnBack.update()
             self.registerButton.update()
@@ -288,6 +295,7 @@ class LoginScene(Scene):
         if self.state == "title":
             self.btnLogin.draw(display)
             self.btnRegister.draw(display)
+            self.btnAbout.draw(display)
         elif self.state == "register":
             self.btnBack.draw(display)
             self.registerButton.draw(display)

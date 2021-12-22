@@ -71,6 +71,11 @@ def addMessage(entryFrom, entryInfo, entryTo):
 
 
 def addFeedback(text, entryFrom):
+    """ Add a feedback message for the system's developers.
+
+    :param text:            The actual message
+    :param entryFrom:       Sender's name
+    """
     dbObj = db.reference('feedback')
     dbObj.push({
         'from': entryFrom,

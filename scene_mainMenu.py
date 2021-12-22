@@ -1,7 +1,7 @@
 import pygame.event
 from pygame import Surface
 from scene import Scene
-from uiComponents import Text, Button
+from uiComponents import Text, Button, TextInput, ImageButton
 import database
 
 # Scene's Constants:
@@ -29,64 +29,45 @@ class MainMenu(Scene):
             """
             main.changeScene(args[0], args[1])
 
+        def addChildToParent(entryForm: tuple):
+            """ Attempt to add a child to a parent's account!
+            Check if the link password is valid to the child's ID.
+
+            :param entryForm:           The user's input, as a tuple. (childID, childLinkPass)
+            """
+            self.inputForm[1].clearText()
+            self.inputForm[3].clearText()
+
         screenSize = display.get_size()
         self.userObj = database.getUser(userId)  # Get the relevant user's details from the database
 
-        # Background and graphics initialize
-        if self.userObj[1]["type"] == "Parent":
-            backColor = "images/Login Scene/purple_background.jpg"
-        elif self.userObj[1]["type"] == "Diagnostic":
-            backColor = "images/Login Scene/red_background.jpg"
-        else:
-            backColor = "images/Login Scene/blue_background.jpg"
-        self.background = pygame.transform.scale(pygame.image.load(backColor),
-                                                 (screenSize[0], screenSize[1]))
-        self.background.set_alpha(180)
-        self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
-                                                 (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
-
-        # UI Components initialize
+        # Mutual account types components initialize:
         title = "Welcome {0} {1}".format(self.userObj[1]["name"], self.userObj[1]["last"])
-        details = [
-            "User's Information:",
-            "   First Name: {0}".format(self.userObj[1]["name"]),
-            "   Last Name: {0}".format(self.userObj[1]["last"]),
-            "   ID: {0}".format(self.userObj[0]),
-            "   Account Type: {0}".format(self.userObj[1]["type"]),
-            "",
-            "   'Link to Parent' code: {0}".format(self.userObj[1]["passlink"])
-        ]
         self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (60, 100, 80), title, 36,
                               "fonts/defaultFont.ttf")
-        self.detailsText = []
-        x = 10
-        y = HEADER_SIZE * 2
-        for item in details:
-            self.detailsText.append(Text((x, y), BLACK, item, 20, "fonts/defaultFont.ttf", alignCenter=False))
-            y += 27
 
-        self.btnLogOff = Button((screenSize[0] - 130, screenSize[1] - FOOTER_SIZE / 2, 120, 70),
-                                ((0, 46, 77), (0, 77, 128)), "Log Off", "fonts/defaultFont.ttf",
-                                28, goToScene, ("start", None))
+        self.btnLogOff = ImageButton((screenSize[0] - 80, screenSize[1] - 75, 70, 60),
+                                     "images/Login Scene/LogOut.png", goToScene, ("start", None))
+        self.btnFeedback = ImageButton((screenSize[0] - 170, screenSize[1] - 90, 80, 100),
+                                       "images/mefateah_feedback/send.png", goToScene,
+                                       ("diag_feedback", self.userObj[0]))
 
-        # Initialize menu buttons:
-        btnSize = (190, 30)
-        spaceBetweenBtns = 20
-        self.btnChooseGame = Button(
-            (screenSize[0] / 2 - btnSize[0] * 1.5 - spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
-            ((0, 46, 77), (0, 77, 128)), "Play a Game", "fonts/defaultFont.ttf", 18, goToScene,
-            ("chooseGame", self.userObj[0]))
-        self.btnScores = Button((screenSize[0] / 2 - btnSize[0] / 2, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
-                                ((0, 46, 77), (0, 77, 128)),
-                                "Game's Scores", "fonts/defaultFont.ttf", 18, goToScene,
-                                ("viewScores", self.userObj[0]))
-        self.btnReviews = Button(
-            (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
-            ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
-            ('viewMessages', self.userObj[0]))
-
-        # Initialize help and info contents:
+        # Initialize screen's view, according to the user's specific account type:
         if self.userObj[1]["type"] == "Child":
+            # ----- Initialize CHILD's specific screen components ----- #
+            backColor = "images/Login Scene/blue_background.jpg"
+
+            details = [
+                "User's Information:",
+                "   First Name: {0}".format(self.userObj[1]["name"]),
+                "   Last Name: {0}".format(self.userObj[1]["last"]),
+                "   ID: {0}".format(self.userObj[0]),
+                "   Account Type: {0}".format(self.userObj[1]["type"]),
+                "",
+                "   'Link to Parent' code: {0}".format(self.userObj[1]["passlink"])
+            ]
+
+            userHelpColor = (0, 0, 0)  # The color for the help section text
             userHelp = [
                 'As a user, you can choose and play any game you wish from the system.',
                 'Press on "Play a Game" button to go to the game selection screen. Your score will be saved after you '
@@ -97,14 +78,112 @@ class MainMenu(Scene):
                 "",
                 'Let your parent use your unique "Link to Parent" code so he can link your account to his account.'
             ]
+
+            # Initialize menu buttons:
+            btnSize = (190, 30)
+            spaceBetweenBtns = 20
+            self.buttons = [
+                Button(
+                    (screenSize[0] / 2 - btnSize[0] * 1.5 - spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
+                    ((0, 46, 77), (0, 77, 128)), "Play a Game", "fonts/defaultFont.ttf", 18, goToScene,
+                    ("chooseGame", self.userObj[0])),
+                Button((screenSize[0] / 2 - btnSize[0] / 2, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
+                       ((0, 46, 77), (0, 77, 128)),
+                       "Game's Scores", "fonts/defaultFont.ttf", 18, goToScene,
+                       ("viewScores", self.userObj[0])),
+                Button(
+                    (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
+                    ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
+                    ('viewMessages', self.userObj[0]))
+            ]
+        elif self.userObj[1]["type"] == "Parent":
+            # ----- Initialize PARENT's specific screen components ----- #
+            backColor = "images/Login Scene/purple_background.jpg"
+
+            # Count children:
+            childrenCount = 0
+            if self.userObj[1].get("children") is not None:
+                childrenCount = len(self.userObj[1].get("children"))
+
+            details = [
+                "User's Information:",
+                "   First Name: {0}".format(self.userObj[1]["name"]),
+                "   Last Name: {0}".format(self.userObj[1]["last"]),
+                "   ID: {0}".format(self.userObj[0]),
+                "   Account Type: {0}".format(self.userObj[1]["type"]),
+                "",
+                "   Amount of children: {0}".format(childrenCount)
+            ]
+
+            userHelpColor = (200, 0, 200)  # The color for the help section text
+            userHelp = [
+                'Example info for parent 1',
+                'Example info for parent 2',
+                'Example info for parent 3'
+            ]
+
+            # Initialize menu buttons:
+            btnSize = (190, 30)
+            spaceBetweenBtns = 20
+            self.buttons = [
+                Button(
+                    (screenSize[0] / 2 - btnSize[0] * 1.5 - spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
+                    ((0, 46, 77), (0, 77, 128)), "My Children", "fonts/defaultFont.ttf", 18, goToScene,
+                    ("chooseGame", self.userObj[0])),
+                Button(
+                    (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
+                    ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
+                    ('viewMessages', self.userObj[0]))
+            ]
+
+            # "Add a Child" components:
+            self.inputForm = [
+                # Input for child's ID:
+                Text((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 150), WHITE, "Child's ID:", 20,
+                     "fonts/defaultFont.ttf", alignCenter=True),
+                TextInput((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 130), 20, "fonts/defaultFont.ttf"),
+                # Input for child's link password:
+                Text((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 110), WHITE, "Link Password:", 20,
+                     "fonts/defaultFont.ttf", alignCenter=True),
+                TextInput((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 90), 20, "fonts/defaultFont.ttf")
+            ]
+            self.buttons.append(
+                Button((screenSize[0] - 200, screenSize[1] - FOOTER_SIZE - 20, 130, 30), ((0, 46, 77), (0, 77, 128)),
+                       "Add a Child", "fonts/defaultFont.ttf", 20, addChildToParent,
+                       (self.inputForm[1], self.inputForm[3])))
         else:
-            userHelp = []
+            # ----- Initialize DIAGNOSTIC's specific screen components ----- #
+            backColor = "images/Login Scene/red_background.jpg"
+            details = []
+            userHelpColor = (0, 100, 0)  # The color for the help section text
+            userHelp = [
+                'Example info for diagnostic 1',
+                'Example info for diagnostic 2',
+                'Example info for diagnostic 3'
+            ]
+            self.buttons = []
+
+        # Background and graphics initialize
+        self.background = pygame.transform.scale(pygame.image.load(backColor),
+                                                 (screenSize[0], screenSize[1]))
+        self.background.set_alpha(180)
+        self.systemLogo = pygame.transform.scale(
+            pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
+            (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
+
+        # Make the details text objects for the center of the screen section:
+        self.detailsText = []
+        x = 10
+        y = HEADER_SIZE * 2
+        for item in details:
+            self.detailsText.append(Text((x, y), BLACK, item, 20, "fonts/defaultFont.ttf", alignCenter=False))
+            y += 27
 
         # Make the text objects for the help and info:
         self.infoText = []
         y = display.get_size()[1] - FOOTER_SIZE
         for i in userHelp:
-            self.infoText.append(Text((10, y), BLACK, i, 16, "fonts/defaultFont.ttf",
+            self.infoText.append(Text((10, y), userHelpColor, i, 16, "fonts/defaultFont.ttf",
                                       alignCenter=False))
             y += 20
 
@@ -116,11 +195,19 @@ class MainMenu(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
+            if event.type == pygame.KEYDOWN:
+                self.inputForm[1].updateText(event)
+                self.inputForm[3].updateText(event)
 
-        self.btnChooseGame.update()
-        self.btnScores.update()
-        self.btnReviews.update()
+        for btn in self.buttons:
+            btn.update()
+
+        if self.userObj[1]["type"] == "Parent":
+            self.inputForm[1].update()
+            self.inputForm[3].update()
+
         self.btnLogOff.update()
+        self.btnFeedback.update()
 
         return True
 
@@ -142,10 +229,15 @@ class MainMenu(Scene):
         for item in self.detailsText:
             item.draw(display)
 
-        self.btnChooseGame.draw(display)
-        self.btnScores.draw(display)
-        self.btnReviews.draw(display)
+        for btn in self.buttons:
+            btn.draw(display)
+
+        if self.userObj[1]["type"] == "Parent":
+            for formEntry in self.inputForm:
+                formEntry.draw(display)
+
         self.btnLogOff.draw(display)
+        self.btnFeedback.draw(display)
 
         # Draw Footer
         pygame.draw.rect(display, (0, 0, 0),

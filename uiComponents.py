@@ -112,6 +112,57 @@ class CycleButton(Button):
         return self.options[self.currentOption]
 
 
+class ImageButton:
+    """ Image Button component """
+
+    def __init__(self, rect: tuple, imgPath: str, clickFunc=None, clickArg=None):
+        """ Initialize button.
+
+        :param rect:        A tuple that represents the measures of the button. (position and size)
+                            [x, y, width, height]
+        :param imgPath:     The path for the image file.
+        :param clickFunc:   Function. The button will call this function when it is clicked.
+        :param clickArg:    The arguments to send as parameters to the function of clickFun.
+        """
+        if len(rect) != 4:
+            self.rect = (0, 0, 0, 0)  # Default values if the given parameter is invalid (Should be a tuple of 4)
+        else:
+            self.rect = rect
+
+        self.btnImage = pygame.transform.scale(pygame.image.load(imgPath), (self.rect[2], self.rect[3]))
+        self.clickFunc = clickFunc
+        self.clickArg = clickArg
+        self.isHover = False
+        Button.clickable = True  # Indicates whether the button is clickable or not (STATIC field for all of the objects)
+        Button.clickSound = pygame.mixer.Sound("audio/sounds/button pressed.ogg")
+
+    def update(self):
+        """ Update method. """
+        mousePos = pygame.mouse.get_pos()
+        self.isHover = self.rect[0] < mousePos[0] < (self.rect[0] + self.rect[2]) and \
+                       self.rect[1] < mousePos[1] < (self.rect[1] + self.rect[3])
+
+        if pygame.mouse.get_pressed()[0] and self.clickFunc is not None:
+            if self.isHover and Button.clickable:
+                pygame.mixer.Sound.play(Button.clickSound)
+                Button.clickable = False
+                if self.clickArg is None:
+                    self.clickFunc()
+                else:
+                    self.clickFunc(self.clickArg)
+        else:  # Prevent the button to be double clicked on the same user's click
+            Button.clickable = True
+
+    def draw(self, display: pygame.display):
+        """ Draw method. """
+        if self.isHover:
+            self.btnImage.set_alpha(100)
+        else:
+            self.btnImage.set_alpha(255)
+
+        display.blit(self.btnImage, (self.rect[0], self.rect[1]))
+
+
 class Text:
     """ Text component """
 
