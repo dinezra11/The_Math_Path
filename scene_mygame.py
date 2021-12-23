@@ -128,7 +128,7 @@ class MyGame(Scene):
                     self.wronganswer3 = random.randint(0, 100)
                     self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
                     self.total += 1
-                    # to insure different answers that are close to correct answer----
+                    # to insure different answers that are close to correct answer-----
                     self.wronganswer1_plus_minus = random.randint(1, 2)
                     if self.wronganswer1_plus_minus == 1:
                         self.wronganswer1 = self.correctanswer + 1
