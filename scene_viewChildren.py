@@ -121,10 +121,7 @@ class ViewChildren(Scene):
                 if result is True:
                     # Operation executed successfully
                     initializeChildList()
-
-                    # Clear the form:
-                    self.inputForm[2].clearText()
-                    self.inputForm[4].clearText()
+                    main.changeScene("mainMenu", self.userDict[0])
                 else:
                     # Error
                     pass

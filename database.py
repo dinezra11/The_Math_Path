@@ -154,6 +154,12 @@ def getUser(searchID: str):
             return item
 
 
+def getAllUsers():
+    """ Return all of the users in the system. """
+    dbObj = db.reference("users").get()
+    return dbObj
+
+
 def getScore(searchID: str):
     """ Find and return user's scores according to a specific ID. (Return a list of the scores)
 
