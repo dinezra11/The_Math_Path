@@ -16,9 +16,6 @@ from scene_about_us import Aboutus
 from scene_add_tips import add_tips
 from scene_private_notes import private_notes
 
-
-
-
 # Global constants and variables
 WIN_WIDTH = 1024
 WIN_HEIGHT = 800

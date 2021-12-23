@@ -105,6 +105,8 @@ class CycleButton(Button):
                     self.currentOption = 0
 
                 self.text = self.font.render(self.options[self.currentOption], True, (255, 255, 255))
+                self.textPos = self.text.get_rect()
+                self.textPos.center = (self.rect[0] + self.rect[2] / 2, self.rect[1] + self.rect[3] / 2)
         else:  # Prevent the button to be double clicked on the same user's click
             Button.clickable = True
 
