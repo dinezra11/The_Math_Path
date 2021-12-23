@@ -8,28 +8,47 @@ class MyGame(Scene):
     # ***********************************************************************************************************
     def __init__(self, display, userId):
         super().__init__(display)
+        # to click one time in the right answer
+        self.can_click_on_right_answer = 1
         self.userId = userId
-
         self.score = 0
         self.total = 0
         self.operand1 = random.randint(0, 10)
         self.operand2 = random.randint(0, 10)
         self.correctanswer = self.operand1 * self.operand2
-        self.wronganswer1 = random.randint(0, 100)
-        self.wronganswer2 = random.randint(0, 100)
-        self.wronganswer3 = random.randint(0, 100)
+        # to insure different answers that are close to correct answer----
+        self.wronganswer1_plus_minus = random.randint(1, 2)
+        if self.wronganswer1_plus_minus == 1:
+            self.wronganswer1 = self.correctanswer + 1
+        elif self.wronganswer1_plus_minus == 2:
+            self.wronganswer1 = self.correctanswer - 1
+
+        self.wronganswer2_plus_minus = random.randint(1, 2)
+        if self.wronganswer2_plus_minus == 1:
+            self.wronganswer2 = self.correctanswer + 2
+        elif self.wronganswer2_plus_minus == 2:
+            self.wronganswer2 = self.correctanswer - 2
+
+        self.wronganswer3_plus_minus = random.randint(1, 2)
+        if self.wronganswer3_plus_minus == 1:
+            self.wronganswer3 = self.correctanswer + 3
+        elif self.wronganswer3_plus_minus == 2:
+            self.wronganswer3 = self.correctanswer - 3
+
         self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
         # to insure different answers----
+        """
         for i in range(3):
             for y in range(3):
                 if i != y:
                     while self.answers[i] == self.answers[y] or self.answers[i] == self.correctanswer:
                         if i == 0:
                             self.wronganswer1 = random.randint(0, 100)
-                        if i == 1:
+                        elif i == 1:
                             self.wronganswer2 = random.randint(0, 100)
-                        if i == 2:
+                        elif i == 2:
                             self.wronganswer3 = random.randint(0, 100)
+        """
         self.expression1 = " * "
         self.statement = " = "
         self.q = "?"
@@ -85,142 +104,167 @@ class MyGame(Scene):
 
     # ***********************************************************************************************************
     def update(self):
+        mouse_pos = pygame.mouse.get_pos()
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
                 return self.userId  # Return userId so the system will go back to the user's menu screen
-        mouse_pos = pygame.mouse.get_pos()
-        # -------------------------------if clicked on Exit-----------------------------------------
-        if self.textRect6.collidepoint(mouse_pos):
-            if pygame.mouse.get_pressed()[0]:
-                self.color = (255, 255, 0)
-                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
-                return self.userId  # Return userId so the system will go back to the user's menu screen
-        # -------------------------------if clicked on Next------------------------------------------
-        if self.textRect7.collidepoint(mouse_pos):
-            if pygame.mouse.get_pressed()[0]:
-                self.operand1 = random.randint(0, 10)
-                self.operand2 = random.randint(0, 10)
-                self.correctanswer = self.operand1 * self.operand2
-                self.wronganswer1 = random.randint(0, 100)
-                self.wronganswer2 = random.randint(0, 100)
-                self.wronganswer3 = random.randint(0, 100)
-                self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
-                self.total += 1
-                # to insure different answers----
-                for i in range(3):
-                    for y in range(3):
-                        if i != y:
-                            while self.answers[i] == self.answers[y] or self.answers[i] == self.correctanswer:
-                                if i == 0:
-                                    self.wronganswer1 = random.randint(0, 100)
-                                if i == 1:
-                                    self.wronganswer2 = random.randint(0, 100)
-                                if i == 2:
-                                    self.wronganswer3 = random.randint(0, 100)
-                self.expression1 = " * "
-                self.statement = " = "
-                self.q = "?"
-                self.mathstring = str(self.operand1) + self.expression1 + str(self.operand2) + self.statement + self.q
-                # init the math question
-                self.text = self.font.render(self.mathstring, True, self.green, self.color)
-                self.textRect = self.text.get_rect()
-                self.textRect.center = (self.x // 2, 75)
-                # init the math answer 1   (the correct answer ---> it will be switched with another answer randomly)
-                self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
-                self.textRect2 = self.text2.get_rect()
-                self.textRect2.center = (self.x // 2, 150)
-                self.rect2place = 150
-                # init the math answer 2
-                self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.color)
-                self.textRect3 = self.text3.get_rect()
-                self.textRect3.center = (self.x // 2, 200)
-                self.rect3place = 200
-                # init the math answer 3
-                self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.color)
-                self.textRect4 = self.text4.get_rect()
-                self.textRect4.center = (self.x // 2, 250)
-                self.rect4place = 250
-                # init the math answer 4
-                self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.color)
-                self.textRect5 = self.text5.get_rect()
-                self.textRect5.center = (self.x // 2, 300)
-                self.rect5place = 300
-                # init score/total button
-                self.slashstr = "/"
-                self.strscore = str(self.score) + self.slashstr + str(self.total)
-                self.text8 = self.font.render(self.strscore, True, self.green, self.color)
-                self.textRect8 = self.text8.get_rect()
-                self.textRect8.center = (100, self.y - 20)
+            # -------------------------------if clicked on Exit-----------------------------------------
+            elif self.textRect6.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    self.color = (255, 255, 0)
+                    database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                    return self.userId  # Return userId so the system will go back to the user's menu screen
+            # -------------------------------if clicked on Next------------------------------------------
+            elif self.textRect7.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    self.can_click_on_right_answer = 1
+                    self.operand1 = random.randint(0, 10)
+                    self.operand2 = random.randint(0, 10)
+                    self.correctanswer = self.operand1 * self.operand2
+                    self.wronganswer1 = random.randint(0, 100)
+                    self.wronganswer2 = random.randint(0, 100)
+                    self.wronganswer3 = random.randint(0, 100)
+                    self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
+                    self.total += 1
+                    # to insure different answers that are close to correct answer----
+                    self.wronganswer1_plus_minus = random.randint(1, 2)
+                    if self.wronganswer1_plus_minus == 1:
+                        self.wronganswer1 = self.correctanswer + 1
+                    elif self.wronganswer1_plus_minus == 2:
+                        self.wronganswer1 = self.correctanswer - 1
 
-                # ----change the correct answer location-------
-                randnumber = random.randint(2, 4)
-                if randnumber == 2:
+                    self.wronganswer2_plus_minus = random.randint(1, 2)
+                    if self.wronganswer2_plus_minus == 1:
+                        self.wronganswer2 = self.correctanswer + 2
+                    elif self.wronganswer2_plus_minus == 2:
+                        self.wronganswer2 = self.correctanswer - 2
+
+                    self.wronganswer3_plus_minus = random.randint(1, 2)
+                    if self.wronganswer3_plus_minus == 1:
+                        self.wronganswer3 = self.correctanswer + 3
+                    elif self.wronganswer3_plus_minus == 2:
+                        self.wronganswer3 = self.correctanswer - 3
+                    # to insure different answers----
+                    """
+                    for i in range(3):
+                        for y in range(3):
+                            if i != y:
+                                while self.answers[i] == self.answers[y] or self.answers[i] == self.correctanswer:
+                                    if i == 0:
+                                        self.wronganswer1 = random.randint(0, 100)
+                                    elif i == 1:
+                                        self.wronganswer2 = random.randint(0, 100)
+                                    elif i == 2:
+                                        self.wronganswer3 = random.randint(0, 100)
+                    """
+                    self.expression1 = " * "
+                    self.statement = " = "
+                    self.q = "?"
+                    self.mathstring = str(self.operand1) + self.expression1 + str(self.operand2) + self.statement +\
+                                      self.q
+                    # init the math question
+                    self.text = self.font.render(self.mathstring, True, self.green, self.color)
+                    self.textRect = self.text.get_rect()
+                    self.textRect.center = (self.x // 2, 75)
+                    # init the math answer 1 (the correct answer ---> it will be switched with another answer randomly)
                     self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
                     self.textRect2 = self.text2.get_rect()
-                    self.textRect2.center = (self.x // 2, 200)
-                    self.rect2place = 200
-
+                    self.textRect2.center = (self.x // 2, 150)
+                    self.rect2place = 150
+                    # init the math answer 2
                     self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.color)
                     self.textRect3 = self.text3.get_rect()
-                    self.textRect3.center = (self.x // 2, 150)
-                    self.rect3place = 150
-                if randnumber == 3:
-                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
-                    self.textRect2 = self.text2.get_rect()
-                    self.textRect2.center = (self.x // 2, 250)
-                    self.rect2place = 250
-
+                    self.textRect3.center = (self.x // 2, 200)
+                    self.rect3place = 200
+                    # init the math answer 3
                     self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.color)
                     self.textRect4 = self.text4.get_rect()
-                    self.textRect4.center = (self.x // 2, 150)
-                    self.rect4place = 150
-                if randnumber == 4:
-                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
-                    self.textRect2 = self.text2.get_rect()
-                    self.textRect2.center = (self.x // 2, 300)
-                    self.rect2place = 300
-
+                    self.textRect4.center = (self.x // 2, 250)
+                    self.rect4place = 250
+                    # init the math answer 4
                     self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.color)
                     self.textRect5 = self.text5.get_rect()
-                    self.textRect5.center = (self.x // 2, 150)
-                    self.rect5place = 150
+                    self.textRect5.center = (self.x // 2, 300)
+                    self.rect5place = 300
+                    # init score/total button
+                    self.slashstr = "/"
+                    self.strscore = str(self.score) + self.slashstr + str(self.total)
+                    self.text8 = self.font.render(self.strscore, True, self.green, self.color)
+                    self.textRect8 = self.text8.get_rect()
+                    self.textRect8.center = (100, self.y - 20)
 
-        # -------------------------------if clicked on one of the answers---------------------------------------------
-        # ----if clicked on the correct answer---------
-        if self.textRect2.collidepoint(mouse_pos):
-            if pygame.mouse.get_pressed()[0]:
-                white = (255, 255, 255)
-                self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
-                self.textRect2 = self.text2.get_rect()
-                self.textRect2.center = (self.x // 2, self.rect2place)
-                self.score += 1
-                # should be automatic click on next button
-        # --if clicked on one of the wrong answers----------------------
-        elif self.textRect3.collidepoint(mouse_pos) or self.textRect4.collidepoint(mouse_pos) or \
-                self.textRect5.collidepoint(mouse_pos):
-            if pygame.mouse.get_pressed()[0]:
-                # fill the correct answer rectangle with white
-                white = (255, 255, 255)
-                self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
-                self.textRect2 = self.text2.get_rect()
-                self.textRect2.center = (self.x // 2, self.rect2place)
-                # fill the wrong answers rectangle with red
-                red = (255, 0, 0)
-                self.text3 = self.font.render(str(self.wronganswer1), True, self.green, red)
-                self.textRect3 = self.text3.get_rect()
-                self.textRect3.center = (self.x // 2, self.rect3place)
+                    # ----change the correct answer location-------
+                    self.randnumber = random.randint(2, 4)
+                    if self.randnumber == 2:
+                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
+                        self.textRect2 = self.text2.get_rect()
+                        self.textRect2.center = (self.x // 2, 200)
+                        self.rect2place = 200
 
-                self.text4 = self.font.render(str(self.wronganswer2), True, self.green, red)
-                self.textRect4 = self.text4.get_rect()
-                self.textRect4.center = (self.x // 2, self.rect4place)
+                        self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.color)
+                        self.textRect3 = self.text3.get_rect()
+                        self.textRect3.center = (self.x // 2, 150)
+                        self.rect3place = 150
+                    elif self.randnumber == 3:
+                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
+                        self.textRect2 = self.text2.get_rect()
+                        self.textRect2.center = (self.x // 2, 250)
+                        self.rect2place = 250
 
-                self.text5 = self.font.render(str(self.wronganswer3), True, self.green, red)
-                self.textRect5 = self.text5.get_rect()
-                self.textRect5.center = (self.x // 2, self.rect5place)
+                        self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.color)
+                        self.textRect4 = self.text4.get_rect()
+                        self.textRect4.center = (self.x // 2, 150)
+                        self.rect4place = 150
+                    elif self.randnumber == 4:
+                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
+                        self.textRect2 = self.text2.get_rect()
+                        self.textRect2.center = (self.x // 2, 300)
+                        self.rect2place = 300
 
-                # have to add automatic click on next button
+                        self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.color)
+                        self.textRect5 = self.text5.get_rect()
+                        self.textRect5.center = (self.x // 2, 150)
+                        self.rect5place = 150
+                    return True
+
+            # -------------------------------if clicked on one of the answers------------------------------------------
+            # ----if clicked on the correct answer---------
+            elif self.textRect2.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    if self.can_click_on_right_answer == 1:
+                        white = (255, 255, 255)
+                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
+                        self.textRect2 = self.text2.get_rect()
+                        self.textRect2.center = (self.x // 2, self.rect2place)
+                        self.score += 1
+                        return True
+            # --if clicked on one of the wrong answers----------------------
+            elif self.textRect3.collidepoint(mouse_pos) or self.textRect4.collidepoint(mouse_pos) or \
+                    self.textRect5.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    self.can_click_on_right_answer = 0
+                    # fill the correct answer rectangle with white
+                    white = (255, 255, 255)
+                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
+                    self.textRect2 = self.text2.get_rect()
+                    self.textRect2.center = (self.x // 2, self.rect2place)
+                    # fill the wrong answers rectangle with red
+                    red = (255, 0, 0)
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, red)
+                    self.textRect3 = self.text3.get_rect()
+                    self.textRect3.center = (self.x // 2, self.rect3place)
+
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, red)
+                    self.textRect4 = self.text4.get_rect()
+                    self.textRect4.center = (self.x // 2, self.rect4place)
+
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, red)
+                    self.textRect5 = self.text5.get_rect()
+                    self.textRect5.center = (self.x // 2, self.rect5place)
+                    return True
+
         return True
 
     # ***********************************************************************************************************
@@ -234,5 +278,4 @@ class MyGame(Scene):
         self.display_surface.blit(self.text6, self.textRect6)
         self.display_surface.blit(self.text7, self.textRect7)
         self.display_surface.blit(self.text8, self.textRect8)
-
-        pass
+        # pass
