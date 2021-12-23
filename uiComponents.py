@@ -296,7 +296,7 @@ class TextInput:
                 self.textStr = self.textStr[:-1]
             elif len(self.textStr) < self.limit:
                 key = key.unicode
-                if ('a' <= key.lower() <= 'z') or ('0' <= key <= '9') or (key in "!@#$%^&*"):
+                if ('a' <= key.lower() <= 'z') or ('0' <= key <= '9') or (key in "!@#$%^&* "):
                     self.textStr += key
 
             if self.isSecret:
