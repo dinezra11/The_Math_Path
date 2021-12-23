@@ -38,25 +38,27 @@ class Button:
         self.clickFunc = clickFunc
         self.clickArg = clickArg
         self.isHover = False
-        Button.clickable = True  # Indicates whether the button is clickable or not (STATIC field for all of the objects)
         Button.clickSound = pygame.mixer.Sound("audio/sounds/button pressed.ogg")
 
-    def update(self):
+        # "clickable" indicates whether the button is clickable or not (STATIC field for all of the objects)
+        Button.clickable = self.clickable = True
+
+def update(self):
         """ Update method. """
         mousePos = pygame.mouse.get_pos()
         self.isHover = self.rect[0] < mousePos[0] < (self.rect[0] + self.rect[2]) and \
                        self.rect[1] < mousePos[1] < (self.rect[1] + self.rect[3])
 
         if pygame.mouse.get_pressed()[0] and self.clickFunc is not None:
-            if self.isHover and Button.clickable:
+            if self.isHover and Button.clickable and self.clickable:
                 pygame.mixer.Sound.play(Button.clickSound)
-                Button.clickable = False
+                Button.clickable = self.clickable = False
                 if self.clickArg is None:
                     self.clickFunc()
                 else:
                     self.clickFunc(self.clickArg)
         else:  # Prevent the button to be double clicked on the same user's click
-            Button.clickable = True
+            Button.clickable = self.clickable = True
 
     def draw(self, display: pygame.display):
         """ Draw method. """
