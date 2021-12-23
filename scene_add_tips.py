@@ -20,7 +20,7 @@ class add_tips(Scene):
 
         self.explanation_font = pygame.font.Font(None, 30)
         self.explanation_surface = self.explanation_font.render(
-            "If you have any new tip, write it down.", True, 'Black')
+            "If you have any new tip for coping with dyscalculia, write it down.", True, 'Black')
         self.explanation_rect = self.explanation_surface.get_rect(midtop=(512, 175))
         self.explanation2_surface = self.explanation_font.render(
             "You can start writing your new tips now.", True, 'Black')
@@ -36,7 +36,6 @@ class add_tips(Scene):
         self.back_surf = pygame.image.load('images/back.png')
         self.back_surf = pygame.transform.scale(self.back_surf, (150, 150))
         self.back_rec = self.back_surf.get_rect(midtop=(900, 600))
-
 
         self.send_button_surf = pygame.image.load('images/mefateah_feedback/send.png')
         self.send_button_surf = pygame.transform.scale(self.send_button_surf, (150, 150))
@@ -77,16 +76,16 @@ class add_tips(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print(self.user_text)
-                return False
+                return self.userId
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.send_button_rec.collidepoint(event.pos):
-                    if self.temp_text1=='':
-                        database.addTips(self.user_text,self.userId)
+                    if self.temp_text1 == '':
+                        database.addTips(self.user_text, self.userId)
                     else:
-                        database.addTips(self.user_text,self.userId)
-                    return False
+                        database.addTips(self.user_text, self.userId)
+                    return self.userId
                 if self.back_rec.collidepoint(event.pos):
-                    return False
+                    return self.userId
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_BACKSPACE:
@@ -97,17 +96,16 @@ class add_tips(Scene):
                     self.next_line()
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if self.last == True:
-                        return False
+                        return self.userId
 
 
                 else:
                     if self.last == True:
-                        return False
+                        return self.userId
                     self.user_text += event.unicode
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if 570 <= self.user_text_surface.get_width() <= 580:
                         self.next_line()
-
 
         return True
 

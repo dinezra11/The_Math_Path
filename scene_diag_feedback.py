@@ -15,7 +15,7 @@ class diag_feedback(Scene):
         self.mouse_pos = pygame.mouse.get_pos()
 
         self.title_font = pygame.font.Font(None, 70)
-        self.title_surface = self.title_font.render('Diagnostic feedback for developers', True, 'Black')
+        self.title_surface = self.title_font.render('Feedback for the Developers', True, 'Black')
         self.title_rect = self.title_surface.get_rect(midtop=(512, 100))
 
         self.explanation_font = pygame.font.Font(None, 30)

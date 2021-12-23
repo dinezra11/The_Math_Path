@@ -6,7 +6,6 @@ from tkinter import *
 from tkinter import messagebox
 
 
-
 class private_notes(Scene):
 
     def __init__(self, display, userId):
@@ -14,7 +13,7 @@ class private_notes(Scene):
         self.userId = userId
         self.background_surf = pygame.image.load('images/mefateah_feedback/background2.jpg')
         self.background_surf = pygame.transform.scale(self.background_surf, (1024, 800))
-        self.background_rec = self.background_surf.get_rect(midtop=(1024,800))
+        self.background_rec = self.background_surf.get_rect(midtop=(1024, 800))
 
         self.mouse_pos = pygame.mouse.get_pos()
 
@@ -40,7 +39,6 @@ class private_notes(Scene):
         self.back_surf = pygame.image.load('images/back.png')
         self.back_surf = pygame.transform.scale(self.back_surf, (150, 150))
         self.back_rec = self.back_surf.get_rect(midtop=(900, 600))
-
 
         self.send_button_surf = pygame.image.load('images/mefateah_feedback/send.png')
         self.send_button_surf = pygame.transform.scale(self.send_button_surf, (150, 150))
@@ -80,7 +78,7 @@ class private_notes(Scene):
         self.color = self.color_passive
         self.active = False
 
-        self.child_id=''
+        self.child_id = ''
         self.child_id_surface = self.base_font.render(self.child_id, True, (255, 255, 255))
 
         self.last = False
@@ -91,28 +89,27 @@ class private_notes(Scene):
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                return self.userId
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.send_button_rec.collidepoint(event.pos):
                     if database.isIdExists(self.child_id):
-                        if self.temp_text1=='':
-                            database.addPrivateNotes(self.user_text, self.userId,int(self.child_id))
+                        if self.temp_text1 == '':
+                            database.addPrivateNotes(self.user_text, self.userId, int(self.child_id))
                         else:
-                            database.addPrivateNotes(self.final_text, self.userId,int(self.child_id))
-                        return False
+                            database.addPrivateNotes(self.final_text, self.userId, int(self.child_id))
+                        return self.userId
                     else:
-                        self.child_id=str(self.child_id)
-                        self.active=True
+                        self.child_id = str(self.child_id)
+                        self.active = True
                         Tk().wm_withdraw()  # to hide the main window
                         messagebox.showinfo('Continue', 'Child ID does not exist!')
 
-
                 if self.back_rec.collidepoint(event.pos):
-                    return False
+                    return self.userId
 
                 if self.text_box_rec.collidepoint(event.pos):
-                    self.start_write_note=True
+                    self.start_write_note = True
 
                 if self.input_rect.collidepoint(event.pos):
                     # self.start_write_id=True
@@ -137,10 +134,10 @@ class private_notes(Scene):
                     self.next_line()
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if self.last:
-                        return False
+                        return self.userId
                 else:
                     if self.last:
-                        return False
+                        return self.userId
                     self.user_text += event.unicode
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if 570 <= self.user_text_surface.get_width() <= 580:
@@ -167,7 +164,7 @@ class private_notes(Scene):
                 self.last = True
             pygame.draw.rect(display, self.color, self.input_rect)
             if self.active:
-                self.start_write_note=False
+                self.start_write_note = False
                 self.color = self.color_active
                 display.blit(self.child_id_surface, (self.input_rect.x + 5, self.input_rect.y + 5))
                 self.input_rect.w = max(100, self.child_id_surface.get_width() + 10)
@@ -198,5 +195,3 @@ class private_notes(Scene):
         self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
         self.user_text_rec.x = 220
         self.user_text_rec.y += 30
-
-
