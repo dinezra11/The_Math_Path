@@ -108,7 +108,7 @@ def addPrivateNotes(text, entryFrom, childID):
     })
 
 
-def addChildToParent(childID, linkPass, parentID):
+def addChildToParent(childID, linkPass, parentID, parentName):
     """ Check if ID and link pass are valid, and if so -> add the child to the parent.
     Return True if child has been added successfully. Return False if operation failed.
 
@@ -129,6 +129,13 @@ def addChildToParent(childID, linkPass, parentID):
         if userId == childID:
             if userDetail['passlink'] == linkPass and userDetail['type'] == "Child":
                 try:
+                    # Update child's parent
+                    dbObj = db.reference("users/{}".format(childID))
+                    dbObj.update({
+                        'parent': parentName
+                    })
+
+                    # Add the child to the parent's database
                     dbObj = db.reference('users/{}/children'.format(parentID))
                     dbObj.push({
                         'full_name': "{} {}".format(userDetail['name'], userDetail['last']),

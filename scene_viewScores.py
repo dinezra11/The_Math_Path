@@ -105,10 +105,17 @@ class ViewScores(Scene):
             self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/blue_background.jpg"),
                                                      (screenSize[0], screenSize[1]))
         else:
-            self.userId = userId[0]
-            self.returnID = userId[1]
-            self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/purple_background.jpg"),
-                                                     (screenSize[0], screenSize[1]))
+            if len(userId) == 2:  # Reached to this scene from parent's interface
+                self.userId = userId[0]
+                self.returnID = userId[1]
+                self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/purple_background.jpg"),
+                                                         (screenSize[0], screenSize[1]))
+            else:  # Reached to this scene from diagnostic's interface
+                self.userId = userId[0]
+                self.returnID = userId[1]
+                self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/red_background.jpg"),
+                                                         (screenSize[0], screenSize[1]))
+
         self.background.set_alpha(180)
         self.systemLogo = pygame.transform.scale(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"),
                                                  (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))

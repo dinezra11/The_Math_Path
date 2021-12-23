@@ -11,6 +11,7 @@ from scene_catchGame import CatchGame
 from scene_viewScores import ViewScores
 from scene_viewMessages import ViewMessages
 from scene_viewChildren import ViewChildren
+from scene_viewUsers import ViewUsers
 from scene_diag_feedback import diag_feedback
 from scene_about_us import Aboutus
 from scene_add_tips import add_tips
@@ -45,6 +46,7 @@ SCENES = {
     'viewScores': ViewScores,
     'viewMessages': ViewMessages,
     'viewChildren': ViewChildren,
+    'viewUsers': ViewUsers,
 
     # Other Scenes:
     'diag_feedback': diag_feedback,

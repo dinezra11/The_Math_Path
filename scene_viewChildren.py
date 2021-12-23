@@ -19,6 +19,7 @@ class View:
         :param size:            The size of the view's box.
         :param data:            The data from the database that needs to be shown.
         :param goToScene:       The function that change scenes.
+        :param parentId:        The id of the parent the engaged this screen.
         """
         self.position = position
         self.size = size
@@ -102,12 +103,9 @@ class ViewChildren(Scene):
                         xPos = startX
                         yPos += viewBoxSize[1] + 10
 
-        def addChild(entryForm: tuple):
+        def addChild():
             """ Attempt to add a child to a parent's account!
-            Check if the link password is valid to the child's ID.
-
-            :param entryForm:           The user's input, as a tuple. (childID, childLinkPass)
-            """
+            Check if the link password is valid to the child's ID. """
             if self.inputForm[2].getText() == "" or self.inputForm[4].getText() == "":
                 return  # Do nothing if the form isn't fully filled
 
@@ -116,11 +114,12 @@ class ViewChildren(Scene):
                 amountOfChildren = len(self.userDict[1]["children"])
 
             if amountOfChildren < 15:  # Max amount of children for parent is 15
-                result = addChildToParent(self.inputForm[2].getText(), self.inputForm[4].getText(), self.userDict[0])
+                result = addChildToParent(self.inputForm[2].getText(), self.inputForm[4].getText(), self.userDict[0],
+                                          "{} {} ({})".format(self.userDict[1]["name"], self.userDict[1]["last"],
+                                                              self.userDict[0]))
 
                 if result is True:
                     # Operation executed successfully
-                    initializeChildList()
                     main.changeScene("mainMenu", self.userDict[0])
                 else:
                     # Error
@@ -150,6 +149,7 @@ class ViewChildren(Scene):
                               "Back", "fonts/defaultFont.ttf", 28, goToScene, ("mainMenu", self.userDict[0]))
 
         # Get the children of the user and initialize the views objects
+        self.views = []
         initializeChildList()
 
         # "Add a Child" components:
@@ -167,8 +167,7 @@ class ViewChildren(Scene):
             TextInput((screenSize[0] - 300 + 70, HEADER_SIZE + 160), 14, "fonts/defaultFont.ttf")
         ]
         self.btnAdd = Button((screenSize[0] - 200 - 65 + 70, HEADER_SIZE + 210, 130, 30),
-                             ((0, 46, 77), (0, 77, 128)), "Add", "fonts/defaultFont.ttf", 20, addChild,
-                             (self.inputForm[2], self.inputForm[4]))
+                             ((0, 46, 77), (0, 77, 128)), "Add", "fonts/defaultFont.ttf", 20, addChild)
 
     def update(self):
         """ Update the scene.

@@ -186,8 +186,8 @@ class MainMenu(Scene):
             spaceBetweenBtns = 10
             self.buttons = [
                 Button((screenSize[0] - btnSize[0] - 10, HEADER_SIZE + 60, btnSize[0],
-                        btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Search User", "fonts/defaultFont.ttf", 18, None,
-                       None),
+                        btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Search User", "fonts/defaultFont.ttf", 18, goToScene,
+                       ('viewUsers', self.userObj, self.registeredUsers)),
                 Button((screenSize[0] - btnSize[0] - 10, HEADER_SIZE + 60 + btnSize[1] + spaceBetweenBtns, btnSize[0],
                         btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Private Notes", "fonts/defaultFont.ttf", 18,
                        goToScene, ("private_notes", self.userObj[0])),
