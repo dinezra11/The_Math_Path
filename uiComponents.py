@@ -38,12 +38,12 @@ class Button:
         self.clickFunc = clickFunc
         self.clickArg = clickArg
         self.isHover = False
-        Button.clickSound = pygame.mixer.Sound("audio/sounds/button pressed.ogg")
 
         # "clickable" indicates whether the button is clickable or not (STATIC field for all of the objects)
         Button.clickable = self.clickable = True
+        Button.clickSound = pygame.mixer.Sound("audio/sounds/button pressed.ogg")
 
-def update(self):
+    def update(self):
         """ Update method. """
         mousePos = pygame.mouse.get_pos()
         self.isHover = self.rect[0] < mousePos[0] < (self.rect[0] + self.rect[2]) and \
