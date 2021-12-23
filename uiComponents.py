@@ -255,7 +255,7 @@ class ErrorText(Text):
 class TextInput:
     """ TextInput component """
 
-    def __init__(self, position: tuple, size: int = 12, fontPath: str = None, secret=False):
+    def __init__(self, position: tuple, size: int = 12, fontPath: str = None, secret=False, length=200, limit=13):
         """ Initialize text input.
 
         :param position:        A tuple that represents the position of the text input field.
@@ -264,14 +264,17 @@ class TextInput:
         :param fontPath:        Path to the font. (string) (Default = system's default font)
         :param secret:          Indicates whether the text should be hidden or not.
                                 For example: pass
+        :param length:          The length of the box. Default 200px.
+        :param limit:           Limit of the characters. Default 13 characters.
         """
         self.font = pygame.font.Font(fontPath, size)
         self.textStr = ""
         self.textRender = self.font.render(self.textStr, True, (0, 0, 0))
-        self.rect = (position[0], position[1], 200, self.font.size("   ")[1])
+        self.rect = (position[0], position[1], length, self.font.size("   ")[1])
 
         self.isActive = False
         self.isSecret = secret
+        self.limit = limit
 
     def update(self):
         """ Update method. """
@@ -289,7 +292,7 @@ class TextInput:
         if self.isActive:
             if key.key == pygame.K_BACKSPACE:
                 self.textStr = self.textStr[:-1]
-            else:
+            elif len(self.textStr) < self.limit:
                 key = key.unicode
                 if ('a' <= key.lower() <= 'z') or ('0' <= key <= '9') or (key in "!@#$%^&*"):
                     self.textStr += key
