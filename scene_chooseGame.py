@@ -1,4 +1,5 @@
 import pygame.event
+from random import randint
 from pygame import Surface
 from scene import Scene
 from uiComponents import Text, Button
@@ -70,6 +71,18 @@ class ChooseGame(Scene):
             """
             main.changeScene(args[0], args[1])
 
+        def playRandom():
+            """ Play a random game. """
+            generatedGame = randint(0, 4)
+            if generatedGame == 0:
+                goToScene(("game_catchGame", self.userId))
+            elif generatedGame == 1:
+                goToScene(("game_chooseSize", self.userId))
+            elif generatedGame == 2:
+                goToScene(("game_mathExp", self.userId))
+            else:
+                goToScene(("game_countGame", self.userId))
+
         screenSize = display.get_size()
         self.userId = userId
 
@@ -80,9 +93,13 @@ class ChooseGame(Scene):
                                                  (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
         self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Choose a Game", 36,
                               "fonts/defaultFont.ttf")
-        self.btnBack = Button((screenSize[0] - 250, screenSize[1] / 2, 200, 70),
+        self.btnBack = Button((screenSize[0] - 210, screenSize[1] - 80, 200, 70),
                               ((0, 46, 77), (0, 77, 128)), "Back", "fonts/defaultFont.ttf",
                               28, goToScene, ("mainMenu", self.userId))
+        self.btnRandom = Button((screenSize[0] / 2 - 110, screenSize[1] - 110, 220, 50),
+                                ((0, 46, 77), (0, 77, 128)), "Random Game", "fonts/defaultFont.ttf",
+                                28, playRandom, None)
+
         self.btnGame = [
             GameIcon("catch answer icon.jpg", "Catch the Answer", (100, HEADER_SIZE + 20), goToScene,
                      ("game_catchGame", self.userId)),
@@ -104,6 +121,7 @@ class ChooseGame(Scene):
                 return self.userId
 
         self.btnBack.update()
+        self.btnRandom.update()
         for btn in self.btnGame:
             btn.update()
 
@@ -126,3 +144,4 @@ class ChooseGame(Scene):
             btn.draw(display)
 
         self.btnBack.draw(display)
+        self.btnRandom.draw(display)
