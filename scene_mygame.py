@@ -35,20 +35,6 @@ class MyGame(Scene):
         elif self.wronganswer3_plus_minus == 2:
             self.wronganswer3 = self.correctanswer - 3
 
-        self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
-        # to insure different answers----
-        """
-        for i in range(3):
-            for y in range(3):
-                if i != y:
-                    while self.answers[i] == self.answers[y] or self.answers[i] == self.correctanswer:
-                        if i == 0:
-                            self.wronganswer1 = random.randint(0, 100)
-                        elif i == 1:
-                            self.wronganswer2 = random.randint(0, 100)
-                        elif i == 2:
-                            self.wronganswer3 = random.randint(0, 100)
-        """
         self.expression1 = " * "
         self.statement = " = "
         self.q = "?"
@@ -65,7 +51,7 @@ class MyGame(Scene):
         # init the math question
         self.text = self.font.render(self.mathstring, True, self.green, self.color)
         self.textRect = self.text.get_rect()
-        self.textRect.center = (self.x // 2, 75)
+        self.textRect.center = (self.x // 2, 80)
         # init the math answer 1   (the correct answer ---> it will be switched with another answer randomly)
         self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
         self.textRect2 = self.text2.get_rect()
@@ -96,11 +82,20 @@ class MyGame(Scene):
         self.textRect7.center = (self.x - 45, 20)
         # init score/total button
         self.slashstr = "/"
-        self.strscore = str(self.score) + self.slashstr + str(self.total)
+        self.strscore = "Score/Total: " + str(self.score) + self.slashstr + str(self.total)
         self.text8 = self.font.render(self.strscore, True, self.green, self.color)
         self.textRect8 = self.text8.get_rect()
-        self.textRect8.center = (100, self.y - 20)
-        # i have to do function that swap the correct answer rectangle with one of the wrong answers
+        self.textRect8.center = (self.x // 2, self.y - 70)
+        # init level button
+        self.level = 1
+        self.strlevel = "Level: " + str(self.level) + " of 3"
+        self.text9 = self.font.render(self.strlevel, True, self.green, self.color)
+        self.textRect9 = self.text9.get_rect()
+        self.textRect9.center = (100, self.y - 70)
+        # init note (with the background)!!!
+        self.image = pygame.image.load("images/scene_mygame.png")
+        # init END GAME background
+        self.end_image = pygame.image.load("images/scene_mygame_end_game.png")
 
     # ***********************************************************************************************************
     def update(self):
@@ -120,14 +115,36 @@ class MyGame(Scene):
             elif self.textRect7.collidepoint(mouse_pos):
                 if pygame.mouse.get_pressed()[0]:
                     self.can_click_on_right_answer = 1
-                    self.operand1 = random.randint(0, 10)
-                    self.operand2 = random.randint(0, 10)
-                    self.correctanswer = self.operand1 * self.operand2
-                    self.wronganswer1 = random.randint(0, 100)
-                    self.wronganswer2 = random.randint(0, 100)
-                    self.wronganswer3 = random.randint(0, 100)
-                    self.answers = [self.wronganswer1, self.wronganswer2, self.wronganswer3]
+                    # check if leveled up after 10 questions
+                    # the game ends after 30 questions
+                    if self.total == 31:
+                        # init exit button
+                        self.text6 = self.font.render(" Exit ", True, self.green, self.color)
+                        self.textRect6 = self.text6.get_rect()
+                        self.textRect6.center = ((self.x // 2), 20)
+                        if self.textRect6.collidepoint(mouse_pos):
+                            if pygame.mouse.get_pressed()[0]:
+                                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                                return self.userId  # Return userId so the system will go back to the user's menu screen
+                        return True
+                    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     self.total += 1
+                    if self.total == 11 or self.total == 21:
+                        if (self.score/self.total) >= 0.8:
+                            self.level += 1
+                    # init operand for each level of 3
+                    if self.level == 1:
+                        self.operand1 = random.randint(1, 10)
+                        self.operand2 = random.randint(1, 10)
+                    elif self.level == 2:
+                        self.operand1 = random.randint(10, 20)
+                        self.operand2 = random.randint(1, 10)
+                    elif self.level == 3:
+                        self.operand1 = random.randint(10, 20)
+                        self.operand2 = random.randint(10, 20)
+
+                    self.correctanswer = self.operand1 * self.operand2
+
                     # to insure different answers that are close to correct answer-----
                     self.wronganswer1_plus_minus = random.randint(1, 2)
                     if self.wronganswer1_plus_minus == 1:
@@ -146,19 +163,7 @@ class MyGame(Scene):
                         self.wronganswer3 = self.correctanswer + 3
                     elif self.wronganswer3_plus_minus == 2:
                         self.wronganswer3 = self.correctanswer - 3
-                    # to insure different answers----
-                    """
-                    for i in range(3):
-                        for y in range(3):
-                            if i != y:
-                                while self.answers[i] == self.answers[y] or self.answers[i] == self.correctanswer:
-                                    if i == 0:
-                                        self.wronganswer1 = random.randint(0, 100)
-                                    elif i == 1:
-                                        self.wronganswer2 = random.randint(0, 100)
-                                    elif i == 2:
-                                        self.wronganswer3 = random.randint(0, 100)
-                    """
+
                     self.expression1 = " * "
                     self.statement = " = "
                     self.q = "?"
@@ -167,7 +172,7 @@ class MyGame(Scene):
                     # init the math question
                     self.text = self.font.render(self.mathstring, True, self.green, self.color)
                     self.textRect = self.text.get_rect()
-                    self.textRect.center = (self.x // 2, 75)
+                    self.textRect.center = (self.x // 2, 80)
                     # init the math answer 1 (the correct answer ---> it will be switched with another answer randomly)
                     self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
                     self.textRect2 = self.text2.get_rect()
@@ -190,10 +195,15 @@ class MyGame(Scene):
                     self.rect5place = 300
                     # init score/total button
                     self.slashstr = "/"
-                    self.strscore = str(self.score) + self.slashstr + str(self.total)
+                    self.strscore = "Score/Total: " + str(self.score) + self.slashstr + str(self.total)
                     self.text8 = self.font.render(self.strscore, True, self.green, self.color)
                     self.textRect8 = self.text8.get_rect()
-                    self.textRect8.center = (100, self.y - 20)
+                    self.textRect8.center = (self.x // 2, self.y - 70)
+                    # init level button
+                    self.strlevel = "Level: " + str(self.level) + " of 3"
+                    self.text9 = self.font.render(self.strlevel, True, self.green, self.color)
+                    self.textRect9 = self.text9.get_rect()
+                    self.textRect9.center = (100, self.y - 70)
 
                     # ----change the correct answer location-------
                     self.randnumber = random.randint(2, 4)
@@ -270,12 +280,18 @@ class MyGame(Scene):
     # ***********************************************************************************************************
     def draw(self, display: pygame.Surface):
         self.display_surface.fill(self.BACKGROUND_COLOR)
-        self.display_surface.blit(self.text, self.textRect)
-        self.display_surface.blit(self.text2, self.textRect2)
-        self.display_surface.blit(self.text3, self.textRect3)
-        self.display_surface.blit(self.text4, self.textRect4)
-        self.display_surface.blit(self.text5, self.textRect5)
-        self.display_surface.blit(self.text6, self.textRect6)
-        self.display_surface.blit(self.text7, self.textRect7)
-        self.display_surface.blit(self.text8, self.textRect8)
+        if self.total == 31:
+            self.display_surface.blit(self.end_image, (0, 0))
+            self.display_surface.blit(self.text6, self.textRect6)
+        else:
+            self.display_surface.blit(self.image, (0, 0))
+            self.display_surface.blit(self.text, self.textRect)
+            self.display_surface.blit(self.text2, self.textRect2)
+            self.display_surface.blit(self.text3, self.textRect3)
+            self.display_surface.blit(self.text4, self.textRect4)
+            self.display_surface.blit(self.text5, self.textRect5)
+            self.display_surface.blit(self.text6, self.textRect6)
+            self.display_surface.blit(self.text7, self.textRect7)
+            self.display_surface.blit(self.text8, self.textRect8)
+            self.display_surface.blit(self.text9, self.textRect9)
         # pass
