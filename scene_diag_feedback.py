@@ -15,7 +15,7 @@ class diag_feedback(Scene):
         self.mouse_pos = pygame.mouse.get_pos()
 
         self.title_font = pygame.font.Font(None, 70)
-        self.title_surface = self.title_font.render('Diagnostic feedback for developers', True, 'Black')
+        self.title_surface = self.title_font.render('Feedback for the Developers', True, 'Black')
         self.title_rect = self.title_surface.get_rect(midtop=(512, 100))
 
         self.explanation_font = pygame.font.Font(None, 30)
@@ -36,7 +36,6 @@ class diag_feedback(Scene):
         self.back_surf = pygame.image.load('images/back.png')
         self.back_surf = pygame.transform.scale(self.back_surf, (150, 150))
         self.back_rec = self.back_surf.get_rect(midtop=(900, 600))
-
 
         self.send_button_surf = pygame.image.load('images/mefateah_feedback/send.png')
         self.send_button_surf = pygame.transform.scale(self.send_button_surf, (150, 150))
@@ -77,16 +76,16 @@ class diag_feedback(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print(self.user_text)
-                return False
+                return self.userId
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.send_button_rec.collidepoint(event.pos):
-                    if self.temp_text1=='':
+                    if self.temp_text1 == '':
                         database.addFeedback(self.user_text, self.userId)
                     else:
                         database.addFeedback(self.final_text, self.userId)
-                    return False
+                    return self.userId
                 if self.back_rec.collidepoint(event.pos):
-                    return False
+                    return self.userId
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_BACKSPACE:
@@ -97,17 +96,14 @@ class diag_feedback(Scene):
                     self.next_line()
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if self.last == True:
-                        return False
-
-
+                        return self.userId
                 else:
                     if self.last == True:
-                        return False
+                        return self.userId
                     self.user_text += event.unicode
                     self.user_text_surface = self.base_font.render(self.user_text, True, 'Black')
                     if 570 <= self.user_text_surface.get_width() <= 580:
                         self.next_line()
-
 
         return True
 

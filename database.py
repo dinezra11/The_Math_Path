@@ -93,7 +93,8 @@ def addTips(text, entryFrom):
         'from': entryFrom,
         'text': text
     })
-    
+
+
 def addPrivateNotes(text, entryFrom, childID):
     """ Add a tip message for the system's developers.
 
@@ -105,9 +106,6 @@ def addPrivateNotes(text, entryFrom, childID):
         'text': text,
         'childID': childID
     })
-    
-    
-    
 
 
 def addChildToParent(childID, linkPass, parentID):
@@ -118,6 +116,14 @@ def addChildToParent(childID, linkPass, parentID):
     :param linkPass:            The unique link password of the child.
     :param parentID:            The parent's ID.
     """
+    # Check if child already linked to the parent
+    dbObj = db.reference("users/{}/children".format(parentID)).get()
+    if dbObj is not None:
+        for _, childDict in dbObj.items():
+            if childDict["id"] == childID:
+                return False
+
+    # Validate the link password and add the child if input is valid
     dbObj = db.reference("users").get()
     for userId, userDetail in dbObj.items():
         if userId == childID:
@@ -146,6 +152,12 @@ def getUser(searchID: str):
     for item in dbObj.items():
         if item[0] == searchID:
             return item
+
+
+def getAllUsers():
+    """ Return all of the users in the system. """
+    dbObj = db.reference("users").get()
+    return dbObj
 
 
 def getScore(searchID: str):

@@ -52,6 +52,7 @@ class MainMenu(Scene):
             self.backFill = (0, 0, 0)  # The color to be drawn below the background (For transparency effect)
             backColor = "images/Login Scene/blue_background.jpg"
 
+            detailsColor = BLACK
             details = [
                 "User's Information:",
                 "   First Name: {0}".format(self.userObj[1]["name"]),
@@ -62,7 +63,7 @@ class MainMenu(Scene):
                 "   'Link to Parent' code: {0}".format(self.userObj[1]["passlink"])
             ]
 
-            userHelpColor = (0, 0, 0)  # The color for the help section text
+            userHelpColor = BLACK  # The color for the help section text
             userHelp = [
                 'As a user, you can choose and play any game you wish from the system.',
                 'Press on "Play a Game" button to go to the game selection screen. Your score will be saved after you '
@@ -102,6 +103,7 @@ class MainMenu(Scene):
             if self.userObj[1].get("children") is not None:
                 childrenCount = len(self.userObj[1].get("children"))
 
+            detailsColor = BLACK
             details = [
                 "User's Information:",
                 "   First Name: {0}".format(self.userObj[1]["name"]),
@@ -114,9 +116,13 @@ class MainMenu(Scene):
 
             userHelpColor = (200, 0, 200)  # The color for the help section text
             userHelp = [
-                'Example info for parent 1',
-                'Example info for parent 2',
-                'Example info for parent 3'
+                "As a parent, you are able to track and view your children's scores and diagnostic's reviews.",
+                'Press on "My Children" button view the information about all of your children.',
+                'On that screen, you can link a new child to your account using his unique "Link to Parent" code.',
+                "",
+                "As a parent you can also view a diagnostic's reviews that are written specifically for you.",
+                '',
+                "You can log off or send a feedback to the game's developers by pressing the icons at the bottom."
             ]
 
             # Initialize menu buttons:
@@ -134,16 +140,61 @@ class MainMenu(Scene):
             ]
         else:
             # ----- Initialize DIAGNOSTIC's specific screen components ----- #
-            self.backFill = (0, 0, 0)  # The color to be drawn below the background (For transparency effect)
+            self.backFill = (0, 0, 100)  # The color to be drawn below the background (For transparency effect)
             backColor = "images/Login Scene/red_background.jpg"
-            details = []
+
+            # Calculate Statistics:
+            self.registeredUsers = database.getAllUsers()
+            usersCount = parentsCount = diagCount = 0
+            for _, val in self.registeredUsers.items():
+                if val["type"] == "Child":
+                    usersCount += 1
+                elif val["type"] == "Parent":
+                    parentsCount += 1
+                elif val["type"] == "Diagnostic":
+                    diagCount += 1
+
+            detailsColor = (0, 100, 50)
+            details = [
+                "Diagnostic Interface:",
+                "   You are logged in as Dr.{} (id {})".format(self.userObj[1]["last"], self.userObj[0]),
+                "",
+                "",
+                "",
+                "General System Statistics:",
+                "   Total of diagnostics users: {}".format(diagCount),
+                "   Registered regular users: {}".format(usersCount),
+                "   Registered parents: {}".format(parentsCount),
+                "   Available games to play: 4"
+            ]
+
             userHelpColor = (0, 100, 0)  # The color for the help section text
             userHelp = [
-                'Example info for diagnostic 1',
-                'Example info for diagnostic 2',
-                'Example info for diagnostic 3'
+                "As a diagnostic, you have access to the information of all of the users that use the system.",
+                'Press on "Search User" to move to the screen where you can find users details and perform operations'
+                ' for them.',
+                'The available operations are: watch scores, send personal messages and reviews.',
+                'Press on "Private Notes" to write and save notes for yourself, or "Add General Advice" to send tips'
+                ' and advices',
+                'for all of the parents.',
+                '',
+                "You can log off or send a feedback to the game's developers by pressing the icons at the bottom."
             ]
-            self.buttons = []
+
+            # Initialize menu buttons:
+            btnSize = (190, 30)
+            spaceBetweenBtns = 10
+            self.buttons = [
+                Button((screenSize[0] - btnSize[0] - 10, HEADER_SIZE + 60, btnSize[0],
+                        btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Search User", "fonts/defaultFont.ttf", 18, None,
+                       None),
+                Button((screenSize[0] - btnSize[0] - 10, HEADER_SIZE + 60 + btnSize[1] + spaceBetweenBtns, btnSize[0],
+                        btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Private Notes", "fonts/defaultFont.ttf", 18,
+                       goToScene, ("private_notes", self.userObj[0])),
+                Button((screenSize[0] - btnSize[0] - 10, HEADER_SIZE + 60 + (btnSize[1] + spaceBetweenBtns) * 2,
+                        btnSize[0], btnSize[1]), ((0, 46, 77), (0, 77, 128)), "Add General Advice",
+                       "fonts/defaultFont.ttf", 18, goToScene, ("add_tips", self.userObj[0]))
+            ]
 
         # Background and graphics initialize
         self.background = pygame.transform.scale(pygame.image.load(backColor),
@@ -158,7 +209,7 @@ class MainMenu(Scene):
         x = 10
         y = HEADER_SIZE * 2
         for item in details:
-            self.detailsText.append(Text((x, y), BLACK, item, 20, "fonts/defaultFont.ttf", alignCenter=False))
+            self.detailsText.append(Text((x, y), detailsColor, item, 20, "fonts/defaultFont.ttf", alignCenter=False))
             y += 27
 
         # Make the text objects for the help and info:
@@ -177,9 +228,6 @@ class MainMenu(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-            if event.type == pygame.KEYDOWN:
-                self.inputForm[1].updateText(event)
-                self.inputForm[3].updateText(event)
 
         for btn in self.buttons:
             btn.update()
