@@ -4,7 +4,7 @@ from scene import Scene
 import database
 
 
-class MyGame_plus(Scene):
+class MyGame_minus(Scene):
     # ***********************************************************************************************************
     def __init__(self, display, userId):
         super().__init__(display)
