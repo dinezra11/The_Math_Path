@@ -116,7 +116,7 @@ class ChooseGame(Scene):
         self.btnGame = [
             GameIcon("catch answer icon.jpg", "Catch the Answer", (100, HEADER_SIZE + 20), goToScene,
                      ("game_catchGame", self.userId)),
-            GameIcon("math expressions icon.png", "Math Expressions", (350, HEADER_SIZE + 20), goToScene,
+            GameIcon("math expressions icon (+).png", "Math Expressions", (350, HEADER_SIZE + 20), goToScene,
                      ("game_mathExp", self.userId)),
             GameIcon("choose size icon.png", "Choose Size", (600, HEADER_SIZE + 20), goToScene,
                      ("game_chooseSize", self.userId)),

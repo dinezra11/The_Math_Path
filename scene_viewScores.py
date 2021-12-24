@@ -38,8 +38,8 @@ class View:
             iconPath += "/catch answer icon.jpg"
         elif data["type"] == "Choose Size":
             iconPath += "/choose size icon.png"
-        elif data["type"] == "Math Expressions":
-            iconPath += "/math expressions icon.png"
+        elif "Math Expressions" in data["type"]:
+            iconPath += "/math expressions icon (+).png"
         elif data["type"] == "Count Game":
             iconPath += "/count game icon.png"
         else:
