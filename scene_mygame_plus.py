@@ -103,13 +103,13 @@ class MyGame_plus(Scene):
         # Keyboard Event check:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                database.addScore("Math Expressions (+)", self.score, self.userId)  # Save in DB
                 return self.userId  # Return userId so the system will go back to the user's menu screen
             # -------------------------------if clicked on Exit-----------------------------------------
             elif self.textRect6.collidepoint(mouse_pos):
                 if pygame.mouse.get_pressed()[0]:
                     self.color = (255, 255, 0)
-                    database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                    database.addScore("Math Expressions (+)", self.score, self.userId)  # Save in DB
                     return self.userId  # Return userId so the system will go back to the user's menu screen
             # -------------------------------if clicked on Next------------------------------------------
             elif self.textRect7.collidepoint(mouse_pos):
@@ -124,7 +124,7 @@ class MyGame_plus(Scene):
                         self.textRect6.center = ((self.x // 2), 20)
                         if self.textRect6.collidepoint(mouse_pos):
                             if pygame.mouse.get_pressed()[0]:
-                                database.addScore("Math Expressions", self.score, self.userId)  # Save in DB
+                                database.addScore("Math Expressions (+)", self.score, self.userId)  # Save in DB
                                 return self.userId  # Return userId so the system will go back to the user's menu screen
                         return True
                     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
