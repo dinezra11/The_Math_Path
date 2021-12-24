@@ -2,7 +2,7 @@ import pygame.event
 from random import randint
 from pygame import Surface
 from scene import Scene
-from uiComponents import Text, Button
+from uiComponents import Text, Button, CycleButton
 
 # Scene's Constants:
 WHITE = (255, 255, 255)
@@ -69,17 +69,30 @@ class ChooseGame(Scene):
 
             :param args:            What scene needs to be displayed next.
             """
+            if args[0] == "game_mathExp":
+                mode = self.gameMode.getText()
+                if mode == "+":
+                    args = ("game_mathExp_plus", args[1])
+                elif mode == "-":
+                    args = ("game_mathExp_minus", args[1])
+                else:
+                    args = ("game_mathExp_power", args[1])
+
             main.changeScene(args[0], args[1])
 
         def playRandom():
             """ Play a random game. """
-            generatedGame = randint(0, 4)
+            generatedGame = randint(0, 5)
             if generatedGame == 0:
                 goToScene(("game_catchGame", self.userId))
             elif generatedGame == 1:
                 goToScene(("game_chooseSize", self.userId))
             elif generatedGame == 2:
-                goToScene(("game_mathExp", self.userId))
+                goToScene(("game_mathExp_power", self.userId))
+            elif generatedGame == 3:
+                goToScene(("game_mathExp_plus", self.userId))
+            elif generatedGame == 4:
+                goToScene(("game_mathExp_minus", self.userId))
             else:
                 goToScene(("game_countGame", self.userId))
 
@@ -111,6 +124,11 @@ class ChooseGame(Scene):
                      ("game_countGame", self.userId))
         ]
 
+        self.gameModeText = Text((350, HEADER_SIZE + 20 + 180), (200, 200, 200), "Game Mode:", 16,
+                                 "fonts/defaultFont.ttf", alignCenter=False)
+        self.gameMode = CycleButton((450, HEADER_SIZE + 20 + 180, 20, 20), ((0, 46, 77), (0, 77, 128)), ("+", "-", "*"),
+                                    "fonts/defaultFont.ttf", 18)
+
     def update(self):
         """ Update the scene.
         Also take care of events and user's input.
@@ -122,6 +140,7 @@ class ChooseGame(Scene):
 
         self.btnBack.update()
         self.btnRandom.update()
+        self.gameMode.update()
         for btn in self.btnGame:
             btn.update()
 
@@ -139,9 +158,11 @@ class ChooseGame(Scene):
         display.blit(self.systemLogo, (10, 10))
         display.blit(self.systemLogo, (display.get_size()[0] - SYSTEMLOGO_SIZE - 10, 10))
         self.titleText.draw(display)
+        self.gameModeText.draw(display)
 
         for btn in self.btnGame:
             btn.draw(display)
 
         self.btnBack.draw(display)
         self.btnRandom.draw(display)
+        self.gameMode.draw(display)

@@ -7,6 +7,8 @@ from scene_chooseGame import ChooseGame
 from scene_chooseSize import ChooseSize
 from scene_count_game import count_game
 from scene_mygame import MyGame
+from scene_mygame_plus import MyGame_plus
+from scene_mygame_minus import MyGame_minus
 from scene_catchGame import CatchGame
 from scene_viewScores import ViewScores
 from scene_viewMessages import ViewMessages
@@ -39,7 +41,9 @@ SCENES = {
     # Mini-Games Scenes:
     'game_countGame': count_game,
     'game_chooseSize': ChooseSize,
-    'game_mathExp': MyGame,
+    'game_mathExp_power': MyGame,  # Arithmetic Game Type: *
+    'game_mathExp_plus': MyGame_plus,  # Arithmetic Game Type: +
+    'game_mathExp_minus': MyGame_minus,  # Arithmetic Game Type: -
     'game_catchGame': CatchGame,
 
     # Statistics and Data Scenes:
