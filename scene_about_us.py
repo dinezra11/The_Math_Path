@@ -33,6 +33,10 @@ class Aboutus(Scene):
                 self.textRect.center = (self.x - 45, 20)
                 if pygame.mouse.get_pressed()[0]:
                     return False  # Return userId so the system will go back to the user's menu screen
+            else:
+                self.text = self.font.render(" Exit ", True, self.blue, self.grey)
+                self.textRect = self.text.get_rect()
+                self.textRect.center = (self.x - 45, 20)
         return True
 
     # ***********************************************************************************************************
