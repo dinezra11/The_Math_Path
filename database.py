@@ -40,6 +40,38 @@ def addUser(entryName, entryLast, entryId, entryPass, entryType):
     })
 
 
+def deleteUser(entryId):
+    """ Delete a user from the database.
+    Make sure to delete this user from the parent's list too. """
+    deleteRef = db.reference("users/{}".format(entryId))
+    if deleteRef.get() is None:
+        return
+
+    parentId = deleteRef.get().get("parent")
+    if parentId is not None:
+        # Delete the child's entry from the parent's children list
+        parentId = parentId.split("(")[1].split(")")[0]
+        print(parentId)
+        parentRef = db.reference("users/{}/children".format(parentId))
+        for key, info in parentRef.get().items():
+            if info["id"] == str(entryId):
+                parentRef.child(key).delete()
+                break
+
+    # Delete scores
+    infoRef = db.reference("scores/{}".format(entryId))
+    if infoRef.get() is not None:
+        infoRef.delete()
+
+    # Delete messages
+    infoRef = db.reference("messages/{}".format(entryId))
+    if infoRef.get() is not None:
+        infoRef.delete()
+
+    # Delete the actual user
+    deleteRef.delete()
+
+
 def addScore(gameType, score, userId):
     """ Add a score entry to the database.
 
