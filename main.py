@@ -29,6 +29,7 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption(WIN_TITLE)
 pygame.display.set_icon(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"))
+pygame.mixer.music.load("audio/music/backgroundMusic.mp3")
 gameClock = pygame.time.Clock()
 
 # Scenes variables
@@ -127,6 +128,7 @@ def draw():
 # GAME STARTS HERE #
 try:
     currentScene = SCENES['start'](gameDisplay)  # Initialize the first default scene
+    pygame.mixer.music.play(-1)
 
     # Game's Loop:
     while update():
