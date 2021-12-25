@@ -1,6 +1,7 @@
 """ Main file of the system! """
 import pygame
 import traceback  # for showing the traceback on the console while error handling
+from scene_settings import Settings
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
 from scene_chooseGame import ChooseGame
@@ -29,8 +30,8 @@ pygame.init()
 gameDisplay = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption(WIN_TITLE)
 pygame.display.set_icon(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"))
-pygame.mixer.music.load("audio/music/backgroundMusic.mp3")
 gameClock = pygame.time.Clock()
+settings = Settings(gameDisplay)
 
 # Scenes variables
 SCENES = {
@@ -74,6 +75,10 @@ def changeScene(newScene="", args=None):
     def fadeOut():
         for i in range(0, 255, 10):
             currentScene.draw(gameDisplay)
+
+            if settings.blueFilterOn:  # Apply Blue Light Filter
+                gameDisplay.blit(settings.blueLightSurface, (0, 0))
+
             fadeSurface.set_alpha(i)
             gameDisplay.blit(fadeSurface, (0, 0))
             pygame.display.update()
@@ -82,6 +87,10 @@ def changeScene(newScene="", args=None):
     def fadeIn():
         for i in range(255, 0, -10):
             currentScene.draw(gameDisplay)
+
+            if settings.blueFilterOn:  # Apply Blue Light Filter
+                gameDisplay.blit(settings.blueLightSurface, (0, 0))
+
             fadeSurface.set_alpha(i)
             gameDisplay.blit(fadeSurface, (0, 0))
             pygame.display.update()
@@ -105,16 +114,19 @@ def changeScene(newScene="", args=None):
 
 def update():
     """ Update the screen according to the current scene. End the game when need to quit the game completely. """
-    result = currentScene.update()
-    if result is False:
-        if type(currentScene) is LoginScene:  # If game was attempted to be closed from first scene - Quit the system.
-            changeScene("endGame")
-            return False
-        else:  # If game was attempted to be closed from any other scene - Return to title screen.
-            changeScene("start")  # End the game's loop
-    elif result is not True:  # Scene returned userId instead of boolean value. Return to main menu AFTER logging in
-        changeScene("mainMenu", result)
-        return True
+    if Settings.showSettings:
+        settings.update()
+    else:
+        result = currentScene.update()
+        if result is False:
+            if type(currentScene) is LoginScene:  # If game was attempted to be closed from first scene - Quit the system.
+                changeScene("endGame")
+                return False
+            else:  # If game was attempted to be closed from any other scene - Return to title screen.
+                changeScene("start")  # End the game's loop
+        elif result is not True:  # Scene returned userId instead of boolean value. Return to main menu AFTER logging in
+            changeScene("mainMenu", result)
+            return True
 
     return True  # Continue with the game's loop
 
@@ -122,13 +134,19 @@ def update():
 def draw():
     """ Draw the current scene. """
     currentScene.draw(gameDisplay)
+
+    if Settings.showSettings:
+        settings.draw(gameDisplay)
+
+    if settings.blueFilterOn:  # Apply Blue Light Filter
+        gameDisplay.blit(settings.blueLightSurface, (0, 0))
+
     pygame.display.update()
 
 
 # GAME STARTS HERE #
 try:
     currentScene = SCENES['start'](gameDisplay)  # Initialize the first default scene
-    pygame.mixer.music.play(-1)
 
     # Game's Loop:
     while update():

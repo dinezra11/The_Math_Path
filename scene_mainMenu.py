@@ -1,4 +1,5 @@
 import pygame.event
+from scene_settings import toggleSettings
 from pygame import Surface
 from scene import Scene
 from uiComponents import Text, Button, TextInput, ImageButton
@@ -45,6 +46,8 @@ class MainMenu(Scene):
         self.btnFeedback = ImageButton((screenSize[0] - 170, screenSize[1] - 90, 80, 100),
                                        "images/mefateah_feedback/send.png", goToScene,
                                        ("diag_feedback", self.userObj[0]))
+        self.btnSettings = ImageButton((screenSize[0] - 235, screenSize[1] - 73, 60, 60),
+                                       "images/Settings/icon.png", toggleSettings)
 
         # Initialize screen's view, according to the user's specific account type:
         if self.userObj[1]["type"] == "Child":
@@ -234,6 +237,7 @@ class MainMenu(Scene):
 
         self.btnLogOff.update()
         self.btnFeedback.update()
+        self.btnSettings.update()
 
         return True
 
@@ -260,6 +264,7 @@ class MainMenu(Scene):
 
         self.btnLogOff.draw(display)
         self.btnFeedback.draw(display)
+        self.btnSettings.draw(display)
 
         # Draw Footer
         pygame.draw.rect(display, (0, 0, 0),

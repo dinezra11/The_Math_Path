@@ -1,6 +1,7 @@
 import pygame.event
 from pygame import Surface
 from scene import Scene
+from scene_settings import toggleSettings
 from uiComponents import Text, Button, TextInput, CycleButton, ErrorText
 import database
 import random
@@ -193,9 +194,11 @@ class LoginScene(Scene):
                                   "Register", "fonts/defaultFont.ttf", 28, changeState, "register")
         self.btnBack = Button((screenSize[0] - 200 - 20, screenSize[1] - 70 - 20, 200, 70), ((0, 46, 77), (0, 77, 128)),
                               "Back", "fonts/defaultFont.ttf", 28, changeState, "title")
-        self.btnAbout = Button((screenSize[0] / 2 - 45, screenSize[1] - 220, 90, 32),
+        self.btnAbout = Button((screenSize[0] / 2 - 45, screenSize[1] - 260, 90, 32),
                                ((0, 46, 77), (0, 77, 128)), "About Us", "fonts/defaultFont.ttf", 16, changeState,
                                "about")
+        self.btnSettings = Button((screenSize[0] / 2 - 45, screenSize[1] - 220, 90, 32),
+                                  ((0, 46, 77), (0, 77, 128)), "Settings", "fonts/defaultFont.ttf", 16, toggleSettings)
 
         # Register screen ui components:
         x = screenSize[0] / 2
@@ -258,6 +261,7 @@ class LoginScene(Scene):
             self.btnLogin.update()
             self.btnRegister.update()
             self.btnAbout.update()
+            self.btnSettings.update()
         elif self.state == "register":
             self.btnBack.update()
             self.registerButton.update()
@@ -296,6 +300,7 @@ class LoginScene(Scene):
             self.btnLogin.draw(display)
             self.btnRegister.draw(display)
             self.btnAbout.draw(display)
+            self.btnSettings.draw(display)
         elif self.state == "register":
             self.btnBack.draw(display)
             self.registerButton.draw(display)
