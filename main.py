@@ -32,6 +32,7 @@ pygame.display.set_caption(WIN_TITLE)
 pygame.display.set_icon(pygame.image.load("images/Login Scene/Welcome Screen/System Logo.png"))
 gameClock = pygame.time.Clock()
 settings = Settings(gameDisplay)
+errorSurface = pygame.image.load("images/errorMessage.jpg")
 
 # Scenes variables
 SCENES = {
@@ -153,7 +154,9 @@ try:
         draw()
         gameClock.tick(30)  # FPS
 except Exception as e:  # Handle default exceptions (The exceptions that haven't been caught by the scene's class)
-    print("Error occurred.")  # need to make new error scene (detailed one)
+    gameDisplay.blit(errorSurface, (0, 0))  # Error Screen
+    pygame.display.update()
+    pygame.time.wait(1500)
     traceback.print_exc()  # for debugging
 finally:
     # Quit the game. Close PyGame safely:
