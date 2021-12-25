@@ -1,6 +1,6 @@
 import pygame
 from scene import Scene
-from uiComponents import Text, TextInput, Button, ImageButton
+from uiComponents import Text, TextInput, Button, ImageButton, ErrorText
 from database import addMessage
 
 # Scene's Constants:
@@ -30,10 +30,11 @@ class View:
                     raise Exception("Can't send an empty message.")
                 addMessage("{} {}".format(diagId[1]["name"], diagId[1]["last"]), msg, data[0])
             except Exception as e:
-                pass  # Add error message
+                View.errorObj.pop(str(e), 1000)  # Pop error message
             else:
                 self.text[4].clearText()
 
+        View.errorObj = ErrorText((1024 / 2, 20), 24, "fonts/defaultFont.ttf")  # Error object
         self.position = position
         self.size = size
         self.data = data
@@ -85,6 +86,8 @@ class View:
         self.text[4].update()
         self.btnSend.update()
 
+        View.errorObj.update()
+
     def draw(self, display):
         """ Draw the View. """
         # Draw background (and borders) of View
@@ -99,6 +102,8 @@ class View:
         # Draw the data as a text on the view's box
         for txt in self.text:
             txt.draw(display)
+
+        View.errorObj.draw(display)
 
 
 class ViewUsers(Scene):
@@ -173,6 +178,7 @@ class ViewUsers(Scene):
                                                  (SYSTEMLOGO_SIZE, SYSTEMLOGO_SIZE))
         self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Search User",
                               36, "fonts/defaultFont.ttf")
+        self.help = pygame.image.load("images/viewChildren Scene icons/viewUsersHelp.png")
 
         self.btnBack = Button((screenSize[0] - 200 - 20, screenSize[1] - 90, 200, 70), ((0, 46, 77), (0, 77, 128)),
                               "Back", "fonts/defaultFont.ttf", 28, goToScene, ("mainMenu", self.diagDict[0]))
@@ -236,6 +242,7 @@ class ViewUsers(Scene):
         display.blit(self.systemLogo, (10, 10))
         display.blit(self.systemLogo, (display.get_size()[0] - SYSTEMLOGO_SIZE - 10, 10))
         self.titleText.draw(display)
+        display.blit(self.help, (0, HEADER_SIZE-15))
 
         # Draw Data
         if self.currentPage < len(self.views):

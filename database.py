@@ -115,6 +115,7 @@ def addChildToParent(childID, linkPass, parentID, parentName):
     :param childID:             The child's ID to add.
     :param linkPass:            The unique link password of the child.
     :param parentID:            The parent's ID.
+    :param parentName           The parent's name.
     """
     # Check if child already linked to the parent
     dbObj = db.reference("users/{}/children".format(parentID)).get()

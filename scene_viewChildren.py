@@ -1,6 +1,6 @@
 import pygame
 from scene import Scene
-from uiComponents import Text, TextInput, Button, ImageButton
+from uiComponents import Text, TextInput, Button, ImageButton, ErrorText
 from database import addChildToParent
 
 # Scene's Constants:
@@ -107,7 +107,11 @@ class ViewChildren(Scene):
             """ Attempt to add a child to a parent's account!
             Check if the link password is valid to the child's ID. """
             if self.inputForm[2].getText() == "" or self.inputForm[4].getText() == "":
-                return  # Do nothing if the form isn't fully filled
+                # Do nothing if the form isn't fully filled
+                self.errorObj.pop(
+                    "Please enter child's ID and child's 'Link to Parent' password.",
+                    1000)
+                return
 
             amountOfChildren = 0
             if self.userDict[1].get("children") is not None:
@@ -123,10 +127,15 @@ class ViewChildren(Scene):
                     main.changeScene("mainMenu", self.userDict[0])
                 else:
                     # Error
-                    pass
+                    self.errorObj.pop(
+                        "Couldn't add the child. Please verify the link password or check if child is already linked.",
+                        2000)
 
         screenSize = display.get_size()
         self.userDict = userDict  # The scene will show the children of this specific parent
+
+        # Create Error Message object:
+        self.errorObj = ErrorText((screenSize[0] / 2, 20), 24, "fonts/defaultFont.ttf")
 
         # Background's Initialize
         self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/purple_background.jpg"),
@@ -189,6 +198,9 @@ class ViewChildren(Scene):
         for v in self.views:
             v.update()
 
+        # Update Error Object:
+        self.errorObj.update()
+
         return True  # Continue with the game's loop
 
     def draw(self, display: pygame.Surface):
@@ -215,3 +227,6 @@ class ViewChildren(Scene):
         # Draw Buttons
         self.btnBack.draw(display)
         self.btnAdd.draw(display)
+
+        # Draw Error Object:
+        self.errorObj.draw(display)
