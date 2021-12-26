@@ -10,6 +10,7 @@ class MyGame_plus(Scene):
         super().__init__(display)
         # to click one time in the right answer
         self.can_click_on_right_answer = 1
+        self.pressed_on_answer = 0
         self.userId = userId
         self.score = 0
         self.total = 0
@@ -41,9 +42,11 @@ class MyGame_plus(Scene):
         self.mathstring = str(self.operand1) + self.expression1 + str(self.operand2) + self.statement + self.q
 
         self.BACKGROUND_COLOR = (0, 128, 255)
+        self.white = (255, 255, 255)
         self.green = (0, 255, 0)
-        blue = (0, 0, 128)
-        self.color = blue
+        self.grey = (127, 127, 127)
+        self.red = (255, 0, 0)
+        self.color = (0, 0, 128)
         self.x = 1024
         self.y = 800
         self.display_surface = display
@@ -107,14 +110,18 @@ class MyGame_plus(Scene):
                 return self.userId  # Return userId so the system will go back to the user's menu screen
             # -------------------------------if clicked on Exit-----------------------------------------
             elif self.textRect6.collidepoint(mouse_pos):
+                # if mouse on change color to red
+                self.text6 = self.font.render(" Exit ", True, self.green, self.red)
                 if pygame.mouse.get_pressed()[0]:
-                    self.color = (255, 255, 0)
                     database.addScore("Math Expressions (+)", self.score, self.userId)  # Save in DB
                     return self.userId  # Return userId so the system will go back to the user's menu screen
             # -------------------------------if clicked on Next------------------------------------------
             elif self.textRect7.collidepoint(mouse_pos):
+                # if mouse on change color to grey
+                self.text7 = self.font.render(" Next ", True, self.green, self.grey)
                 if pygame.mouse.get_pressed()[0]:
                     self.can_click_on_right_answer = 1
+                    self.pressed_on_answer = 0
                     # check if leveled up after 10 questions
                     # the game ends after 30 questions
                     if self.total == 31:
@@ -241,40 +248,75 @@ class MyGame_plus(Scene):
 
             # -------------------------------if clicked on one of the answers------------------------------------------
             # ----if clicked on the correct answer---------
+            # correct answer with blue (default color)
             elif self.textRect2.collidepoint(mouse_pos):
+                # if mouse on change color to grey
+                self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.grey)
                 if pygame.mouse.get_pressed()[0]:
+                    # if clicked change to white
                     if self.can_click_on_right_answer == 1:
-                        white = (255, 255, 255)
-                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
+                        self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.white)
                         self.textRect2 = self.text2.get_rect()
                         self.textRect2.center = (self.x // 2, self.rect2place)
                         self.score += 1
+                        self.can_click_on_right_answer = 0
+                        self.pressed_on_answer = 2
                         return True
             # --if clicked on one of the wrong answers----------------------
             elif self.textRect3.collidepoint(mouse_pos) or self.textRect4.collidepoint(mouse_pos) or \
                     self.textRect5.collidepoint(mouse_pos):
+                # if mouse on change color to grey
+                if self.textRect3.collidepoint(mouse_pos):
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.grey)
+                elif self.textRect4.collidepoint(mouse_pos):
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.grey)
+                elif self.textRect5.collidepoint(mouse_pos):
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.grey)
+                # if pressed on answer
                 if pygame.mouse.get_pressed()[0]:
+                    self.pressed_on_answer = 1
                     self.can_click_on_right_answer = 0
                     # fill the correct answer rectangle with white
-                    white = (255, 255, 255)
-                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, white)
+                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.white)
                     self.textRect2 = self.text2.get_rect()
                     self.textRect2.center = (self.x // 2, self.rect2place)
                     # fill the wrong answers rectangle with red
-                    red = (255, 0, 0)
-                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, red)
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.red)
                     self.textRect3 = self.text3.get_rect()
                     self.textRect3.center = (self.x // 2, self.rect3place)
 
-                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, red)
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.red)
                     self.textRect4 = self.text4.get_rect()
                     self.textRect4.center = (self.x // 2, self.rect4place)
 
-                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, red)
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.red)
                     self.textRect5 = self.text5.get_rect()
                     self.textRect5.center = (self.x // 2, self.rect5place)
                     return True
-
+            # if mouse not on any of the clickable buttons
+            else:
+                # exit and next buttons stay with blue
+                self.text6 = self.font.render(" Exit ", True, self.green, self.color)
+                self.text7 = self.font.render(" Next ", True, self.green, self.color)
+                # if pressed wrong answer
+                if self.pressed_on_answer == 1:
+                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.white)
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.red)
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.red)
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.red)
+                # if pressed on right answer
+                elif self.pressed_on_answer == 2:
+                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.white)
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.color)
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.color)
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.color)
+                # stay with default colors of buttons
+                else:
+                    self.text2 = self.font.render(str(self.correctanswer), True, self.green, self.color)
+                    self.text3 = self.font.render(str(self.wronganswer1), True, self.green, self.color)
+                    self.text4 = self.font.render(str(self.wronganswer2), True, self.green, self.color)
+                    self.text5 = self.font.render(str(self.wronganswer3), True, self.green, self.color)
+                return True
         return True
 
     # ***********************************************************************************************************
