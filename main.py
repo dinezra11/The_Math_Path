@@ -19,6 +19,7 @@ from scene_diag_feedback import diag_feedback
 from scene_about_us import Aboutus
 from scene_add_tips import add_tips
 from scene_private_notes import private_notes
+from scene_general_tips_parents import general_tips_parents
 
 # Global constants and variables
 WIN_WIDTH = 1024
@@ -59,7 +60,8 @@ SCENES = {
     'diag_feedback': diag_feedback,
     'about': Aboutus,
     'add_tips': add_tips,
-    'private_notes': private_notes
+    'private_notes': private_notes,
+    'general_tips_parents': general_tips_parents
 }
 currentScene = None  # This variable will hold the object of the current scene!
 
