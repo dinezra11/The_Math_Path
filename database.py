@@ -172,7 +172,8 @@ def addChildToParent(childID, linkPass, parentID, parentName):
                     dbObj = db.reference('users/{}/children'.format(parentID))
                     dbObj.push({
                         'full_name': "{} {}".format(userDetail['name'], userDetail['last']),
-                        'id': userId
+                        'id': userId,
+                        'password': userDetail['password']
                     })
                     return True
                 except Exception as e:

@@ -21,6 +21,11 @@ class View:
         :param goToScene:       The function that change scenes.
         :param parentId:        The id of the parent the engaged this screen.
         """
+
+        def viewChildPassword():
+            """ View the child's password. """
+            View.errorObj.pop("Child Password: {}".format(data["password"]), 1000)
+
         self.position = position
         self.size = size
 
@@ -40,6 +45,8 @@ class View:
         self.btnDelete = ImageButton(
             (position[0] + 5, position[1] + size[1] - btnSize - 10, btnSize, btnSize),
             "images/Settings/deleteUserIcon.png", goToScene, ("deleteUser", data["id"], parentId))
+        self.btnRestorePass = ImageButton((position[0] + size[0] - btnSize - 2, position[1] + 2, btnSize, btnSize),
+                                          "images/Settings/helpIcon.png", viewChildPassword)
 
         self.background = pygame.Surface((size[0], size[1]))
         self.background.set_alpha(55)
@@ -50,6 +57,7 @@ class View:
         self.btnScores.update()
         self.btnMessages.update()
         self.btnDelete.update()
+        self.btnRestorePass.update()
 
     def draw(self, display):
         """ Draw the View. """
@@ -61,6 +69,7 @@ class View:
         self.btnScores.draw(display)
         self.btnMessages.draw(display)
         self.btnDelete.draw(display)
+        self.btnRestorePass.draw(display)
 
         # Draw the data as a text on the view's box
         for txt in self.text:
@@ -114,7 +123,7 @@ class ViewChildren(Scene):
             Check if the link password is valid to the child's ID. """
             if self.inputForm[2].getText() == "" or self.inputForm[4].getText() == "":
                 # Do nothing if the form isn't fully filled
-                self.errorObj.pop(
+                View.errorObj.pop(
                     "Please enter child's ID and child's 'Link to Parent' password.",
                     1000)
                 return
@@ -133,7 +142,7 @@ class ViewChildren(Scene):
                     main.changeScene("mainMenu", self.userDict[0])
                 else:
                     # Error
-                    self.errorObj.pop(
+                    View.errorObj.pop(
                         "Couldn't add the child. Please verify the link password or check if child is already linked.",
                         2000)
 
@@ -141,7 +150,7 @@ class ViewChildren(Scene):
         self.userDict = userDict  # The scene will show the children of this specific parent
 
         # Create Error Message object:
-        self.errorObj = ErrorText((screenSize[0] / 2, 20), 24, "fonts/defaultFont.ttf")
+        View.errorObj = ErrorText((screenSize[0] / 2, 20), 24, "fonts/defaultFont.ttf")
 
         # Background's Initialize
         self.background = pygame.transform.scale(pygame.image.load("images/Login Scene/purple_background.jpg"),
@@ -205,7 +214,7 @@ class ViewChildren(Scene):
             v.update()
 
         # Update Error Object:
-        self.errorObj.update()
+        View.errorObj.update()
 
         return True  # Continue with the game's loop
 
@@ -235,4 +244,4 @@ class ViewChildren(Scene):
         self.btnAdd.draw(display)
 
         # Draw Error Object:
-        self.errorObj.draw(display)
+        View.errorObj.draw(display)
