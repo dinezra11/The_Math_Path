@@ -139,7 +139,12 @@ class MainMenu(Scene):
                 Button(
                     (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + 10, btnSize[0], btnSize[1]),
                     ((0, 46, 77), (0, 77, 128)), "Diagnostic's Reviews", "fonts/defaultFont.ttf", 18, goToScene,
-                    ('viewMessages', self.userObj[0], self.userObj[0]))
+                    ('viewMessages', self.userObj[0], self.userObj[0])),
+                Button(
+                    (screenSize[0] / 2 + btnSize[0] / 2 + spaceBetweenBtns, HEADER_SIZE + btnSize[1] + 15, btnSize[0],
+                     btnSize[1]),
+                    ((0, 46, 77), (0, 77, 128)), "View General Tips", "fonts/defaultFont.ttf", 18, goToScene,
+                    ('general_tips_parents', self.userObj[0]))
             ]
         else:
             # ----- Initialize DIAGNOSTIC's specific screen components ----- #
