@@ -72,6 +72,10 @@ class View:
         self.btnSend = ImageButton(
             (position[0] + size[0] - (btnSize - 5) * 3, position[1] + size[1] - btnSize + 10, btnSize, btnSize),
             "images/mefateah_feedback/send.png", sendMessage)
+        btnSize -= 30
+        self.btnDelete = ImageButton(
+            (position[0] + size[0] - btnSize - 5, position[1] + 10, btnSize, btnSize),
+            "images/Settings/deleteUserIcon.png", goToScene, ("deleteUser", data[0], diagId[0]))
 
         # Initialize view's background
         self.background = pygame.Surface((size[0], size[1]))
@@ -85,6 +89,7 @@ class View:
 
         self.text[4].update()
         self.btnSend.update()
+        self.btnDelete.update()
 
         View.errorObj.update()
 
@@ -98,6 +103,7 @@ class View:
         if self.data[1]["type"] == "Child":
             self.btnScores.draw(display)
         self.btnSend.draw(display)
+        self.btnDelete.draw(display)
 
         # Draw the data as a text on the view's box
         for txt in self.text:
@@ -242,7 +248,7 @@ class ViewUsers(Scene):
         display.blit(self.systemLogo, (10, 10))
         display.blit(self.systemLogo, (display.get_size()[0] - SYSTEMLOGO_SIZE - 10, 10))
         self.titleText.draw(display)
-        display.blit(self.help, (0, HEADER_SIZE-15))
+        display.blit(self.help, (0, HEADER_SIZE - 15))
 
         # Draw Data
         if self.currentPage < len(self.views):

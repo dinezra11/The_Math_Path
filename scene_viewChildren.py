@@ -36,6 +36,10 @@ class View:
         self.btnMessages = ImageButton(
             (position[0] + size[0] - btnSize * 2 - 10, position[1] + size[1] - btnSize - 5, btnSize, btnSize),
             "images/viewChildren Scene icons/messages icon.png", goToScene, ("viewMessages", data["id"], parentId))
+        btnSize -= 15
+        self.btnDelete = ImageButton(
+            (position[0] + 5, position[1] + size[1] - btnSize - 10, btnSize, btnSize),
+            "images/Settings/deleteUserIcon.png", goToScene, ("deleteUser", data["id"], parentId))
 
         self.background = pygame.Surface((size[0], size[1]))
         self.background.set_alpha(55)
@@ -45,6 +49,7 @@ class View:
         """ Update view's buttons. """
         self.btnScores.update()
         self.btnMessages.update()
+        self.btnDelete.update()
 
     def draw(self, display):
         """ Draw the View. """
@@ -55,6 +60,7 @@ class View:
         # Draw buttons Icons:
         self.btnScores.draw(display)
         self.btnMessages.draw(display)
+        self.btnDelete.draw(display)
 
         # Draw the data as a text on the view's box
         for txt in self.text:
