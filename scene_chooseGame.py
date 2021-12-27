@@ -118,7 +118,7 @@ class ChooseGame(Scene):
                      ("game_catchGame", self.userId)),
             GameIcon("math expressions icon (+).png", "Math Expressions", (350, HEADER_SIZE + 20), goToScene,
                      ("game_mathExp", self.userId)),
-            GameIcon("choose size icon.png", "Choose Size", (600, HEADER_SIZE + 20), goToScene,
+            GameIcon("choose size icon.png", "SizeMe", (600, HEADER_SIZE + 20), goToScene,
                      ("game_chooseSize", self.userId)),
             GameIcon("count game icon.png", "Count Game", (100, HEADER_SIZE + 250), goToScene,
                      ("game_countGame", self.userId))

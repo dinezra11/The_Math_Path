@@ -5,7 +5,7 @@ from scene_settings import Settings
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
 from scene_chooseGame import ChooseGame
-from scene_chooseSize import ChooseSize
+from scene_chooseSize import SizeMe
 from scene_count_game import count_game
 from scene_mygame import MyGame
 from scene_mygame_plus import MyGame_plus
@@ -45,7 +45,7 @@ SCENES = {
 
     # Mini-Games Scenes:
     'game_countGame': count_game,
-    'game_chooseSize': ChooseSize,
+    'game_chooseSize': SizeMe,
     'game_mathExp_power': MyGame,  # Arithmetic Game Type: *
     'game_mathExp_plus': MyGame_plus,  # Arithmetic Game Type: +
     'game_mathExp_minus': MyGame_minus,  # Arithmetic Game Type: -

@@ -3,7 +3,7 @@ from scene import Scene
 import database
 
 
-class ChooseSize(Scene):
+class SizeMe(Scene):
     def __init__(self, display, userId):
         super().__init__(display)
         self.userId = userId
@@ -11,27 +11,23 @@ class ChooseSize(Scene):
 
         # """ Prints the title"""
         font_title = pygame.font.Font(None, 100)
-        self.title = font_title.render('SizeMe', False, 'Blue')
+        self.title = font_title.render('SizeMe', True, 'Green')
 
         # """ Prints the 1st line of the explain of the game."""
-        font_xpl = pygame.font.Font(None, 30)
-        x = 'Welcome to SizeMe!'
-        self.xpl = font_xpl.render(x, False, 'Black')
+        font_xpl = pygame.font.Font(None, 40)
+        self.xpl = font_xpl.render('Welcome to SizeMe!', True, 'Black')
 
         # """ Prints the 2nd line of the explain of the game."""
-        font_xpl1 = pygame.font.Font(None, 30)
-        y = 'Here we will learn the size value of the objects'
-        self.xpl1 = font_xpl1.render(y, False, 'Black')
+        font_xpl1 = pygame.font.Font(None, 40)
+        self.xpl1 = font_xpl1.render('Here we will learn the size value of the objects', True, 'Black')
 
         # """ Prints the 3rd line of the explain of the game."""
-        font_xpl2 = pygame.font.Font(None, 30)
-        z = 'that will appear in front of us.'
-        self.xpl2 = font_xpl2.render(z, False, 'Black')
+        font_xpl2 = pygame.font.Font(None, 40)
+        self.xpl2 = font_xpl2.render('that will appear in front of us.', True, 'Black')
 
         # """ Printing the instruction of START button """
-        s = 'To start the game press on "START".'
-        font_xpl3 = pygame.font.Font(None, 35)
-        self.xpl3 = font_xpl3.render(s, False, 'Black')
+        font_xpl3 = pygame.font.Font(None, 40)
+        self.xpl3 = font_xpl3.render('To start the game press on "START".', True, 'Black')
 
         self.start_button = pygame.image.load('images/Choose Size/start button.png')
 
@@ -44,9 +40,12 @@ class ChooseSize(Scene):
         self.end_game2_surface = self.end_game2_font.render('PRESS SPACE TO RETURN TO THE MENU', True,
                                                             'Black')
         self.end_game2_rect = self.end_game2_surface.get_rect(midtop=(575, 500))
-
-        self.try_again_font = pygame.font.Font(None, 50)
+        # Wrong answer text&image
+        self.try_again_font = pygame.font.Font(None, 40)
         self.try_again_surface = self.try_again_font.render('THATS INCORRECT,PRESS SPACE TO TRY AGAIN!', True, 'Black')
+        # Correct answer text&image
+        self.good_next_font = pygame.font.Font(None, 50)
+        self.good_next_surface = self.good_next_font.render('Well done, Press "SPACE" to continue.', True, 'Black')
 
         self.state = False
         self.current_level = 1
@@ -91,7 +90,6 @@ class ChooseSize(Scene):
             if keys[pygame.K_SPACE]:
                 self.try_again = False
         elif self.end_game:
-            self.display_end_game(display)
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
                 self.update_end_game = True
@@ -100,13 +98,11 @@ class ChooseSize(Scene):
 
     def level_one(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion = pygame.font.Font(None, 30)
-        text_question = 'Question 1:'
-        self.numquestion = font_numquestion.render(text_question, False, 'Red')
+        self.numquestion = font_numquestion.render('Question 1:', True, 'Green')
         display.blit(self.numquestion, (200, 230))
         # """ Images For QUESTION 1"""
         self.one_ball = pygame.image.load('images/Choose Size/Questions/1_blue_ball.png')
@@ -139,13 +135,11 @@ class ChooseSize(Scene):
 
     def level_two(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion2 = pygame.font.Font(None, 30)
-        text_question = 'Question 2:'
-        self.numquestion2 = font_numquestion2.render(text_question, False, 'Red')
+        self.numquestion2 = font_numquestion2.render('Question 2:', True, 'Green')
         display.blit(self.numquestion2, (200, 230))
         # """ Images For QUESTION 2"""
         self.nine_balls = pygame.image.load('images/Choose Size/Questions/9_balls.png')
@@ -178,13 +172,11 @@ class ChooseSize(Scene):
 
     def level_three(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion3 = pygame.font.Font(None, 30)
-        text_question = 'Question 3:'
-        self.numquestion3 = font_numquestion3.render(text_question, False, 'Red')
+        self.numquestion3 = font_numquestion3.render('Question 3:', True, 'Green')
         display.blit(self.numquestion3, (200, 230))
         # """ Images For QUESTION 3"""
         self.ten_balls = pygame.image.load('images/Choose Size/Questions/10_balls.png')
@@ -217,13 +209,11 @@ class ChooseSize(Scene):
 
     def level_four(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion4 = pygame.font.Font(None, 30)
-        text_question = 'Question 4:'
-        self.numquestion4 = font_numquestion4.render(text_question, False, 'Red')
+        self.numquestion4 = font_numquestion4.render('Question 4:', True, 'Green')
         display.blit(self.numquestion4, (200, 230))
         # """ Images For QUESTION 4"""
         self.two_balloons = pygame.image.load('images/Choose Size/Questions/2_balloons.png')
@@ -256,13 +246,11 @@ class ChooseSize(Scene):
 
     def level_five(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion5 = pygame.font.Font(None, 30)
-        text_question = 'Question 5:'
-        self.numquestion5 = font_numquestion5.render(text_question, False, 'Red')
+        self.numquestion5 = font_numquestion5.render('Question 5:', True, 'Green')
         display.blit(self.numquestion5, (200, 230))
         # """ Images For QUESTION 5"""
         self.three_balloons1 = pygame.image.load('images/Choose Size/Questions/3_ballons1.png')
@@ -295,13 +283,11 @@ class ChooseSize(Scene):
 
     def level_six(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion6 = pygame.font.Font(None, 30)
-        text_question = 'Question 6:'
-        self.numquestion6 = font_numquestion6.render(text_question, False, 'Red')
+        self.numquestion6 = font_numquestion6.render('Question 6:', True, 'Green')
         display.blit(self.numquestion6, (200, 230))
         # """ Images For QUESTION 6"""
         self.many_bears = pygame.image.load('images/Choose Size/Questions/many_bears.png')
@@ -334,13 +320,11 @@ class ChooseSize(Scene):
 
     def level_seven(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion7 = pygame.font.Font(None, 30)
-        text_question = 'Question 7:'
-        self.numquestion7 = font_numquestion7.render(text_question, False, 'Red')
+        self.numquestion7 = font_numquestion7.render('Question 7:', True, 'Green')
         display.blit(self.numquestion7, (200, 230))
         # """ Images For QUESTION 7"""
         self.four_bears = pygame.image.load('images/Choose Size/Questions/4_bears.png')
@@ -373,19 +357,17 @@ class ChooseSize(Scene):
 
     def level_eight(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion8 = pygame.font.Font(None, 30)
-        text_question = 'Question 8:'
-        self.numquestion8 = font_numquestion8.render(text_question, False, 'Red')
+        self.numquestion8 = font_numquestion8.render('Question 8:', True, 'Green')
         display.blit(self.numquestion8, (200, 230))
         # """ Images For QUESTION 8"""
         self.one_green_bear = pygame.image.load('images/Choose Size/Questions/1_green_bear.png')
         display.blit(self.one_green_bear, (200, 320))
         self.one_red_bear = pygame.image.load('images/Choose Size/Questions/1_red_bear.png')
-        display.blit(self.one_red_bear, (600, 320))
+        display.blit(self.one_red_bear, (670, 320))
         # """ Math symbols """
         self.left_symbol = pygame.image.load('images/Choose Size/left.png')
         display.blit(self.left_symbol, (250, 620))
@@ -412,13 +394,11 @@ class ChooseSize(Scene):
 
     def level_nine(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion9 = pygame.font.Font(None, 30)
-        text_question = 'Question 9:'
-        self.numquestion9 = font_numquestion9.render(text_question, False, 'Red')
+        self.numquestion9 = font_numquestion9.render('Question 9:', True, 'Green')
         display.blit(self.numquestion9, (200, 230))
         # """ Images For QUESTION 9"""
         self.three_bears = pygame.image.load('images/Choose Size/Questions/3_bears.png')
@@ -451,13 +431,11 @@ class ChooseSize(Scene):
 
     def level_ten(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
-        p = 'According the image choose the correct symbol.'
         font_task = pygame.font.Font(None, 35)
-        self.task = font_task.render(p, False, 'Black')
+        self.task = font_task.render('According the image choose the correct symbol.', True, 'Black')
         display.blit(self.task, (200, 180))
         font_numquestion10 = pygame.font.Font(None, 30)
-        text_question = 'Question 10:'
-        self.numquestion10 = font_numquestion10.render(text_question, False, 'Red')
+        self.numquestion10 = font_numquestion10.render('Question 10:', True, 'Green')
         display.blit(self.numquestion10, (200, 230))
         # """ Images For QUESTION 10"""
         self.two_bears = pygame.image.load('images/Choose Size/Questions/2_bears.png')
@@ -492,32 +470,30 @@ class ChooseSize(Scene):
         display.blit(self.test_surface, (0, 0))
         correct_window = pygame.image.load('images/Choose Size/correct-answer-md.png')
         display.blit(correct_window, (350, 400))
+        display.blit(self.good_next_surface, (130, 200))
 
     def wrong_answer(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
         wrong_window = pygame.image.load('images/Choose Size/wrong answer.png')
         display.blit(wrong_window, (280, 200))
-        display.blit(self.try_again_surface, (100, 150))
+        display.blit(self.try_again_surface, (130, 170))
 
     def display_start_screen(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
         display.blit(self.title, (380, 180))
         display.blit(self.xpl, (200, 260))
-        display.blit(self.xpl1, (200, 280))
-        display.blit(self.xpl2, (200, 300))
-        display.blit(self.xpl3, (300, 400))
+        display.blit(self.xpl1, (200, 290))
+        display.blit(self.xpl2, (200, 320))
+        display.blit(self.xpl3, (285, 420))
         display.blit(self.start_button, (380, 490))
 
     def display_end_game(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
         display.blit(self.end_game1_surface, self.end_game1_rect)
         display.blit(self.end_game2_surface, self.end_game2_rect)
+        self.end_game = True
 
     def current_level_function(self, display: pygame.Surface):
-        # """         if self.current_level==1:
-        #             self.level_one(display)
-        #         if self.current_level == 2:
-        #             self.end_game = True """
         if self.current_level == 1:
             self.level_one(display)
         elif self.current_level == 2:
@@ -538,15 +514,6 @@ class ChooseSize(Scene):
             self.level_nine(display)
         elif self.current_level == 10:
             self.level_ten(display)
-            self.end_game = True
+        elif self.current_level:
+            self.display_end_game(display)
 
-        # """ Images For QUESTION 11"""
-        # """ self.one_ball = pygame.image.load('images/Choose Size/Questions/')
-        #         display.blit(self.one_ball, (200, 320))
-        #         self.six_balls = pygame.image.load('images/Choose Size/Questions/')
-        #         display.blit(self.six_balls, (600, 320))
-        #         # """ Images For QUESTION 12"""
-        #         self.one_ball = pygame.image.load('images/Choose Size/Questions/')
-        #         display.blit(self.one_ball, (200, 320))
-        #         self.six_balls = pygame.image.load('images/Choose Size/Questions/')
-        #         display.blit(self.six_balls, (600, 320)) """
