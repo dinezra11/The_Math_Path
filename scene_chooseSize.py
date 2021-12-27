@@ -55,9 +55,14 @@ class ChooseSize(Scene):
         self.end_game = False
         self.update_end_game = False
 
+        # Score Variables:
+        self.score_correct = 0
+        self.score_wrong = 0
+
     def update(self):
         if self.update_end_game:
-            database.addScore("Choose Size", 0, self.userId)
+            score = int(self.score_correct / (self.score_correct + self.score_wrong) * 100)
+            database.addScore("Choose Size", score, self.userId)
             return self.userId  # Return userId so the system will go back to the user's menu screen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,8 +132,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_two(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -164,8 +171,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_three(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -201,8 +210,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_four(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -238,8 +249,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_five(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -275,8 +288,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_six(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -312,8 +327,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_seven(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -349,8 +366,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_eight(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -386,8 +405,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_nine(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -423,8 +444,10 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def level_ten(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
@@ -460,18 +483,20 @@ class ChooseSize(Scene):
             if mouseOn:
                 self.current_level += 1
                 self.next_level = True
+                self.score_correct += 1
             if mouseOff:
                 self.try_again = True
+                self.score_wrong += 1
 
     def correct_answer(self, display: pygame.Surface):
-        display.blit(self.test_surface,(0,0))
+        display.blit(self.test_surface, (0, 0))
         correct_window = pygame.image.load('images/Choose Size/correct-answer-md.png')
-        display.blit(correct_window,(350, 400))
+        display.blit(correct_window, (350, 400))
 
     def wrong_answer(self, display: pygame.Surface):
         display.blit(self.test_surface, (0, 0))
         wrong_window = pygame.image.load('images/Choose Size/wrong answer.png')
-        display.blit(wrong_window,(280, 200))
+        display.blit(wrong_window, (280, 200))
         display.blit(self.try_again_surface, (100, 150))
 
     def display_start_screen(self, display: pygame.Surface):
@@ -488,7 +513,7 @@ class ChooseSize(Scene):
         display.blit(self.end_game1_surface, self.end_game1_rect)
         display.blit(self.end_game2_surface, self.end_game2_rect)
 
-    def current_level_function(self,display:pygame.Surface):
+    def current_level_function(self, display: pygame.Surface):
         # """         if self.current_level==1:
         #             self.level_one(display)
         #         if self.current_level == 2:
