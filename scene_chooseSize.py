@@ -37,7 +37,7 @@ class SizeMe(Scene):
         self.end_game1_rect = self.end_game1_surface.get_rect(midtop=(450, 300))
 
         self.end_game2_font = pygame.font.Font(None, 40)
-        self.end_game2_surface = self.end_game2_font.render('PRESS SPACE TO RETURN TO THE MENU', True,
+        self.end_game2_surface = self.end_game2_font.render('PRESS "ENTER" TO RETURN TO THE MENU', True,
                                                             'Black')
         self.end_game2_rect = self.end_game2_surface.get_rect(midtop=(575, 500))
         # Wrong answer text&image
@@ -90,9 +90,7 @@ class SizeMe(Scene):
             if keys[pygame.K_SPACE]:
                 self.try_again = False
         elif self.end_game:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_SPACE]:
-                self.update_end_game = True
+            self.update_end_game = True
         else:
             self.current_level_function(display)
 
@@ -491,7 +489,9 @@ class SizeMe(Scene):
         display.blit(self.test_surface, (0, 0))
         display.blit(self.end_game1_surface, self.end_game1_rect)
         display.blit(self.end_game2_surface, self.end_game2_rect)
-        self.end_game = True
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
+            self.end_game = True
 
     def current_level_function(self, display: pygame.Surface):
         if self.current_level == 1:
