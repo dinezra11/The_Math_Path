@@ -2,6 +2,7 @@ import pygame
 from scene import Scene
 from uiComponents import Text, TextInput, Button, ImageButton, ErrorText
 from database import addMessage
+from exportExcel import exportUsers
 
 # Scene's Constants:
 HEADER_SIZE = 80
@@ -207,6 +208,9 @@ class ViewUsers(Scene):
         self.btnFilter = Button((screenSize[0] / 2 - screenSize[0] * 0.9 / 2, screenSize[1] / 2 - 45, 100, 30),
                                 ((0, 46, 77), (0, 77, 128)), "Search", "fonts/defaultFont.ttf", 20, updateViewList,
                                 None)
+        self.export = Button((screenSize[0] / 2 - screenSize[0] * 0.9 / 2 + 400, screenSize[1] / 2 - 45, 180, 28),
+                             ((0, 46, 77), (0, 77, 128)), "Export To Excel", "fonts/defaultFont.ttf", 20,
+                             exportUsers, None)
 
         updateViewList("")  # At the start of the scene, show all users without any filter
 
@@ -225,6 +229,7 @@ class ViewUsers(Scene):
         self.btnBack.update()
         self.input.update()
         self.btnFilter.update()
+        self.export.update()
         if self.currentPage + 1 < len(self.views):
             self.btnNextView.update()
         if self.currentPage != 0:
@@ -260,6 +265,7 @@ class ViewUsers(Scene):
         # Draw Buttons
         self.btnBack.draw(display)
         self.btnFilter.draw(display)
+        self.export.draw(display)
         if self.currentPage + 1 < len(self.views):
             self.btnNextView.draw(display)
         if self.currentPage != 0:

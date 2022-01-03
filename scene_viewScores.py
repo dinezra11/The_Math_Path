@@ -2,6 +2,7 @@ import pygame
 from scene import Scene
 from uiComponents import Text, Button
 from database import getScore
+from exportExcel import exportScores
 
 # Scene's Constants:
 HEADER_SIZE = 80
@@ -122,6 +123,7 @@ class ViewScores(Scene):
         self.titleText = Text((display.get_size()[0] / 2, HEADER_SIZE / 2), (200, 200, 200), "Game Scores Statistics",
                               36, "fonts/defaultFont.ttf")
         self.currentPage = 0
+        data = getScore(self.userId)  # Get the scores of this user from the database
         self.buttons = [
             Button((screenSize[0] - 200 - 20, screenSize[1] - 90, 200, 70), ((0, 46, 77), (0, 77, 128)), "Back",
                    "fonts/defaultFont.ttf", 28, goToScene, ("mainMenu", self.returnID)),
@@ -130,9 +132,10 @@ class ViewScores(Scene):
             Button((5, screenSize[1] / 2, 50, 50), ((0, 46, 77), (0, 77, 128)), "<-", "fonts/defaultFont.ttf", 28,
                    nextPage, "previous")
         ]
+        self.btnExport = Button((screenSize[0] - 440, screenSize[1] - 90, 200, 70), ((0, 46, 77), (0, 77, 128)),
+                                "Export All Scores To Excel", "fonts/defaultFont.ttf", 14, exportScores, self.userId)
 
-        # Initialize data from DB
-        data = getScore(self.userId)  # Get the scores of this user from the database
+        # Initialize views according to the data from the DB
         viewBoxSize = (screenSize[0] * 0.75, screenSize[1] / 8)
         self.views = []
         if data is not None:
@@ -155,6 +158,7 @@ class ViewScores(Scene):
                 return self.returnID
 
         self.buttons[0].update()
+        self.btnExport.update()
         if len(self.views) > (self.currentPage + 1) * 5:
             self.buttons[1].update()
         if self.currentPage != 0:
@@ -185,6 +189,7 @@ class ViewScores(Scene):
 
         # Draw Buttons
         self.buttons[0].draw(display)
+        self.btnExport.draw(display)
         if len(self.views) > (self.currentPage + 1) * 5:
             self.buttons[1].draw(display)
         if self.currentPage != 0:
