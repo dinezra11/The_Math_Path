@@ -2,6 +2,7 @@ import pygame
 from scene import Scene
 from uiComponents import Text, Button
 from database import getScore, getMessage
+from exportExcel import exportMessages
 
 # Scene's Constants:
 HEADER_SIZE = 80
@@ -116,6 +117,9 @@ class ViewMessages(Scene):
                 self.views.append(View((xPos, yPos), viewBoxSize, d))
                 yPos += viewBoxSize[1] + 5
 
+        self.btnExport = Button((screenSize[0] - 440, screenSize[1] - 90, 200, 70), ((0, 46, 77), (0, 77, 128)),
+                                "Export All Scores To Excel", "fonts/defaultFont.ttf", 14, exportMessages, self.userId)
+
     def update(self):
         """ Update the scene.
         Also take care of events and user's input.
@@ -126,6 +130,7 @@ class ViewMessages(Scene):
                 return self.returnID
 
         self.buttons[0].update()
+        self.btnExport.update()
         if len(self.views) > (self.currentPage + 1) * self.dataPerPage:
             self.buttons[1].update()
         if self.currentPage != 0:
@@ -156,6 +161,7 @@ class ViewMessages(Scene):
 
         # Draw Buttons
         self.buttons[0].draw(display)
+        self.btnExport.draw(display)
         if len(self.views) > (self.currentPage + 1) * self.dataPerPage:
             self.buttons[1].draw(display)
         if self.currentPage != 0:

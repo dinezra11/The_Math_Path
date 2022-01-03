@@ -4,7 +4,7 @@ External library used: - openpyxl -
 """
 
 from openpyxl import Workbook
-from database import getAllUsers, getScore
+from database import getAllUsers, getScore, getMessage
 
 
 def exportScores(userID):
@@ -102,6 +102,24 @@ def exportScores(userID):
     for c in content:
         sheet.active.append(c)
     sheet.save('{} score report.xlsx'.format(userID))
+
+    sheet.close()
+
+
+def exportMessages(userID):
+    """ Convert, calculate and export the data into an excel file. """
+    data = getMessage(userID)
+    if data is None:
+        return
+
+    sheet = Workbook()
+
+    # Adding the data into the excel object
+    sheetWrite = sheet.active
+    sheetWrite.append(("Date", "From", "Message"))
+    for message in data:
+        sheetWrite.append((message[1]['date'], message[1]['from'], message[1]['info']))
+    sheet.save('Messages for {}.xlsx'.format(userID))
 
     sheet.close()
 
