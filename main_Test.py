@@ -1,6 +1,6 @@
-""" Test file for 'uiComponents.py'
-'uiComponents.py' contains almost all of the components and elements of the systems.
-Therefore, testing this file is extremely important and cover up almost all of the system's functionality. """
+""" Test file for general PyGame'
+This test script perform a general test for the PyGame engine. It uses build-in tests to make sure all of the
+engine's components are legit and valid. """
 import unittest
 import pygame.tests
 
