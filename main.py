@@ -1,6 +1,5 @@
 """ Main file of the system! """
 import pygame
-import traceback  # for showing the traceback on the console while error handling
 from scene_settings import Settings
 from scene_login import LoginScene
 from scene_mainMenu import MainMenu
@@ -161,7 +160,6 @@ except Exception as e:  # Handle default exceptions (The exceptions that haven't
     gameDisplay.blit(errorSurface, (0, 0))  # Error Screen
     pygame.display.update()
     pygame.time.wait(1500)
-    traceback.print_exc()  # for debugging
 finally:
     # Quit the game. Close PyGame safely:
     pygame.quit()
