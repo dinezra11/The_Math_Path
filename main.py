@@ -1,4 +1,6 @@
 """ Main file of the system! """
+import sys
+
 import pygame
 from scene_settings import Settings
 from scene_login import LoginScene
@@ -104,7 +106,7 @@ def changeScene(newScene="", args=None):
         # Safely close pygame and quit the game:
         fadeOut()
         pygame.quit()
-        quit()
+        sys.exit()
     elif newScene in SCENES:
         # Fade out and in to the new scene:
         fadeOut()
@@ -163,4 +165,3 @@ except Exception as e:  # Handle default exceptions (The exceptions that haven't
 finally:
     # Quit the game. Close PyGame safely:
     pygame.quit()
-    quit()
