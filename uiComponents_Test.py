@@ -134,7 +134,7 @@ class TestUiComponents(unittest.TestCase):
                     loop = False
 
             if pygame.mouse.get_pressed()[0] is True:
-                txtTest.pop("Button clicked, error popped! :)", 100)  # Pop the error
+                txtTest.pop("Mouse clicked, error popped! :)", 100)  # Pop the error
 
             gameDisplay.fill((0, 0, 0))
             txtTest.update()
